@@ -95,7 +95,6 @@
                 <artifactId>frontend-maven-plugin</artifactId>
                 <version>${plugin.frontend.version}</version>
                 <configuration>
-                    <!-- angular 源码根目录 angular -->
                     <workingDirectory>src/main/angular</workingDirectory>
                     <nodeDownloadRoot>https://npm.taobao.org/mirrors/node/</nodeDownloadRoot>
                     <nodeVersion>${system.node.version}</nodeVersion>
