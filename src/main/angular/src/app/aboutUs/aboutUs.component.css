@@ -14,7 +14,9 @@ a:hover {
   background-color: #fff;
   border: .05rem solid #fff;
 }
-
+.maintop{
+  margin-top: 20%;
+}
 .cover-container {
   max-width: 42em;
 }
@@ -36,4 +38,5 @@ a:hover {
  */
 .mastfoot {
   color: rgba(255, 255, 255, .5);
+  margin-bottom: 10%;
 }

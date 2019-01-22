@@ -17,7 +17,17 @@
 .form-signin .form-control:focus {
     z-index: 2;
 }
-
+.form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  
 .btn-secondary,
 .btn-secondary:hover,
 .btn-secondary:focus {
@@ -38,6 +48,7 @@ a:hover {
 }
 .cover {
     padding: 0 1.5rem;
+    margin-top: 20%;
 }
 .cover .btn-lg {
     padding: .75rem 1.25rem;
