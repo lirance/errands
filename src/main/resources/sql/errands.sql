@@ -12,7 +12,7 @@ CREATE TABLE `user` (
   `rateNumber` int(255) NOT NULL ,
   `averageRate` float (7,2),
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 ------------------------------------
 --order table
@@ -26,7 +26,7 @@ CREATE TABLE `order` (
   `timeLimit` int(255) DEFAULT 1,
   `tip` float (7,2) NOT NULL,
   PRIMARY KEY (`orderId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -------------------------------------
 --user_order table

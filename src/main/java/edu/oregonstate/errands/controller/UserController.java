@@ -25,11 +25,24 @@ public class UserController {
 
     @RequestMapping("/login")
     public boolean logIn(String phone, String password) {
+
         try {
             User user = userService.getUserByPhone(phone);
             return password.equals(user.getPassword());
+
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    @RequestMapping("/login/getId")
+    public int logInGetId(String phone, String password) {
+
+        try {
+            User user = userService.getUserByPhone(phone);
+            return password.equals(user.getPassword()) ? user.getUserid() : -1;
+        } catch (Exception e) {
+            return -1;
         }
     }
 

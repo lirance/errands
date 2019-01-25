@@ -41,10 +41,6 @@
         </javaClientGenerator>
 
         <!--&lt;!&ndash; database automatically generator schema:the database name; tableName:; domainObjectName:the domain key of the table &ndash;&gt;-->
-        <!--<table schema="snooze" tableName="user" domainObjectName="User"-->
-        <!--enableCountByExample="false" enableUpdateByExample="false"-->
-        <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-        <!--selectByExampleQueryId="false">-->
 
         <table schema="errands" tableName="order" domainObjectName="Order"
                enableCountByExample="false" enableUpdateByExample="false"
