@@ -15,4 +15,10 @@ public interface UserOrderMapper {
     int updateByPrimaryKeySelective(UserOrder record);
 
     int updateByPrimaryKey(UserOrder record);
+
+    int rate(UserOrder record);
+
+    int setRateFlag(UserOrder record);
+
+    UserOrder selectRate(UserOrderKey key);
 }

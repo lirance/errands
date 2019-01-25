@@ -42,4 +42,24 @@ public class UserOrderServiceImpl implements UserOrderService {
     public int deleteByPrimaryKey(UserOrderKey userOrderKey) {
         return userOrderMapper.deleteByPrimaryKey(userOrderKey);
     }
+
+    @Override
+    public boolean getRateFlag(UserOrderKey userOrderKey) {
+        return this.selectByPrimaryKey(userOrderKey).getRateflag();
+    }
+
+    @Override
+    public boolean setRate(int orderId, int userId, float rate) {
+        UserOrder userOrder = new UserOrder();
+        userOrder.setOrderid(orderId);
+        userOrder.setUserid(userId);
+        userOrder.setRate(rate);
+        userOrder.setRateflag(true);
+        return userOrderMapper.rate(userOrder) == 1 && userOrderMapper.setRateFlag(userOrder) == 1;
+    }
+
+    @Override
+    public UserOrder getRateUser(UserOrderKey userOrderKey) {
+        return userOrderMapper.selectRate(userOrderKey);
+    }
 }

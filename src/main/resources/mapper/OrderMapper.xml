@@ -3,7 +3,7 @@
 <mapper namespace="edu.oregonstate.errands.mapper.OrderMapper">
     <resultMap id="BaseResultMap" type="edu.oregonstate.errands.model.Order">
         <id column="orderId" jdbcType="INTEGER" property="orderid"/>
-        <result column="itemList" jdbcType="VARCHAR" property="itemlist"/>
+        <result column="itemList" jdbcType="VARCHAR" property="itemlist" javaType="java.util.ArrayList"/>
         <result column="storeAdd" jdbcType="VARCHAR" property="storeadd"/>
         <result column="state" jdbcType="VARCHAR" property="state"/>
         <result column="timeLimit" jdbcType="INTEGER" property="timelimit"/>
@@ -15,21 +15,20 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from order
+        from `order`
         where orderId = #{orderid,jdbcType=INTEGER}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from order
+    delete from `order`
     where orderId = #{orderid,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="edu.oregonstate.errands.model.Order" useGeneratedKeys="true">
-    insert into order (orderId, itemList, storeAdd, 
-      state, timeLimit, tip)
-    values (#{orderid,jdbcType=INTEGER}, #{itemlist,jdbcType=VARCHAR}, #{storeadd,jdbcType=VARCHAR}, 
-      #{state,jdbcType=VARCHAR}, #{timelimit,jdbcType=INTEGER}, #{tip,jdbcType=REAL})
+    <insert id="insert" parameterType="edu.oregonstate.errands.model.Order" useGeneratedKeys="true"
+            keyProperty="orderid">
+    insert into `order` ( itemList, storeAdd, state, timeLimit, tip)
+    values (#{itemlist,jdbcType=VARCHAR}, #{storeadd,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{timelimit,jdbcType=INTEGER}, #{tip,jdbcType=REAL})
   </insert>
     <insert id="insertSelective" parameterType="edu.oregonstate.errands.model.Order">
-        insert into order
+        insert into `order`
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="orderid != null">
                 orderId,
@@ -72,7 +71,7 @@
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="edu.oregonstate.errands.model.Order">
-        update order
+        update `order`
         <set>
             <if test="itemlist != null">
                 itemList = #{itemlist,jdbcType=VARCHAR},
@@ -93,7 +92,7 @@
         where orderId = #{orderid,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="edu.oregonstate.errands.model.Order">
-    update order
+    update `order`
     set itemList = #{itemlist,jdbcType=VARCHAR},
       storeAdd = #{storeadd,jdbcType=VARCHAR},
       state = #{state,jdbcType=VARCHAR},

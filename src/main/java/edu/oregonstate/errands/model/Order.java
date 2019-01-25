@@ -1,15 +1,15 @@
 package edu.oregonstate.errands.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Order extends BaseModelObject {
     private Integer orderid;
 
-    private List<String> itemlist;
+    private ArrayList<String> itemlist;
 
     private String storeadd;
 
-    private State state = State.ORDERED;
+    private String state = State.ORDERED.toString();
 
     private Integer timelimit;
 
@@ -23,11 +23,11 @@ public class Order extends BaseModelObject {
         this.orderid = orderid;
     }
 
-    public List<String> getItemlist() {
+    public ArrayList<String> getItemlist() {
         return itemlist;
     }
 
-    public void setItemlist(List<String> itemlist) {
+    public void setItemlist(ArrayList<String> itemlist) {
         this.itemlist = itemlist;
     }
 
@@ -39,11 +39,11 @@ public class Order extends BaseModelObject {
         this.storeadd = storeadd == null ? null : storeadd.trim();
     }
 
-    public State getState() {
+    public String getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(String state) {
         this.state = state;
     }
 
@@ -62,5 +62,6 @@ public class Order extends BaseModelObject {
     public void setTip(Float tip) {
         this.tip = tip;
     }
+
 
 }

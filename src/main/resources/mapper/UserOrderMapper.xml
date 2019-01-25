@@ -91,4 +91,26 @@
     where orderId = #{orderid,jdbcType=INTEGER}
       and userId = #{userid,jdbcType=INTEGER}
   </update>
+    <update id="rate" parameterType="edu.oregonstate.errands.model.UserOrder">
+    update user_order
+    set rate = #{rate,jdbcType=REAL}
+    where orderId = #{orderid,jdbcType=INTEGER}
+    and userId != #{userid,jdbcType=INTEGER};
+  </update>
+    <update id="setRateFlag" parameterType="edu.oregonstate.errands.model.UserOrder">
+    update user_order
+    set rateFlag = #{rateflag,jdbcType=BIT}
+    where orderId = #{orderid,jdbcType=INTEGER}
+    and userId = #{userid,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="selectRate" parameterType="edu.oregonstate.errands.model.UserOrderKey"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_order
+        where orderId = #{orderid,jdbcType=INTEGER}
+        and userId != #{userid,jdbcType=INTEGER}
+    </select>
 </mapper>
