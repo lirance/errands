@@ -28,13 +28,16 @@ a:hover {
  */
 .cover {
   padding: 0 1.5rem;
+  margin-top: 20%;
 }
 .cover .btn-lg {
   padding: .75rem 1.25rem;
   font-weight: 700;
 }
 
-
+.masthead {
+  margin-bottom: 2rem;
+}
 /*
  * Footer
  */
