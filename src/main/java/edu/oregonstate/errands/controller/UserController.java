@@ -28,6 +28,7 @@ public class UserController {
 
         try {
             User user = userService.getUserByPhone(phone);
+            password = String.valueOf(password.hashCode());
             return password.equals(user.getPassword());
 
         } catch (Exception e) {
@@ -40,6 +41,8 @@ public class UserController {
 
         try {
             User user = userService.getUserByPhone(phone);
+            // hash password
+            password = String.valueOf(password.hashCode());
             return password.equals(user.getPassword()) ? user.getUserid() : -1;
         } catch (Exception e) {
             return -1;
@@ -51,7 +54,8 @@ public class UserController {
 
         User user = new User();
         user.setUsername(username);
-        user.setPassword(password);
+        // hash password
+        user.setPassword(String.valueOf(password.hashCode()));
         user.setPhone(phone);
         user.setAddress(address);
 
