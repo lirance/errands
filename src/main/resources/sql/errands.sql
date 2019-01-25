@@ -36,6 +36,7 @@ CREATE TABLE `user_order` (
   `userId` int(100) NOT NULL,
   `orderId` int(100) NOT NULL,
   `rateFlag` boolean DEFAULT 0,
+  `orderMaker` boolean DEFAULT 1,
   `rate`  float (7,2),
 CONSTRAINT PK_UO PRIMARY KEY (`orderId`,`userId`),
 FOREIGN KEY fk_oId(orderId) REFERENCES `order`(orderId),

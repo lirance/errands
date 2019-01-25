@@ -77,4 +77,14 @@ public class UserController {
         }
 
     }
+
+    @RequestMapping("/getUserById")
+    public User getUserById(int userid) {
+        return userService.selectByPrimaryKey(userid);
+    }
+
+    @RequestMapping("/getUserByPhone")
+    public User getUserByPhone(String phone) {
+        return userService.getUserByPhone(phone);
+    }
 }

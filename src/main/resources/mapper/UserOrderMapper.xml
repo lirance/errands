@@ -1,83 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.oregonstate.errands.mapper.UserOrderMapper">
-  <resultMap id="BaseResultMap" type="edu.oregonstate.errands.model.UserOrder">
-    <id column="orderId" jdbcType="INTEGER" property="orderid" />
-    <id column="userId" jdbcType="INTEGER" property="userid" />
-    <result column="rateFlag" jdbcType="BIT" property="rateflag" />
-    <result column="rate" jdbcType="REAL" property="rate" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    orderId, userId, rateFlag, rate
+    <resultMap id="BaseResultMap" type="edu.oregonstate.errands.model.UserOrder">
+        <id column="orderId" jdbcType="INTEGER" property="orderid"/>
+        <id column="userId" jdbcType="INTEGER" property="userid"/>
+        <result column="rateFlag" jdbcType="BIT" property="rateflag"/>
+        <result column="orderMaker" jdbcType="BIT" property="ordermaker"/>
+        <result column="rate" jdbcType="REAL" property="rate"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    orderId, userId, rateFlag, orderMaker, rate
   </sql>
-  <select id="selectByPrimaryKey" parameterType="edu.oregonstate.errands.model.UserOrderKey" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from user_order
-    where orderId = #{orderid,jdbcType=INTEGER}
-      and userId = #{userid,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="edu.oregonstate.errands.model.UserOrderKey">
+    <select id="selectByPrimaryKey" parameterType="edu.oregonstate.errands.model.UserOrderKey"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_order
+        where orderId = #{orderid,jdbcType=INTEGER}
+        and userId = #{userid,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="edu.oregonstate.errands.model.UserOrderKey">
     delete from user_order
     where orderId = #{orderid,jdbcType=INTEGER}
       and userId = #{userid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="edu.oregonstate.errands.model.UserOrder">
+    <insert id="insert" parameterType="edu.oregonstate.errands.model.UserOrder">
     insert into user_order (orderId, userId, rateFlag, 
-      rate)
+      orderMaker, rate)
     values (#{orderid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{rateflag,jdbcType=BIT}, 
-      #{rate,jdbcType=REAL})
+      #{ordermaker,jdbcType=BIT}, #{rate,jdbcType=REAL})
   </insert>
-  <insert id="insertSelective" parameterType="edu.oregonstate.errands.model.UserOrder">
-    insert into user_order
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="orderid != null">
-        orderId,
-      </if>
-      <if test="userid != null">
-        userId,
-      </if>
-      <if test="rateflag != null">
-        rateFlag,
-      </if>
-      <if test="rate != null">
-        rate,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="orderid != null">
-        #{orderid,jdbcType=INTEGER},
-      </if>
-      <if test="userid != null">
-        #{userid,jdbcType=INTEGER},
-      </if>
-      <if test="rateflag != null">
-        #{rateflag,jdbcType=BIT},
-      </if>
-      <if test="rate != null">
-        #{rate,jdbcType=REAL},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="edu.oregonstate.errands.model.UserOrder">
-    update user_order
-    <set>
-      <if test="rateflag != null">
-        rateFlag = #{rateflag,jdbcType=BIT},
-      </if>
-      <if test="rate != null">
-        rate = #{rate,jdbcType=REAL},
-      </if>
-    </set>
-    where orderId = #{orderid,jdbcType=INTEGER}
-      and userId = #{userid,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="edu.oregonstate.errands.model.UserOrder">
+    <insert id="insertSelective" parameterType="edu.oregonstate.errands.model.UserOrder">
+        insert into user_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderid != null">
+                orderId,
+            </if>
+            <if test="userid != null">
+                userId,
+            </if>
+            <if test="rateflag != null">
+                rateFlag,
+            </if>
+            <if test="ordermaker != null">
+                orderMaker,
+            </if>
+            <if test="rate != null">
+                rate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderid != null">
+                #{orderid,jdbcType=INTEGER},
+            </if>
+            <if test="userid != null">
+                #{userid,jdbcType=INTEGER},
+            </if>
+            <if test="rateflag != null">
+                #{rateflag,jdbcType=BIT},
+            </if>
+            <if test="ordermaker != null">
+                #{ordermaker,jdbcType=BIT},
+            </if>
+            <if test="rate != null">
+                #{rate,jdbcType=REAL},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="edu.oregonstate.errands.model.UserOrder">
+        update user_order
+        <set>
+            <if test="rateflag != null">
+                rateFlag = #{rateflag,jdbcType=BIT},
+            </if>
+            <if test="ordermaker != null">
+                orderMaker = #{ordermaker,jdbcType=BIT},
+            </if>
+            <if test="rate != null">
+                rate = #{rate,jdbcType=REAL},
+            </if>
+        </set>
+        where orderId = #{orderid,jdbcType=INTEGER}
+        and userId = #{userid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="edu.oregonstate.errands.model.UserOrder">
     update user_order
     set rateFlag = #{rateflag,jdbcType=BIT},
+      orderMaker = #{ordermaker,jdbcType=BIT},
       rate = #{rate,jdbcType=REAL}
     where orderId = #{orderid,jdbcType=INTEGER}
       and userId = #{userid,jdbcType=INTEGER}
   </update>
-
 </mapper>
