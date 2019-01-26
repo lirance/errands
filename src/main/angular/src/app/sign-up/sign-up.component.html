@@ -1,22 +1,32 @@
 <div class="cover-container d-flex w-100 h-90 p-3 mx-auto flex-column mb-auto">
   <main role="main" class="inner cover">
-      <form class="form-signup mt-auto">
+      <form (ngSubmit)="onSubmit()" [formGroup]="signupForm" class="form-signup mt-auto">
         <h1 class="mb-3 font-weight-normal">Sign Up</h1>
+        <div class="form-group">
         <label for="inputFirstName" class="sr-only">Enter your first name</label>
         <input type="name" id="inputFirstName" class="form-control" placeholder="Enter your first name" required="" autofocus="">
-        
+</div>
+
+          <div class="form-group">
         <label for="inputLastName" class="sr-only">Enter your last name</label>
         <input type="name" id="inputLastName" class="form-control" placeholder="Enter your last name" required="" autofocus="">
-        
+          </div>
+
+            <div class="form-group">
         <label for="inputEmail" class="sr-only">Enter your email address</label>
         <input type="email" id="inputEmail" class="form-control" placeholder="Enter your email address" required="" autofocus="">
-        
+            </div>
+
+        <div class="form-group">
         <label for="inputPassword" class="sr-only">Enter your password</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Enter your password" required="">
-        
+        </div>
+
+        <div class="form-group">
         <label for="inputConfirmPassword" class="sr-only">Confirm your password</label>
         <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Confirm your password" required="">
-        
+        </div>
+
         <button class="btn btn-lg btn-secondary btn-block mt-5" type="submit">Sign up</button>
       </form>  
     </main>
