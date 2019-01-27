@@ -1,40 +1,81 @@
 <div class="cover-container d-flex w-100 h-90 p-3 mx-auto flex-column mb-auto">
   <main role="main" class="inner cover">
-      <form (ngSubmit)="onSubmit()" [formGroup]="signupForm" class="form-signup mt-auto">
-        <h1 class="mb-3 font-weight-normal">Sign Up</h1>
-        <div class="form-group">
-        <label for="inputFirstName" class="sr-only">Enter your first name</label>
-        <input type="name" id="inputFirstName" class="form-control" placeholder="Enter your first name" required="" autofocus="">
-</div>
+    <form (ngSubmit)="onSubmit()" [formGroup]="signupForm" class="form-signup mt-auto">
 
-          <div class="form-group">
-        <label for="inputLastName" class="sr-only">Enter your last name</label>
-        <input type="name" id="inputLastName" class="form-control" placeholder="Enter your last name" required="" autofocus="">
+      <h1 class="mb-3 font-weight-normal">Sign Up</h1>
+
+      <div class="form-group">
+        <label for="username" class="sr-only">Enter your username</label>
+        <input type="username" id="username" class="form-control" formControlName="username"
+               placeholder="Enter your username" required=""
+               autofocus="">
+        <div *ngIf="signupForm.controls.username.touched && !signupForm.controls.username.valid"
+             class="alert alert-danger">
+          Username is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone" class="sr-only">Enter your phone number</label>
+        <input type="phone" id="phone" class="form-control" formControlName="phone"
+               placeholder="Enter your phone number" required=""
+               autofocus="">
+        <div *ngIf="signupForm.controls.phone.touched && signupForm.controls.phone.errors">
+          <div *ngIf="signupForm.controls.phone.errors.required"
+               class="alert alert-danger">
+            Phone number is required.
           </div>
 
-            <div class="form-group">
-        <label for="inputEmail" class="sr-only">Enter your email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Enter your email address" required="" autofocus="">
-            </div>
-
-        <div class="form-group">
-        <label for="inputPassword" class="sr-only">Enter your password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Enter your password" required="">
+          <div *ngIf="signupForm.controls.phone.errors.pattern"
+               class="alert alert-danger">
+            US phone number should be 10 numbers.
+          </div>
         </div>
 
-        <div class="form-group">
-        <label for="inputConfirmPassword" class="sr-only">Confirm your password</label>
-        <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Confirm your password" required="">
+        <label for="address" class="sr-only">Enter your address</label>
+        <input type="address" id="address" class="form-control" formControlName="address"
+               placeholder="Enter your address" required=""
+               autofocus="">
+        <div *ngIf="signupForm.controls.address.touched && !signupForm.controls.address.valid"
+             class="alert alert-danger">
+          Address is required
         </div>
+      </div>
 
-        <button class="btn btn-lg btn-secondary btn-block mt-5" type="submit">Sign up</button>
-      </form>  
-    </main>
-  
-    <footer class="mastfoot mt-5">
-        <div class="inner">
-          <p>Website for <a href="http://web.engr.oregonstate.edu/~scaffidc/courses/cs562/index.shtml?cb=1547975610290">CS562</a>, by <a href="https://github.com/lirance/errands">@Lirance and Brian</a>.</p>
+      <div class="form-group">
+        <label for="password" class="sr-only">Enter your password</label>
+        <input type="password" id="password" class="form-control" formControlName="password"
+               placeholder="Enter your password" required="">
+        <div *ngIf="signupForm.controls.password.touched && !signupForm.controls.password.valid"
+             class="alert alert-danger">
+          Password is required
         </div>
-    </footer>
-    
-  </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword" class="sr-only">Confirm your password</label>
+        <input type="password" id="confirmPassword" class="form-control" formControlName="confirmPassword"
+               placeholder="Confirm your password" required="">
+        <div *ngIf="signupForm.controls.confirmPassword.touched && signupForm.controls.confirmPassword.errors">
+          <div *ngIf="signupForm.controls.confirmPassword.errors.required" class="alert alert-danger">
+            Confirm password is required
+          </div>
+          <div *ngIf="signupForm.controls.confirmPassword.errors.EqualValidator" class="alert alert-danger">
+            Password is mismatch
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-lg btn-secondary btn-block mt-5" type="submit">Sign up</button>
+
+    </form>
+  </main>
+
+  <footer class="mastfoot mt-5">
+    <div class="inner">
+      <p>Website for <a href="http://web.engr.oregonstate.edu/~scaffidc/courses/cs562/index.shtml?cb=1547975610290">CS562</a>,
+        by <a href="https://github.com/lirance/errands">@Lirance and Brian</a>.</p>
+    </div>
+  </footer>
+
+</div>

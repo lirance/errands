@@ -20,7 +20,7 @@ import { UserService } from "./_services";
     HomeComponent,
     LoginComponent,
     SignUpComponent,
-    DashboardComponent
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
