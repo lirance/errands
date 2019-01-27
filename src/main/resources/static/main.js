@@ -53,8 +53,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../environments/environment */ "./src/environments/environment.ts");
-
 
 
 
@@ -63,7 +61,7 @@ var UserService = /** @class */ (function () {
         this.http = http;
     }
     UserService.prototype.login = function (phone, password) {
-        return this.http.get(_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiurl + "/user/login?phone=" + phone + "&password=" + password);
+        return this.http.get("/user/login?phone=" + phone + "&password=" + password);
     };
     UserService.prototype.logout = function () {
         // remove user from local storage to log user out
@@ -433,7 +431,7 @@ module.exports = ".form-signin {\n    width: 100%;\n    max-width: 330px;\n    p
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"cover-container d-flex w-100 h-90 p-3 mx-auto flex-column\">\n  <header></header>\n  <main role=\"main\" class=\"inner cover\">\n    <form (ngSubmit)=\"onSubmit()\" [formGroup]=\"loginForm\" class=\"form-signin\">\n      <h1 class=\"mb-3 font-weight-normal\">Please log in</h1>\n\n      <div class=\"form-group\">\n        <label for=\"phone\" class=\"sr-only\">Phone Number</label>\n        <input type=\"phone\" id=\"phone\" class=\"form-control\" formControlName=\"phone\" placeholder=\"Phone Number\" required=\"\" autofocus=\"\">\n      </div>\n\n      <div class=\"form-group\">\n        <label for=\"password\" class=\"sr-only\">Password</label>\n        <input type=\"password\" id=\"password\" class=\"form-control\" formControlName=\"password\" placeholder=\"Password\" required=\"\">\n      </div>\n\n      <div class=\"form-group\">\n        <button class=\"btn btn-lg btn-secondary btn-block mt-auto\" type=\"submit\">Log in</button>\n      </div>\n\n    </form>\n  </main>\n\n  <footer class=\"mastfoot mt-5\">\n    <div class=\"inner\">\n      <p>Website for <a href=\"http://web.engr.oregonstate.edu/~scaffidc/courses/cs562/index.shtml?cb=1547975610290\">CS562</a>,\n        by <a href=\"https://github.com/lirance/errands\">@Lirance and Brian</a>.</p>\n    </div>\n  </footer>\n\n</div>\n"
+module.exports = "<div class=\"cover-container d-flex w-100 h-90 p-3 mx-auto flex-column\">\n  <header></header>\n  <main role=\"main\" class=\"inner cover\">\n    <form (ngSubmit)=\"onSubmit()\" [formGroup]=\"loginForm\" class=\"form-signin\">\n\n      <h1 class=\"mb-3 font-weight-normal\">Please log in</h1>\n\n      <div class=\"form-group\">\n        <label for=\"phone\" class=\"sr-only\">Phone Number</label>\n        <input type=\"phone\" id=\"phone\" class=\"form-control\" formControlName=\"phone\" placeholder=\"Phone Number\" required=\"\" autofocus=\"\">\n        <div *ngIf=\"loginForm.controls.phone.touched && !loginForm.controls.phone.valid\" class=\"alert alert-danger\">\n          Phone number is required\n        </div>\n      </div>\n\n      <div class=\"form-group\">\n        <label for=\"password\" class=\"sr-only\">Password</label>\n        <input type=\"password\" id=\"password\" class=\"form-control\" formControlName=\"password\" placeholder=\"Password\" required=\"\">\n        <div *ngIf=\"loginForm.controls.password.touched && loginForm.controls.password.errors\">\n          <div *ngIf=\"loginForm.controls.password.errors.invalidLogin\"\n               class=\"alert alert-danger\">\n            Phone number or password is invalid.\n          </div>\n\n          <div *ngIf=\"loginForm.controls.password.errors.required\" class=\"alert alert-danger\">\n            Password is required.\n          </div>\n      </div>\n\n      <div class=\"form-group\">\n        <button class=\"btn btn-lg btn-secondary btn-block mt-auto\" type=\"submit\">Log in</button>\n      </div>\n\n    </form>\n  </main>\n\n  <footer class=\"mastfoot mt-5\">\n    <div class=\"inner\">\n      <p>Website for <a href=\"http://web.engr.oregonstate.edu/~scaffidc/courses/cs562/index.shtml?cb=1547975610290\">CS562</a>,\n        by <a href=\"https://github.com/lirance/errands\">@Lirance and Brian</a>.</p>\n    </div>\n  </footer>\n\n</div>\n"
 
 /***/ }),
 
@@ -452,6 +450,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _services_user_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../_services/user.service */ "./src/app/_services/user.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
 
 
 
@@ -463,7 +463,6 @@ var LoginComponent = /** @class */ (function () {
         this.route = route;
         this.router = router;
         this.userService = userService;
-        this.result = false;
     }
     LoginComponent.prototype.ngOnInit = function () {
         this.loginForm = this.formBuilder.group({
@@ -473,13 +472,13 @@ var LoginComponent = /** @class */ (function () {
     };
     LoginComponent.prototype.onSubmit = function () {
         var _this = this;
-        this.userService.login(this.loginForm.controls['phone'].value, this.loginForm.controls['password'].value).subscribe(function (data) { return _this.result; });
-        console.log(this.loginForm.controls['phone'].value);
-        console.log(this.loginForm.controls['password'].value);
-        console.log(this.result);
-        if (this.result) {
-            this.router.navigate(['/dashboard']);
-        }
+        this.userService.login(this.loginForm.controls['phone'].value, this.loginForm.controls['password'].value).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["first"])()).subscribe(function (string) {
+            _this.result = string;
+            console.log(_this.result);
+            if (_this.result) {
+                _this.router.navigate(['/dashboard']);
+            }
+        });
     };
     LoginComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -584,7 +583,7 @@ __webpack_require__.r(__webpack_exports__);
 // The list of file replacements can be found in `angular.json`.
 var environment = {
     production: false,
-    apiurl: 'http://localhost:4200'
+    apiurl: 'http://localhost:8080'
 };
 /*
  * For easier debugging in development mode, you can import the following file

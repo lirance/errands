@@ -10,7 +10,7 @@ export class UserService {
 
   login(phone:string, password:string){
 
-     return this.http.get<boolean>(`${environment.apiurl}/user/login?phone=` + phone + `&password=` + password);
+     return this.http.get<string>(`/user/login?phone=` + phone + `&password=` + password);
   }
 
   logout() {
