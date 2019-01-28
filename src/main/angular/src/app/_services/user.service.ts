@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { User } from "../_models/user"
 import { environment } from "../../environments/environment";
 
 
@@ -11,6 +12,10 @@ export class UserService {
   login(phone:string, password:string){
 
      return this.http.get<string>(`/user/login?phone=` + phone + `&password=` + password);
+  }
+
+  signup(user: User){
+    return this.http.post(`/user/register?phone=` + user.phone + `&password=` + user.password +`&username=` + user.username +`&address=` + user.address, user);
   }
 
   logout() {

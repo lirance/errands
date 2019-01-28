@@ -5,6 +5,7 @@ import { UserService } from "../_services/user.service";
 import { EqualValidator} from "../_directives/equal-validator.directive";
 
 import { first } from 'rxjs/operators';
+import {User} from "../_models";
 
 @Component({
   selector: 'app-sign-up',
@@ -14,6 +15,7 @@ import { first } from 'rxjs/operators';
 
 export class SignUpComponent implements OnInit {
   signupForm: FormGroup;
+  user: User;
   submitted = false;
 
   constructor(
@@ -32,5 +34,16 @@ export class SignUpComponent implements OnInit {
       confirmPassword:['', [Validators.required, EqualValidator('password')]]
     });
   }
-  onSubmit() {}
+
+  onSubmit() {
+    if (this.signupForm.invalid) {
+      console.log(this.signupForm.value);
+      return;
+    }
+
+    this.userService.signup(this.signupForm.value).pipe(first()).subscribe(
+      success=>{this.router.navigate(['/login']);},
+      error => {console.log('error')}
+      );
+  }
 }

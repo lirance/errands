@@ -33,63 +33,34 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EqualValidator", function() { return EqualValidator; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-
-
-
-var EqualValidator = /** @class */ (function () {
-    function EqualValidator(validateEqual, reverse) {
-        this.validateEqual = validateEqual;
-        this.reverse = reverse;
-    }
-    EqualValidator_1 = EqualValidator;
-    Object.defineProperty(EqualValidator.prototype, "isReverse", {
-        get: function () {
-            if (!this.reverse)
-                return false;
-            return this.reverse === 'true';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    EqualValidator.prototype.validate = function (c) {
-        var v = c.value;
-        var e = c.root.get(this.validateEqual);
-        if (e && v !== e.value && !this.isReverse) {
+function EqualValidator(otherControlName) {
+    var thisControl;
+    var otherControl;
+    return function (control) {
+        if (!control.parent) {
+            return null;
+        }
+        if (!thisControl) {
+            thisControl = control;
+            otherControl = control.parent.get(otherControlName);
+            if (!otherControl) {
+                throw new Error('EqualValidator(): other control is not found in parent group');
+            }
+            otherControl.valueChanges.subscribe(function () {
+                thisControl.updateValueAndValidity();
+            });
+        }
+        if (!otherControl) {
+            return null;
+        }
+        if (otherControl.value !== thisControl.value) {
             return {
-                validateEqual: false
+                EqualValidator: true
             };
-        }
-        if (e && v === e.value && this.isReverse) {
-            delete e.errors['validateEqual'];
-            if (!Object.keys(e.errors).length)
-                e.setErrors(null);
-        }
-        if (e && v !== e.value && this.isReverse) {
-            e.setErrors({ validateEqual: false });
         }
         return null;
     };
-    var EqualValidator_1;
-    EqualValidator = EqualValidator_1 = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"])({
-            selector: '[validateEqual][formControlName],[validateEqual][formControl],[validateEqual][ngModel]',
-            providers: [
-                {
-                    provide: _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NG_VALIDATORS"], useExisting: Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["forwardRef"])(function () { return EqualValidator_1; }),
-                    multi: true
-                }
-            ]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](0, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Attribute"])('validateEqual')),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Attribute"])('reverse')),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [String, String])
-    ], EqualValidator);
-    return EqualValidator;
-}());
-
+}
 
 
 /***/ }),
@@ -133,6 +104,9 @@ var UserService = /** @class */ (function () {
     }
     UserService.prototype.login = function (phone, password) {
         return this.http.get("/user/login?phone=" + phone + "&password=" + password);
+    };
+    UserService.prototype.signup = function (user) {
+        return this.http.post("/user/register?phone=" + user.phone + "&password=" + user.password + "&username=" + user.username + "&address=" + user.address, user);
     };
     UserService.prototype.logout = function () {
         // remove user from local storage to log user out
@@ -329,9 +303,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _login_login_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./login/login.component */ "./src/app/login/login.component.ts");
 /* harmony import */ var _sign_up_sign_up_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./sign-up/sign-up.component */ "./src/app/sign-up/sign-up.component.ts");
 /* harmony import */ var _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./dashboard/dashboard.component */ "./src/app/dashboard/dashboard.component.ts");
-/* harmony import */ var _directives_equal_validator_directive__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./_directives/equal-validator.directive */ "./src/app/_directives/equal-validator.directive.ts");
-/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./_services */ "./src/app/_services/index.ts");
-
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./_services */ "./src/app/_services/index.ts");
 
 
 
@@ -357,7 +329,6 @@ var AppModule = /** @class */ (function () {
                 _login_login_component__WEBPACK_IMPORTED_MODULE_9__["LoginComponent"],
                 _sign_up_sign_up_component__WEBPACK_IMPORTED_MODULE_10__["SignUpComponent"],
                 _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_11__["DashboardComponent"],
-                _directives_equal_validator_directive__WEBPACK_IMPORTED_MODULE_12__["EqualValidator"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
@@ -366,7 +337,7 @@ var AppModule = /** @class */ (function () {
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClientModule"]
             ],
             providers: [
-                _services__WEBPACK_IMPORTED_MODULE_13__["UserService"],
+                _services__WEBPACK_IMPORTED_MODULE_12__["UserService"],
             ],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]]
         })
@@ -593,7 +564,7 @@ module.exports = ".form-signup {\n    width: 100%;\n    max-width: 330px;\n    p
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"cover-container d-flex w-100 h-90 p-3 mx-auto flex-column mb-auto\">\n  <main role=\"main\" class=\"inner cover\">\n    <form (ngSubmit)=\"onSubmit()\" [formGroup]=\"signupForm\" class=\"form-signup mt-auto\">\n\n      <h1 class=\"mb-3 font-weight-normal\">Sign Up</h1>\n\n      <div class=\"form-group\">\n        <label for=\"username\" class=\"sr-only\">Enter your username</label>\n        <input type=\"username\" id=\"username\" class=\"form-control\" formControlName=\"username\"\n               placeholder=\"Enter your username\" required=\"\"\n               autofocus=\"\">\n        <div *ngIf=\"signupForm.controls.username.touched && !signupForm.controls.username.valid\"\n             class=\"alert alert-danger\">\n          Username is required\n        </div>\n      </div>\n\n      <div class=\"form-group\">\n        <label for=\"phone\" class=\"sr-only\">Enter your phone number</label>\n        <input type=\"phone\" id=\"phone\" class=\"form-control\" formControlName=\"phone\"\n               placeholder=\"Enter your phone number\" required=\"\"\n               autofocus=\"\">\n        <div *ngIf=\"signupForm.controls.phone.touched && signupForm.controls.phone.errors\">\n          <div *ngIf=\"signupForm.controls.phone.errors.required\"\n               class=\"alert alert-danger\">\n            Phone number is required.\n          </div>\n\n          <div *ngIf=\"signupForm.controls.phone.errors.patternMismatch\"\n               class=\"alert alert-danger\">\n            Phone number should be 10 numbers.\n          </div>\n        </div>\n      </div>\n\n        <div class=\"form-group\">\n          <label for=\"address\" class=\"sr-only\">Enter your address</label>\n          <input type=\"address\" id=\"address\" class=\"form-control\" formControlName=\"address\"\n                 placeholder=\"Enter your address\" required=\"\"\n                 autofocus=\"\">\n          <div *ngIf=\"signupForm.controls.address.touched && !signupForm.controls.address.valid\"\n               class=\"alert alert-danger\">\n            Address is required\n          </div>\n        </div>\n\n        <div class=\"form-group\">\n          <label for=\"password\" class=\"sr-only\">Enter your password</label>\n          <input type=\"password\" id=\"password\" class=\"form-control\" formControlName=\"password\"\n                 placeholder=\"Enter your password\" required=\"\">\n          <div *ngIf=\"signupForm.controls.password.touched && !signupForm.controls.password.valid\"\n               class=\"alert alert-danger\">\n            Password is required\n          </div>\n        </div>\n\n        <div class=\"form-group\">\n          <label for=\"confirmPassword\" class=\"sr-only\">Confirm your password</label>\n          <input type=\"password\" id=\"confirmPassword\" class=\"form-control\" formControlName=\"confirmPassword\"\n                 placeholder=\"Confirm your password\"\n                 required=\"\">\n          <div *ngIf=\"signupForm.controls.confirmPassword.touched && !signupForm.controls.confirmPassword.valid\"\n               class=\"alert alert-danger\">\n            Confirm password is required\n          </div>\n        </div>\n\n        <button class=\"btn btn-lg btn-secondary btn-block mt-5\" type=\"submit\">Sign up</button>\n    </form>\n  </main>\n\n  <footer class=\"mastfoot mt-5\">\n    <div class=\"inner\">\n      <p>Website for <a href=\"http://web.engr.oregonstate.edu/~scaffidc/courses/cs562/index.shtml?cb=1547975610290\">CS562</a>,\n        by <a href=\"https://github.com/lirance/errands\">@Lirance and Brian</a>.</p>\n    </div>\n  </footer>\n\n</div>\n"
+module.exports = "<div class=\"cover-container d-flex w-100 h-90 p-3 mx-auto flex-column mb-auto\">\n  <main role=\"main\" class=\"inner cover\">\n    <form (ngSubmit)=\"onSubmit()\" [formGroup]=\"signupForm\" class=\"form-signup mt-auto\">\n\n      <h1 class=\"mb-3 font-weight-normal\">Sign Up</h1>\n\n      <div class=\"form-group\">\n        <label for=\"username\" class=\"sr-only\">Enter your username</label>\n        <input type=\"username\" id=\"username\" class=\"form-control\" formControlName=\"username\"\n               placeholder=\"Enter your username\" required=\"\"\n               autofocus=\"\">\n        <div *ngIf=\"signupForm.controls.username.touched && !signupForm.controls.username.valid\"\n             class=\"alert alert-danger\">\n          Username is required\n        </div>\n      </div>\n\n      <div class=\"form-group\">\n        <label for=\"phone\" class=\"sr-only\">Enter your phone number</label>\n        <input type=\"phone\" id=\"phone\" class=\"form-control\" formControlName=\"phone\"\n               placeholder=\"Enter your phone number\" required=\"\"\n               autofocus=\"\">\n        <div *ngIf=\"signupForm.controls.phone.touched && signupForm.controls.phone.errors\">\n          <div *ngIf=\"signupForm.controls.phone.errors.required\"\n               class=\"alert alert-danger\">\n            Phone number is required.\n          </div>\n\n          <div *ngIf=\"signupForm.controls.phone.errors.pattern\"\n               class=\"alert alert-danger\">\n            US phone number should be 10 numbers.\n          </div>\n        </div>\n\n        <label for=\"address\" class=\"sr-only\">Enter your address</label>\n        <input type=\"address\" id=\"address\" class=\"form-control\" formControlName=\"address\"\n               placeholder=\"Enter your address\" required=\"\"\n               autofocus=\"\">\n        <div *ngIf=\"signupForm.controls.address.touched && !signupForm.controls.address.valid\"\n             class=\"alert alert-danger\">\n          Address is required\n        </div>\n      </div>\n\n      <div class=\"form-group\">\n        <label for=\"password\" class=\"sr-only\">Enter your password</label>\n        <input type=\"password\" id=\"password\" class=\"form-control\" formControlName=\"password\"\n               placeholder=\"Enter your password\" required=\"\">\n        <div *ngIf=\"signupForm.controls.password.touched && !signupForm.controls.password.valid\"\n             class=\"alert alert-danger\">\n          Password is required\n        </div>\n      </div>\n\n      <div class=\"form-group\">\n        <label for=\"confirmPassword\" class=\"sr-only\">Confirm your password</label>\n        <input type=\"password\" id=\"confirmPassword\" class=\"form-control\" formControlName=\"confirmPassword\"\n               placeholder=\"Confirm your password\" required=\"\">\n        <div *ngIf=\"signupForm.controls.confirmPassword.touched && signupForm.controls.confirmPassword.errors\">\n          <div *ngIf=\"signupForm.controls.confirmPassword.errors.required\" class=\"alert alert-danger\">\n            Confirm password is required\n          </div>\n          <div *ngIf=\"signupForm.controls.confirmPassword.errors.EqualValidator\" class=\"alert alert-danger\">\n            Password is mismatch\n          </div>\n        </div>\n      </div>\n\n      <button class=\"btn btn-lg btn-secondary btn-block mt-5\" type=\"submit\">Sign up</button>\n\n    </form>\n  </main>\n\n  <footer class=\"mastfoot mt-5\">\n    <div class=\"inner\">\n      <p>Website for <a href=\"http://web.engr.oregonstate.edu/~scaffidc/courses/cs562/index.shtml?cb=1547975610290\">CS562</a>,\n        by <a href=\"https://github.com/lirance/errands\">@Lirance and Brian</a>.</p>\n    </div>\n  </footer>\n\n</div>\n"
 
 /***/ }),
 
@@ -612,6 +583,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _services_user_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../_services/user.service */ "./src/app/_services/user.service.ts");
+/* harmony import */ var _directives_equal_validator_directive__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../_directives/equal-validator.directive */ "./src/app/_directives/equal-validator.directive.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+
 
 
 
@@ -631,10 +606,21 @@ var SignUpComponent = /** @class */ (function () {
             phone: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('[0-9]{10}')]],
             address: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
             password: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
-            confirmPassword: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]
+            confirmPassword: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, Object(_directives_equal_validator_directive__WEBPACK_IMPORTED_MODULE_5__["EqualValidator"])('password')]]
         });
     };
-    SignUpComponent.prototype.onSubmit = function () { };
+    SignUpComponent.prototype.onSubmit = function () {
+        var _this = this;
+        this.user.username = this.signupForm.value.username;
+        this.user.phone = this.signupForm.value.phone;
+        this.user.address = this.signupForm.value.address;
+        this.user.password = this.signupForm.value.password;
+        this.user.averagerate = 0;
+        this.user.ratenumber = 0;
+        this.userService.signup(this.user).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["first"])()).subscribe(function (success) {
+            _this.router.navigate['/dashboard'];
+        });
+    };
     SignUpComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-sign-up',
