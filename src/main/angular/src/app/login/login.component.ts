@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from "../_services/user.service";
 import { first } from 'rxjs/operators';
+import { User } from "../_models";
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ import { first } from 'rxjs/operators';
 
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  result: string;
+  currentUserID: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,13 +30,15 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.userService.login(this.loginForm.controls['phone'].value, this.loginForm.controls['password'].value).pipe(first()).subscribe(
-      string=>{
-        this.result = string;
-      console.log(this.result);
-      if(this.result){
+      data=>{
+
+      if(data.toString()!='-1'){
+        this.currentUserID = data;
+        localStorage.setItem('currentUserID', JSON.stringify(this.currentUserID));
         this.router.navigate(['/dashboard']);
-      }
-      if(!this.result){
+      };
+
+      if(data.toString()=='-1'){
         this.loginForm.controls['password'].setErrors({
           invalidLogin: true
         });

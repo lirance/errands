@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -9,9 +9,10 @@ import { AboutUsComponent } from './aboutUs/aboutUs.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { UserService } from "./_services";
+
+import { AppMainModule} from "../appmain/appmain.module";
 
 @NgModule({
   declarations: [
@@ -20,16 +21,16 @@ import { UserService } from "./_services";
     HomeComponent,
     LoginComponent,
     SignUpComponent,
-    DashboardComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AppMainModule,
+    AppRoutingModule
   ],
   providers: [
-    UserService,
+    UserService
     ],
   bootstrap: [AppComponent]
 })

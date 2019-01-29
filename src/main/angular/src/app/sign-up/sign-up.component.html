@@ -1,4 +1,17 @@
-<div class="cover-container d-flex w-100 h-90 p-3 mx-auto flex-column mb-auto">
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+
+  <header class="masthead mb-auto">
+    <div class="inner">
+      <h3 class="masthead-brand">Errands</h3>
+      <nav class="nav nav-masthead justify-content-center">
+        <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+        <a class="nav-link" routerLink="/aboutUs" routerLinkActive="active">About us</a>
+        <a class="nav-link" routerLink="/login" routerLinkActive="active">Log in</a>
+        <a class="nav-link" routerLink="/signup" routerLinkActive="active">Sign up</a>
+      </nav>
+    </div>
+  </header>
+
   <main role="main" class="inner cover">
     <form (ngSubmit)="onSubmit()" [formGroup]="signupForm" class="form-signup mt-auto">
 

@@ -6,6 +6,7 @@ import { EqualValidator} from "../_directives/equal-validator.directive";
 
 import { first } from 'rxjs/operators';
 import {User} from "../_models";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-sign-up',
@@ -16,7 +17,7 @@ import {User} from "../_models";
 export class SignUpComponent implements OnInit {
   signupForm: FormGroup;
   user: User;
-  submitted = false;
+  result = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,7 +43,11 @@ export class SignUpComponent implements OnInit {
     }
 
     this.userService.signup(this.signupForm.value).pipe(first()).subscribe(
-      success=>{this.router.navigate(['/login']);},
+      data=>{data.toString();
+      if(data) {
+        this.router.navigate(['/login']);
+      };
+      },
       error => {console.log('error')}
       );
   }
