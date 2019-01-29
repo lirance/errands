@@ -45,6 +45,9 @@ speed-measure-plugin.json
 .settings/
 *.sublime-workspace
 
+# resource/static
+/src/main/resources/static
+
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json

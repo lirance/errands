@@ -1,7 +1,9 @@
 package edu.oregonstate.errands.mapper;
 
 import edu.oregonstate.errands.model.Order;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface OrderMapper {
     int deleteByPrimaryKey(Integer orderid);
 
