@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { User} from '../../app/_models';
+import { User} from '../_models';
 import { first } from 'rxjs/operators';
-import { UserService } from '../../app/_services';
+import { UserService } from '../_services';
 
 @Component({
   selector: 'app-dashboard',

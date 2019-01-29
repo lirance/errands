@@ -82,6 +82,44 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/app/_services/order.service.ts":
+/*!********************************************!*\
+  !*** ./src/app/_services/order.service.ts ***!
+  \********************************************/
+/*! exports provided: OrderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OrderService", function() { return OrderService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+
+var OrderService = /** @class */ (function () {
+    function OrderService(http) {
+        this.http = http;
+    }
+    OrderService.prototype.getOrderlist = function () {
+        return this.http.get('/orders/getOrders');
+    };
+    OrderService.prototype.createOrder = function (order) {
+        return this.http.post('/orders/create?userid=' + order.maker + '&itemlist=' + order.itemlist +
+            '&storeadd=' + order.storeadd + '&destination=' + order.destination + '&timelimit=' + order.timelimit + '&tip=' + order.tip, order);
+    };
+    OrderService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]])
+    ], OrderService);
+    return OrderService;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/_services/user.service.ts":
 /*!*******************************************!*\
   !*** ./src/app/_services/user.service.ts ***!
@@ -201,6 +239,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./home/home.component */ "./src/app/home/home.component.ts");
 /* harmony import */ var _login_login_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./login/login.component */ "./src/app/login/login.component.ts");
 /* harmony import */ var _sign_up_sign_up_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./sign-up/sign-up.component */ "./src/app/sign-up/sign-up.component.ts");
+/* harmony import */ var _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./dashboard/dashboard.component */ "./src/app/dashboard/dashboard.component.ts");
+/* harmony import */ var _dashhome_dashhome_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./dashhome/dashhome.component */ "./src/app/dashhome/dashhome.component.ts");
+/* harmony import */ var _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./create-order/create-order.component */ "./src/app/create-order/create-order.component.ts");
+/* harmony import */ var _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./order-detail/order-detail.component */ "./src/app/order-detail/order-detail.component.ts");
+
+
+
+
 
 
 
@@ -213,7 +259,14 @@ var routes = [
     { path: 'home', component: _home_home_component__WEBPACK_IMPORTED_MODULE_4__["HomeComponent"] },
     { path: 'aboutUs', component: _aboutUs_aboutUs_component__WEBPACK_IMPORTED_MODULE_3__["AboutUsComponent"] },
     { path: 'login', component: _login_login_component__WEBPACK_IMPORTED_MODULE_5__["LoginComponent"] },
-    { path: 'signup', component: _sign_up_sign_up_component__WEBPACK_IMPORTED_MODULE_6__["SignUpComponent"] }
+    { path: 'signup', component: _sign_up_sign_up_component__WEBPACK_IMPORTED_MODULE_6__["SignUpComponent"] },
+    { path: 'dashboard',
+        component: _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_7__["DashboardComponent"],
+        children: [
+            { path: 'dashhome', component: _dashhome_dashhome_component__WEBPACK_IMPORTED_MODULE_8__["DashhomeComponent"], outlet: 'aux' },
+            { path: 'createorder', component: _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_9__["CreateOrderComponent"], outlet: 'aux' },
+            { path: 'orderdetail', component: _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_10__["OrderDetailComponent"], outlet: 'aux' }
+        ] }
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
@@ -306,7 +359,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _login_login_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./login/login.component */ "./src/app/login/login.component.ts");
 /* harmony import */ var _sign_up_sign_up_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./sign-up/sign-up.component */ "./src/app/sign-up/sign-up.component.ts");
 /* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./_services */ "./src/app/_services/index.ts");
-/* harmony import */ var _appmain_appmain_module__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../appmain/appmain.module */ "./src/appmain/appmain.module.ts");
+/* harmony import */ var _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./dashboard/dashboard.component */ "./src/app/dashboard/dashboard.component.ts");
+/* harmony import */ var _dashhome_dashhome_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./dashhome/dashhome.component */ "./src/app/dashhome/dashhome.component.ts");
+/* harmony import */ var _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./create-order/create-order.component */ "./src/app/create-order/create-order.component.ts");
+/* harmony import */ var _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./order-detail/order-detail.component */ "./src/app/order-detail/order-detail.component.ts");
+/* harmony import */ var _services_order_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./_services/order.service */ "./src/app/_services/order.service.ts");
+
+
+
+
 
 
 
@@ -331,21 +392,264 @@ var AppModule = /** @class */ (function () {
                 _home_home_component__WEBPACK_IMPORTED_MODULE_8__["HomeComponent"],
                 _login_login_component__WEBPACK_IMPORTED_MODULE_9__["LoginComponent"],
                 _sign_up_sign_up_component__WEBPACK_IMPORTED_MODULE_10__["SignUpComponent"],
+                _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_12__["DashboardComponent"],
+                _dashhome_dashhome_component__WEBPACK_IMPORTED_MODULE_13__["DashhomeComponent"],
+                _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_14__["CreateOrderComponent"],
+                _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_15__["OrderDetailComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClientModule"],
-                _appmain_appmain_module__WEBPACK_IMPORTED_MODULE_12__["AppMainModule"],
                 _app_routing_module__WEBPACK_IMPORTED_MODULE_5__["AppRoutingModule"]
             ],
             providers: [
+                _services_order_service__WEBPACK_IMPORTED_MODULE_16__["OrderService"],
                 _services__WEBPACK_IMPORTED_MODULE_11__["UserService"]
             ],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]]
         })
     ], AppModule);
     return AppModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/create-order/create-order.component.css":
+/*!*********************************************************!*\
+  !*** ./src/app/create-order/create-order.component.css ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NyZWF0ZS1vcmRlci9jcmVhdGUtb3JkZXIuY29tcG9uZW50LmNzcyJ9 */"
+
+/***/ }),
+
+/***/ "./src/app/create-order/create-order.component.html":
+/*!**********************************************************!*\
+  !*** ./src/app/create-order/create-order.component.html ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h2>Create an order</h2>\n<form [formGroup]=\"orderForm\" (ngSubmit)=\"onSubmit()\">\n\n  <div class=\"form-group\">\n    <label for=\"itemlist\"> Item List </label>\n    <input type=\"text\" placeholder=\"e.g. apple\" id=\"itemlist\" formControlName=\"itemlist\" class=\"form-control\"/>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"storeadd\"> Store address </label>\n    <input type=\"text\" placeholder=\"e.g. Circle K on Monroe\" id=\"storeadd\" formControlName=\"storeadd\" class=\"form-control\"/>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"destination\" >Destination</label>\n    <input type=\"text\" placeholder=\"e.g. 123NW 123Street\" id=\"destination\" formControlName=\"destination\" class=\"form-control\"/>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"state\" >Departure State</label>\n    <select formControlName=\"state\" id=\"state\" class=\"form-control custom-select\">\n      <option value=\"\">N/A</option>\n      <option value=\"AK\">Alaska</option>\n      <option value=\"AL\">Alabama</option>\n      <option value=\"AR\">Arkansas</option>\n      <option value=\"AZ\">Arizona</option>\n      <option value=\"CA\">California</option>\n      <option value=\"CO\">Colorado</option>\n      <option value=\"CT\">Connecticut</option>\n      <option value=\"DC\">District of Columbia</option>\n      <option value=\"DE\">Delaware</option>\n      <option value=\"FL\">Florida</option>\n      <option value=\"GA\">Georgia</option>\n      <option value=\"HI\">Hawaii</option>\n      <option value=\"IA\">Iowa</option>\n      <option value=\"ID\">Idaho</option>\n      <option value=\"IL\">Illinois</option>\n      <option value=\"IN\">Indiana</option>\n      <option value=\"KS\">Kansas</option>\n      <option value=\"KY\">Kentucky</option>\n      <option value=\"LA\">Louisiana</option>\n      <option value=\"MA\">Massachusetts</option>\n      <option value=\"MD\">Maryland</option>\n      <option value=\"ME\">Maine</option>\n      <option value=\"MI\">Michigan</option>\n      <option value=\"MN\">Minnesota</option>\n      <option value=\"MO\">Missouri</option>\n      <option value=\"MS\">Mississippi</option>\n      <option value=\"MT\">Montana</option>\n      <option value=\"NC\">North Carolina</option>\n      <option value=\"ND\">North Dakota</option>\n      <option value=\"NE\">Nebraska</option>\n      <option value=\"NH\">New Hampshire</option>\n      <option value=\"NJ\">New Jersey</option>\n      <option value=\"NM\">New Mexico</option>\n      <option value=\"NV\">Nevada</option>\n      <option value=\"NY\">New York</option>\n      <option value=\"OH\">Ohio</option>\n      <option value=\"OK\">Oklahoma</option>\n      <option value=\"OR\">Oregon</option>\n      <option value=\"PA\">Pennsylvania</option>\n      <option value=\"PR\">Puerto Rico</option>\n      <option value=\"RI\">Rhode Island</option>\n      <option value=\"SC\">South Carolina</option>\n      <option value=\"SD\">South Dakota</option>\n      <option value=\"TN\">Tennessee</option>\n      <option value=\"TX\">Texas</option>\n      <option value=\"UT\">Utah</option>\n      <option value=\"VA\">Virginia</option>\n      <option value=\"VT\">Vermont</option>\n      <option value=\"WA\">Washington</option>\n      <option value=\"WI\">Wisconsin</option>\n      <option value=\"WV\">West Virginia</option>\n      <option value=\"WY\">Wyoming</option>\n    </select>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"timelimit\">Limit Time</label>\n    <select class=\"form-control custom-select\" formControlName=\"timelimit\" id=\"timelimit\">\n      <option value=\"1\">1</option>\n      <option value=\"2\">2</option>\n      <option value=\"3\">3</option>\n      <option value=\"4\">4</option>\n      <option value=\"5\">5</option>\n      <option value=\"5\">6</option>\n      <option value=\"5\">7</option>\n      <option value=\"5\">8</option>\n      <option value=\"5\">9</option>\n      <option value=\"5\">10</option>\n    </select>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"tip\">Tips</label>\n    <select class=\"form-control custom-select\" formControlName=\"tip\" id=\"tip\">\n      <option value=\"1\">1</option>\n      <option value=\"2\">2</option>\n      <option value=\"3\">3</option>\n      <option value=\"4\">4</option>\n      <option value=\"5\">5</option>\n    </select>\n  </div>\n\n\n  <div class=\"form-group\">\n    <button [disabled]=\"loading\" class=\"btn btn-primary\">Submit</button>\n    <img *ngIf=\"loading\" src=\"data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==\" />\n    <a [routerLink]=\"['']\" class=\"btn btn-link\">Cancel</a>\n  </div>\n\n</form>\n\n<br><br>\n"
+
+/***/ }),
+
+/***/ "./src/app/create-order/create-order.component.ts":
+/*!********************************************************!*\
+  !*** ./src/app/create-order/create-order.component.ts ***!
+  \********************************************************/
+/*! exports provided: CreateOrderComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CreateOrderComponent", function() { return CreateOrderComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _services_order_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../_services/order.service */ "./src/app/_services/order.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+
+
+
+
+
+var CreateOrderComponent = /** @class */ (function () {
+    function CreateOrderComponent(formBuilder, router, orderServie) {
+        this.formBuilder = formBuilder;
+        this.router = router;
+        this.orderServie = orderServie;
+        this.loading = false;
+    }
+    CreateOrderComponent.prototype.ngOnInit = function () {
+        this.orderForm = this.formBuilder.group({
+            orderid: [],
+            itemlist: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            storeadd: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            destination: [''],
+            state: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            timelimit: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            tip: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            maker: [],
+            recipient: []
+        });
+    };
+    CreateOrderComponent.prototype.onSubmit = function () {
+        var _this = this;
+        this.loading = true;
+        this.orderForm.value.maker = localStorage.getItem('currentUserID');
+        this.orderServie.createOrder(this.orderForm.value).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["first"])()).subscribe(function (success) {
+            console.log('success!');
+            _this.router.navigate(['/dashhome']);
+        });
+    };
+    CreateOrderComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-create-order',
+            template: __webpack_require__(/*! ./create-order.component.html */ "./src/app/create-order/create-order.component.html"),
+            styles: [__webpack_require__(/*! ./create-order.component.css */ "./src/app/create-order/create-order.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
+            _services_order_service__WEBPACK_IMPORTED_MODULE_4__["OrderService"]])
+    ], CreateOrderComponent);
+    return CreateOrderComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/dashboard/dashboard.component.css":
+/*!***************************************************!*\
+  !*** ./src/app/dashboard/dashboard.component.css ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/* Links */\na,\na:focus,\na:hover {\n  color: #fff;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZGFzaGJvYXJkL2Rhc2hib2FyZC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLFdBQVc7QUFDWDs7O0VBR0UsWUFBWTtDQUNiIiwiZmlsZSI6InNyYy9hcHAvZGFzaGJvYXJkL2Rhc2hib2FyZC5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLyogTGlua3MgKi9cbmEsXG5hOmZvY3VzLFxuYTpob3ZlciB7XG4gIGNvbG9yOiAjZmZmO1xufVxuIl19 */"
+
+/***/ }),
+
+/***/ "./src/app/dashboard/dashboard.component.html":
+/*!****************************************************!*\
+  !*** ./src/app/dashboard/dashboard.component.html ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-light h-10\" style=\"background-color: #f0b07b;\">\n  <a class=\"navbar-brand\" routerLink=\"\">Errands</a>\n\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n          aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav mr-auto\">\n      <!--<li class=\"nav-item active\">-->\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['dashhome']}}]\">Home<span class=\"sr-only\">(current)</span></a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['createorder']}}]\">Create Order</a>\n      </li>\n\n    </ul>\n\n    <div class=\"nav-item dropdown\">\n      <a *ngIf=\"currentUser\" class=\"nav-link dropdown-toggle\" routerLink=\"/dashboard#\" id=\"navbarDropdown\" role=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n        {{currentUser.username}}\n      </a>\n      <div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdown\">\n        <a class=\"dropdown-item\" routerLink=\"./\">Edit Profile</a>\n        <a class=\"dropdown-item\" (click)=\"userLogout()\">Log Out</a>\n      </div>\n    </div>\n\n  </div>\n</nav>\n\n<div class=\"jumbotron h-90\">\n  <div class=\"container\">\n    <router-outlet name=\"aux\"></router-outlet>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/dashboard/dashboard.component.ts":
+/*!**************************************************!*\
+  !*** ./src/app/dashboard/dashboard.component.ts ***!
+  \**************************************************/
+/*! exports provided: DashboardComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DashboardComponent", function() { return DashboardComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../_services */ "./src/app/_services/index.ts");
+
+
+
+
+
+var DashboardComponent = /** @class */ (function () {
+    function DashboardComponent(router, userService) {
+        this.router = router;
+        this.userService = userService;
+    }
+    DashboardComponent.prototype.ngOnInit = function () {
+        this.currentUserID = localStorage.getItem('currentUserID');
+        this.getUserbyuserId(this.currentUserID);
+    };
+    DashboardComponent.prototype.getUserbyuserId = function (userId) {
+        var _this = this;
+        this.userService.getUserById(this.currentUserID).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["first"])()).subscribe(function (user) {
+            _this.currentUser = user;
+            localStorage.setItem('currentUser', JSON.stringify(_this.currentUser));
+        });
+    };
+    DashboardComponent.prototype.userLogout = function () {
+        localStorage.clear();
+        this.router.navigate(['']);
+    };
+    DashboardComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-dashboard',
+            template: __webpack_require__(/*! ./dashboard.component.html */ "./src/app/dashboard/dashboard.component.html"),
+            styles: [__webpack_require__(/*! ./dashboard.component.css */ "./src/app/dashboard/dashboard.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _services__WEBPACK_IMPORTED_MODULE_4__["UserService"]])
+    ], DashboardComponent);
+    return DashboardComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/dashhome/dashhome.component.css":
+/*!*************************************************!*\
+  !*** ./src/app/dashhome/dashhome.component.css ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2Rhc2hob21lL2Rhc2hob21lLmNvbXBvbmVudC5jc3MifQ== */"
+
+/***/ }),
+
+/***/ "./src/app/dashhome/dashhome.component.html":
+/*!**************************************************!*\
+  !*** ./src/app/dashhome/dashhome.component.html ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"row\" *ngIf='orderList != []'>\n  <div *ngFor=\"let order of orderList\" class=\"col-md-4\">\n    <div class=\"card mb-4 box-shadow\">\n      <div class=\"card-body\">\n        <h5 class=\"card-title\">{{order.orderid}}</h5>\n        <h6 class=\"card-subtitle mb-2 text-muted\">Time limit: {{order.timelimit}} </h6>\n      </div>\n\n      <ul class=\"list-group list-group-flush\">\n        <li class=\"list-group-item\">Store address: {{order.storeadd}}</li>\n        <li class=\"list-group-item\">destination adress: {{order.destination}}</li>\n        <li class=\"list-group-item\">Tips: {{order.tip}} </li>\n      </ul>\n\n      <div class=\"card-body\">\n        <a routerLink=\"/orderdetail/{{order.orderid}}\" class=\"card-link\">See Detail</a>\n      </div>\n\n    </div>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/dashhome/dashhome.component.ts":
+/*!************************************************!*\
+  !*** ./src/app/dashhome/dashhome.component.ts ***!
+  \************************************************/
+/*! exports provided: DashhomeComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DashhomeComponent", function() { return DashhomeComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _services_order_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../_services/order.service */ "./src/app/_services/order.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+
+
+
+
+
+var DashhomeComponent = /** @class */ (function () {
+    function DashhomeComponent(orderService, router) {
+        this.orderService = orderService;
+        this.router = router;
+        this.orderList = [];
+    }
+    DashhomeComponent.prototype.ngOnInit = function () {
+        this.getOrderList();
+    };
+    DashhomeComponent.prototype.getOrderList = function () {
+        var _this = this;
+        this.orderService.getOrderlist().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["first"])()).subscribe(function (orderList) {
+            _this.orderList = orderList;
+        });
+    };
+    DashhomeComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-dashhome',
+            template: __webpack_require__(/*! ./dashhome.component.html */ "./src/app/dashhome/dashhome.component.html"),
+            styles: [__webpack_require__(/*! ./dashhome.component.css */ "./src/app/dashhome/dashhome.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_order_service__WEBPACK_IMPORTED_MODULE_3__["OrderService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]])
+    ], DashhomeComponent);
+    return DashhomeComponent;
 }());
 
 
@@ -494,6 +798,62 @@ var LoginComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/order-detail/order-detail.component.css":
+/*!*********************************************************!*\
+  !*** ./src/app/order-detail/order-detail.component.css ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL29yZGVyLWRldGFpbC9vcmRlci1kZXRhaWwuY29tcG9uZW50LmNzcyJ9 */"
+
+/***/ }),
+
+/***/ "./src/app/order-detail/order-detail.component.html":
+/*!**********************************************************!*\
+  !*** ./src/app/order-detail/order-detail.component.html ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  order-detail works!\n</p>\n"
+
+/***/ }),
+
+/***/ "./src/app/order-detail/order-detail.component.ts":
+/*!********************************************************!*\
+  !*** ./src/app/order-detail/order-detail.component.ts ***!
+  \********************************************************/
+/*! exports provided: OrderDetailComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OrderDetailComponent", function() { return OrderDetailComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+var OrderDetailComponent = /** @class */ (function () {
+    function OrderDetailComponent() {
+    }
+    OrderDetailComponent.prototype.ngOnInit = function () {
+    };
+    OrderDetailComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-order-detail',
+            template: __webpack_require__(/*! ./order-detail.component.html */ "./src/app/order-detail/order-detail.component.html"),
+            styles: [__webpack_require__(/*! ./order-detail.component.css */ "./src/app/order-detail/order-detail.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+    ], OrderDetailComponent);
+    return OrderDetailComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/sign-up/sign-up.component.css":
 /*!***********************************************!*\
   !*** ./src/app/sign-up/sign-up.component.css ***!
@@ -583,168 +943,6 @@ var SignUpComponent = /** @class */ (function () {
             _services_user_service__WEBPACK_IMPORTED_MODULE_4__["UserService"]])
     ], SignUpComponent);
     return SignUpComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/appmain/appmain-routing.module.ts":
-/*!***********************************************!*\
-  !*** ./src/appmain/appmain-routing.module.ts ***!
-  \***********************************************/
-/*! exports provided: AppMainRoutingModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppMainRoutingModule", function() { return AppMainRoutingModule; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dashboard/dashboard.component */ "./src/appmain/dashboard/dashboard.component.ts");
-
-
-
-
-var secondaryroutes = [
-    { path: 'dashboard', component: _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_3__["DashboardComponent"] },
-];
-var AppMainRoutingModule = /** @class */ (function () {
-    function AppMainRoutingModule() {
-    }
-    AppMainRoutingModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
-            imports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forChild(secondaryroutes)],
-            exports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"]]
-        })
-    ], AppMainRoutingModule);
-    return AppMainRoutingModule;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/appmain/appmain.module.ts":
-/*!***************************************!*\
-  !*** ./src/appmain/appmain.module.ts ***!
-  \***************************************/
-/*! exports provided: AppMainModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppMainModule", function() { return AppMainModule; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/fesm5/platform-browser.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./dashboard/dashboard.component */ "./src/appmain/dashboard/dashboard.component.ts");
-/* harmony import */ var _appmain_routing_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./appmain-routing.module */ "./src/appmain/appmain-routing.module.ts");
-
-
-
-
-
-
-
-var AppMainModule = /** @class */ (function () {
-    function AppMainModule() {
-    }
-    AppMainModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
-            declarations: [
-                _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_5__["DashboardComponent"]
-            ],
-            imports: [
-                _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
-                _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClientModule"],
-                _appmain_routing_module__WEBPACK_IMPORTED_MODULE_6__["AppMainRoutingModule"]
-            ],
-            providers: [],
-            bootstrap: []
-        })
-    ], AppMainModule);
-    return AppMainModule;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/appmain/dashboard/dashboard.component.css":
-/*!*******************************************************!*\
-  !*** ./src/appmain/dashboard/dashboard.component.css ***!
-  \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwbWFpbi9kYXNoYm9hcmQvZGFzaGJvYXJkLmNvbXBvbmVudC5jc3MifQ== */"
-
-/***/ }),
-
-/***/ "./src/appmain/dashboard/dashboard.component.html":
-/*!********************************************************!*\
-  !*** ./src/appmain/dashboard/dashboard.component.html ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-light h-10\" style=\"background-color: #f0b07b;\">\n  <a class=\"navbar-brand\" href=\"http://web.engr.oregonstate.edu/~hezhi/beaverrider\">BeaverRider</a>\n\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n          aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav mr-auto\">\n      <!--<li class=\"nav-item active\">-->\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"\">Home</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"\">Create Order</a>\n      </li>\n\n    </ul>\n\n    <div class=\"nav-item dropdown\">\n      <a *ngIf=\"currentUser\" class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdown\" role=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n        {{currentUser.username}}\n      </a>\n      <div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdown\">\n        <a class=\"dropdown-item\">Edit Profile</a>\n        <div class=\"dropdown-divider\"></div>\n        <a class=\"dropdown-item\" (click)=\"userLogout()\">Log Out</a>\n      </div>\n    </div>\n\n  </div>\n</nav>\n\n<div class=\"jumbotron h-90\">\n  <div class=\"container\">\n    <router-outlet name=\"let2\"></router-outlet>\n  </div>\n</div>\n"
-
-/***/ }),
-
-/***/ "./src/appmain/dashboard/dashboard.component.ts":
-/*!******************************************************!*\
-  !*** ./src/appmain/dashboard/dashboard.component.ts ***!
-  \******************************************************/
-/*! exports provided: DashboardComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DashboardComponent", function() { return DashboardComponent; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _app_services__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../app/_services */ "./src/app/_services/index.ts");
-
-
-
-
-
-var DashboardComponent = /** @class */ (function () {
-    function DashboardComponent(router, userService) {
-        this.router = router;
-        this.userService = userService;
-    }
-    DashboardComponent.prototype.ngOnInit = function () {
-        this.currentUserID = localStorage.getItem('currentUserID');
-    };
-    DashboardComponent.prototype.getUserbyuserId = function (userId) {
-        var _this = this;
-        this.userService.getUserById(this.currentUserID).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["first"])()).subscribe(function (user) {
-            _this.currentUser = user;
-            localStorage.setItem('currentUser', JSON.stringify(_this.currentUser));
-        });
-    };
-    DashboardComponent.prototype.userLogout = function () {
-        localStorage.clear();
-        this.router.navigate(['']);
-    };
-    DashboardComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-            selector: 'app-dashboard',
-            template: __webpack_require__(/*! ./dashboard.component.html */ "./src/appmain/dashboard/dashboard.component.html"),
-            styles: [__webpack_require__(/*! ./dashboard.component.css */ "./src/appmain/dashboard/dashboard.component.css")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _app_services__WEBPACK_IMPORTED_MODULE_4__["UserService"]])
-    ], DashboardComponent);
-    return DashboardComponent;
 }());
 
 

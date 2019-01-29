@@ -10,21 +10,20 @@
     <ul class="navbar-nav mr-auto">
       <!--<li class="nav-item active">-->
       <li class="nav-item">
-        <a class="nav-link" routerLink="/dashhome">Home<span class="sr-only">(current)</span></a>
+        <a class="nav-link" [routerLink]="['/dashboard', {outlets: {'aux': ['dashhome']}}]">Home<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="">Create Order</a>
+        <a class="nav-link" [routerLink]="['/dashboard', {outlets: {'aux': ['createorder']}}]">Create Order</a>
       </li>
 
     </ul>
 
     <div class="nav-item dropdown">
-      <a *ngIf="currentUser" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a *ngIf="currentUser" class="nav-link dropdown-toggle" routerLink="/dashboard#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{currentUser.username}}
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item">Edit Profile</a>
-        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" routerLink="./">Edit Profile</a>
         <a class="dropdown-item" (click)="userLogout()">Log Out</a>
       </div>
     </div>
@@ -34,6 +33,6 @@
 
 <div class="jumbotron h-90">
   <div class="container">
-    <router-outlet name="let2"></router-outlet>
+    <router-outlet name="aux"></router-outlet>
   </div>
 </div>

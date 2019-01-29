@@ -12,7 +12,11 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 
 import { UserService } from "./_services";
 
-import { AppMainModule} from "../appmain/appmain.module";
+import {DashboardComponent} from "./dashboard/dashboard.component";
+import {DashhomeComponent} from "./dashhome/dashhome.component";
+import {CreateOrderComponent} from "./create-order/create-order.component";
+import {OrderDetailComponent} from "./order-detail/order-detail.component";
+import {OrderService} from "./_services/order.service";
 
 @NgModule({
   declarations: [
@@ -21,15 +25,19 @@ import { AppMainModule} from "../appmain/appmain.module";
     HomeComponent,
     LoginComponent,
     SignUpComponent,
+    DashboardComponent,
+    DashhomeComponent,
+    CreateOrderComponent,
+    OrderDetailComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AppMainModule,
     AppRoutingModule
   ],
   providers: [
+    OrderService,
     UserService
     ],
   bootstrap: [AppComponent]
