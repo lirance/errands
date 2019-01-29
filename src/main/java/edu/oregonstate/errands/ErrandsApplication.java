@@ -14,17 +14,16 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 @SpringBootApplication
 @MapperScan("edu.oregonstate.errands.mapper")
-public class AppTest extends SpringBootServletInitializer {
+public class ErrandsApplication extends SpringBootServletInitializer {
 
-    public static void main( String[] args )
-    {
-        SpringApplication.run(AppTest.class, args);
+    public static void main(String[] args) {
+        SpringApplication.run(ErrandsApplication.class, args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         // TODO Auto-generated method stub
-        return builder.sources(AppTest.class);
+        return builder.sources(ErrandsApplication.class);
     }
 
 }

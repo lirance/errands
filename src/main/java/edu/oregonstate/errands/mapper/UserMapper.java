@@ -1,7 +1,9 @@
 package edu.oregonstate.errands.mapper;
 
 import edu.oregonstate.errands.model.User;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface UserMapper {
     int deleteByPrimaryKey(Integer userid);
 

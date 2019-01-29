@@ -2,7 +2,9 @@ package edu.oregonstate.errands.mapper;
 
 import edu.oregonstate.errands.model.UserOrder;
 import edu.oregonstate.errands.model.UserOrderKey;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface UserOrderMapper {
     int deleteByPrimaryKey(UserOrderKey key);
 
