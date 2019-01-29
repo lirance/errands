@@ -22,6 +22,7 @@ CREATE TABLE `order` (
   `orderId` int(100) NOT NULL AUTO_INCREMENT,
   `itemList` varchar(1024) NOT NULL,
   `storeAdd` varchar(255) NOT NULL,
+  `destination` varchar(255) NOT NULL,
   `state` varchar(320) NOT NULL,
   `timeLimit` int(255) DEFAULT 1,
   `tip` float (7,2) NOT NULL,

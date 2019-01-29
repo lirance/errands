@@ -9,6 +9,8 @@ public class Order extends BaseModelObject {
 
     private String storeadd;
 
+    private String destination;
+
     private String state = State.ORDERED.toString();
 
     private Integer timelimit;
@@ -37,6 +39,14 @@ public class Order extends BaseModelObject {
 
     public void setStoreadd(String storeadd) {
         this.storeadd = storeadd == null ? null : storeadd.trim();
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination == null ? null : destination.trim();
     }
 
     public String getState() {

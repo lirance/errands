@@ -5,12 +5,13 @@
         <id column="orderId" jdbcType="INTEGER" property="orderid"/>
         <result column="itemList" jdbcType="VARCHAR" property="itemlist" javaType="java.util.ArrayList"/>
         <result column="storeAdd" jdbcType="VARCHAR" property="storeadd"/>
+        <result column="destination" jdbcType="VARCHAR" property="destination"/>
         <result column="state" jdbcType="VARCHAR" property="state"/>
         <result column="timeLimit" jdbcType="INTEGER" property="timelimit"/>
         <result column="tip" jdbcType="REAL" property="tip"/>
     </resultMap>
     <sql id="Base_Column_List">
-    orderId, itemList, storeAdd, state, timeLimit, tip
+    orderId, itemList, storeAdd, destination, state, timeLimit, tip
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -24,8 +25,8 @@
   </delete>
     <insert id="insert" parameterType="edu.oregonstate.errands.model.Order" useGeneratedKeys="true"
             keyProperty="orderid">
-    insert into `order` ( itemList, storeAdd, state, timeLimit, tip)
-    values (#{itemlist,jdbcType=VARCHAR}, #{storeadd,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{timelimit,jdbcType=INTEGER}, #{tip,jdbcType=REAL})
+    insert into `order` ( itemList, storeAdd, destination, state, timeLimit, tip)
+    values (#{itemlist,jdbcType=VARCHAR}, #{storeadd,jdbcType=VARCHAR},  #{destination,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{timelimit,jdbcType=INTEGER}, #{tip,jdbcType=REAL})
   </insert>
     <insert id="insertSelective" parameterType="edu.oregonstate.errands.model.Order">
         insert into `order`
@@ -38,6 +39,9 @@
             </if>
             <if test="storeadd != null">
                 storeAdd,
+            </if>
+            <if test="destination != null">
+                destination,
             </if>
             <if test="state != null">
                 state,
@@ -59,6 +63,9 @@
             <if test="storeadd != null">
                 #{storeadd,jdbcType=VARCHAR},
             </if>
+            <if test="destination != null">
+                #{destination,jdbcType=VARCHAR},
+            </if>
             <if test="state != null">
                 #{state,jdbcType=VARCHAR},
             </if>
@@ -79,6 +86,9 @@
             <if test="storeadd != null">
                 storeAdd = #{storeadd,jdbcType=VARCHAR},
             </if>
+            <if test="destination != null">
+                destination = #{destination,jdbcType=VARCHAR},
+            </if>
             <if test="state != null">
                 state = #{state,jdbcType=VARCHAR},
             </if>
@@ -95,6 +105,7 @@
     update `order`
     set itemList = #{itemlist,jdbcType=VARCHAR},
       storeAdd = #{storeadd,jdbcType=VARCHAR},
+      destination = #{destination,jdbcType=VARCHAR},
       state = #{state,jdbcType=VARCHAR},
       timeLimit = #{timelimit,jdbcType=INTEGER},
       tip = #{tip,jdbcType=REAL}

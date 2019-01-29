@@ -35,8 +35,7 @@ public class OrderController {
     public boolean createOrder(Order order, int userid) {
 
         UserOrder userOrder = new UserOrder();
-//
-//        order.setState(State.ORDERED);
+
         userOrder.setUserid(userid);
 
         try {
@@ -90,13 +89,47 @@ public class OrderController {
 
     }
 
-    @RequestMapping("/rate")
-    public boolean RateOrder(int orderId, int userId, int rate) {
+    @RequestMapping("/complete")
+    public boolean completeOrder(int orderId, int userId) {
         UserOrderKey userOrderKey = new UserOrderKey();
         userOrderKey.setUserid(userId);
         userOrderKey.setOrderid(orderId);
 
         try {
+            if (userOrderService.selectByPrimaryKey(userOrderKey) == null) {
+                return false;
+            }
+
+            Order order = orderService.selectByPrimaryKey(orderId);
+
+            // the order is already been accepted
+            if (!State.ACCEPTED.toString().equals(order.getState())) {
+                return false;
+            }
+
+            order.setState(State.COMPLETED.toString());
+            orderService.updateByPrimaryKey(order);
+            return true;
+
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
+    @RequestMapping("/rate")
+    public boolean RateOrder(int orderId, int userId, float rate) {
+        UserOrderKey userOrderKey = new UserOrderKey();
+        userOrderKey.setUserid(userId);
+        userOrderKey.setOrderid(orderId);
+
+        try {
+            // the order status is not completed.
+            if (!(State.COMPLETED.toString()).equals(orderService.selectByPrimaryKey(orderId).getState())) {
+                return false;
+            }
+
+            // the user is already rate the order
             if (userOrderService.getRateFlag(userOrderKey)) {
                 return false;
             }
