@@ -3,6 +3,8 @@ package edu.oregonstate.errands.service;
 import edu.oregonstate.errands.model.UserOrder;
 import edu.oregonstate.errands.model.UserOrderKey;
 
+import java.util.Map;
+
 /**
  * @author: Chendi Zhang
  * @date: 2019-01-24
@@ -16,4 +18,9 @@ public interface UserOrderService extends BaseObjectService<UserOrder, UserOrder
     boolean setRate(int orderId, int userId, float rate);
 
     UserOrder getRateUser(UserOrderKey userOrderKey);
+
+    /**
+     * @return map <OrderId, UserId>
+     */
+    Map<Integer, Integer> getOrderMakers();
 }

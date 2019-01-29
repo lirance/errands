@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/order")
 @CrossOrigin(origins = "http://localhost:4200")
-public class OrderController {
+public class PersonalOrderController {
 
     private final UserOrderService userOrderService;
     private final OrderService orderService;
     private final UserService userService;
 
     @Autowired
-    public OrderController(UserOrderService userOrderService, OrderService orderService, UserService userService) {
+    public PersonalOrderController(UserOrderService userOrderService, OrderService orderService, UserService userService) {
         this.userOrderService = userOrderService;
         this.orderService = orderService;
         this.userService = userService;
@@ -39,6 +39,10 @@ public class OrderController {
         userOrder.setUserid(userid);
 
         try {
+            if (order.getDestination() == null) {
+                String destination = userService.selectByPrimaryKey(userid).getAddress();
+                order.setDestination(destination);
+            }
             // insert into the order table
             orderService.insert(order);
             if (order.getOrderid() != null) {

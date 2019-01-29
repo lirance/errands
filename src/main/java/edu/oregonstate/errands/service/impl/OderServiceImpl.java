@@ -6,6 +6,8 @@ import edu.oregonstate.errands.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author: Chendi Zhang
  * @date: 2019-01-24
@@ -41,5 +43,10 @@ public class OderServiceImpl implements OrderService {
     @Override
     public int deleteByPrimaryKey(Integer integer) {
         return orderMapper.deleteByPrimaryKey(integer);
+    }
+
+    @Override
+    public List<Order> getAllNotAcceptedOrders() {
+        return orderMapper.getAllNotAcceptedOrders();
     }
 }

@@ -7,6 +7,10 @@ import edu.oregonstate.errands.service.UserOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author: Chendi Zhang
  * @date: 2019-01-24
@@ -61,5 +65,19 @@ public class UserOrderServiceImpl implements UserOrderService {
     @Override
     public UserOrder getRateUser(UserOrderKey userOrderKey) {
         return userOrderMapper.selectRate(userOrderKey);
+    }
+
+    @Override
+    public Map<Integer, Integer> getOrderMakers() {
+        List<UserOrder> userOrders = userOrderMapper.getAllOrderMakers();
+
+        Map<Integer, Integer> resultMap = new HashMap<>();
+
+        for (UserOrder uo : userOrders) {
+            resultMap.put(uo.getOrderid(), uo.getUserid());
+        }
+
+        return resultMap;
+
     }
 }
