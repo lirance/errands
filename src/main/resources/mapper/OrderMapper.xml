@@ -110,5 +110,12 @@
       timeLimit = #{timelimit,jdbcType=INTEGER},
       tip = #{tip,jdbcType=REAL}
     where orderId = #{orderid,jdbcType=INTEGER}
-  </update>
+    </update>
+
+    <select id="getAllNotAcceptedOrders" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from `order`
+        where state = 'ORDERED'
+    </select>
 </mapper>

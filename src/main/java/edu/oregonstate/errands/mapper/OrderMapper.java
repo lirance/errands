@@ -3,6 +3,8 @@ package edu.oregonstate.errands.mapper;
 import edu.oregonstate.errands.model.Order;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface OrderMapper {
     int deleteByPrimaryKey(Integer orderid);
@@ -16,4 +18,6 @@ public interface OrderMapper {
     int updateByPrimaryKeySelective(Order record);
 
     int updateByPrimaryKey(Order record);
+
+    List<Order> getAllNotAcceptedOrders();
 }

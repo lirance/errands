@@ -4,6 +4,8 @@ import edu.oregonstate.errands.model.UserOrder;
 import edu.oregonstate.errands.model.UserOrderKey;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface UserOrderMapper {
     int deleteByPrimaryKey(UserOrderKey key);
@@ -23,4 +25,6 @@ public interface UserOrderMapper {
     int setRateFlag(UserOrder record);
 
     UserOrder selectRate(UserOrderKey key);
+
+    List<UserOrder> getAllOrderMakers();
 }

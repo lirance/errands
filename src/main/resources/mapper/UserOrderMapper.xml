@@ -113,4 +113,11 @@
         where orderId = #{orderid,jdbcType=INTEGER}
         and userId != #{userid,jdbcType=INTEGER}
     </select>
+
+    <select id="getAllOrderMakers" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_order
+        where orderMaker = true
+    </select>
 </mapper>
