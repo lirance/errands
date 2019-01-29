@@ -1,8 +1,11 @@
 
 ------------------------------------
---user table
+DROP TABLE IF EXISTS `user_order`;
 DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `order`;
 
+------------------------------------
+--user table
 CREATE TABLE `user` (
   `userId` int(100) NOT NULL AUTO_INCREMENT,
   `userName` varchar(40) NOT NULL,
@@ -16,7 +19,6 @@ CREATE TABLE `user` (
 
 ------------------------------------
 --order table
-DROP TABLE IF EXISTS `order`;
 
 CREATE TABLE `order` (
   `orderId` int(100) NOT NULL AUTO_INCREMENT,
@@ -31,7 +33,6 @@ CREATE TABLE `order` (
 
 -------------------------------------
 --user_order table
-DROP TABLE IF EXISTS `user_order`;
 
 CREATE TABLE `user_order` (
   `userId` int(100) NOT NULL,
