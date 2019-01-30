@@ -19,11 +19,13 @@
     </ul>
 
     <div class="nav-item dropdown">
-      <a *ngIf="currentUser" class="nav-link dropdown-toggle" routerLink="/dashboard#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button *ngIf="currentUser" class="nav-link btn dropdown-toggle text-primary" id="dropdownMenuButton" type="button"
+         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{currentUser.username}}
-      </a>
-      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" routerLink="./">Edit Profile</a>
+      </button>
+
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="#">Edit Profile</a>
         <a class="dropdown-item" (click)="userLogout()">Log Out</a>
       </div>
     </div>

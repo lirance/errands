@@ -263,6 +263,7 @@ var routes = [
     { path: 'dashboard',
         component: _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_7__["DashboardComponent"],
         children: [
+            { path: '', redirectTo: 'dashhome', pathMatch: 'full' },
             { path: 'dashhome', component: _dashhome_dashhome_component__WEBPACK_IMPORTED_MODULE_8__["DashhomeComponent"], outlet: 'aux' },
             { path: 'createorder', component: _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_9__["CreateOrderComponent"], outlet: 'aux' },
             { path: 'orderdetail', component: _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_10__["OrderDetailComponent"], outlet: 'aux' }

@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {OrderService} from "../_services/order.service";
 import {first} from "rxjs/operators";
+import {AlertService} from "../_services";
 
 @Component({
   selector: 'app-create-order',
@@ -17,7 +18,9 @@ export class CreateOrderComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private orderServie: OrderService) {
+    private orderServie: OrderService,
+    private alertService: AlertService,
+    ) {
   }
 
   ngOnInit() {
@@ -38,8 +41,9 @@ export class CreateOrderComponent implements OnInit {
     this.orderForm.value.maker = localStorage.getItem('currentUserID');
     this.orderServie.createOrder(this.orderForm.value).pipe(first()).subscribe(
       success=>{
-        console.log('success!')
-        this.router.navigate(['/dashhome']);
+        console.log('success!');
+        this.alertService.success('Order Created!', true);
+        this.router.navigate(['/dashboard', {outlets: {'aux': ['dashhome']}}]);
       }
     )
   }

@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
       if(data.toString()!='-1'){
         this.currentUserID = data;
         localStorage.setItem('currentUserID', JSON.stringify(this.currentUserID));
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard', {outlets: {'aux': ['dashhome']}}]);
       };
 
       if(data.toString()=='-1'){

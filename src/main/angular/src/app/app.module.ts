@@ -18,6 +18,9 @@ import {CreateOrderComponent} from "./create-order/create-order.component";
 import {OrderDetailComponent} from "./order-detail/order-detail.component";
 import {OrderService} from "./_services/order.service";
 
+import { AlertService } from "./_services";
+import { AlertComponent } from "./_directives";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +31,8 @@ import {OrderService} from "./_services/order.service";
     DashboardComponent,
     DashhomeComponent,
     CreateOrderComponent,
-    OrderDetailComponent
+    OrderDetailComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +42,8 @@ import {OrderService} from "./_services/order.service";
   ],
   providers: [
     OrderService,
-    UserService
+    UserService,
+    AlertService
     ],
   bootstrap: [AppComponent]
 })

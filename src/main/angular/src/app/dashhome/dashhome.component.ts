@@ -9,7 +9,9 @@ import {Router} from "@angular/router";
   templateUrl: './dashhome.component.html',
   styleUrls: ['./dashhome.component.css']
 })
+
 export class DashhomeComponent implements OnInit {
+
   orderList: Order[] = [];
 
   constructor(private orderService: OrderService, private router: Router) {
@@ -21,6 +23,7 @@ export class DashhomeComponent implements OnInit {
 
   getOrderList() {
     this.orderService.getOrderlist().pipe(first()).subscribe(orderList => {
+      console.log(orderList);
       this.orderList = orderList;
     });
   }

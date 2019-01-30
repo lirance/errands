@@ -13,7 +13,7 @@ export class OrderService {
   }
 
   createOrder(order: Order) {
-    return this.http.post('/orders/create?userid=' + order.maker + '&itemlist=' + order.itemlist +
+    return this.http.post('/order/create?userid=' + order.maker + '&itemlist=' + order.itemlist +
       '&storeadd='+order.storeadd+'&destination='+order.destination+'&timelimit='+order.timelimit+'&tip='+order.tip, order);
   }
 

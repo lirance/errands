@@ -1,19 +1,20 @@
-<div class="row" *ngIf='orderList != []'>
+<div class="row text-dark" *ngIf='orderList != []'>
   <div *ngFor="let order of orderList" class="col-md-4">
     <div class="card mb-4 box-shadow">
       <div class="card-body">
-        <h5 class="card-title">{{order.orderid}}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Time limit: {{order.timelimit}} </h6>
+        <h5 class="card-title"> {{order.orderid}} </h5>
+        <h6 class="card-subtitle mb-2 text-muted">Time limit: {{order.timelimit}} hours.</h6>
       </div>
 
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">Store address: {{order.storeadd}}</li>
-        <li class="list-group-item">destination adress: {{order.destination}}</li>
-        <li class="list-group-item">Tips: {{order.tip}} </li>
+      <ul class="list-group list-group-flush text-left">
+        <li class="list-group-item">Store address: {{order.storeadd}} </li>
+        <li class="list-group-item">Destination adress: {{order.destination}} </li>
+        <li class="list-group-item">Tips: {{order.tip}} dollar</li>
       </ul>
 
       <div class="card-body">
         <a routerLink="/orderdetail/{{order.orderid}}" class="card-link">See Detail</a>
+        <a routerLink="/orderdetail/{{order.orderid}}" class="card-link disabled">Accept</a>
       </div>
 
     </div>
