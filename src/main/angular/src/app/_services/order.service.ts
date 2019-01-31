@@ -9,11 +9,11 @@ export class OrderService {
   }
 
   getOrderlist() {
-    return this.http.get<Order[]>('/orders/getOrders');
+    return this.http.get<Order[]>('http://localhost:8080/orders/getOrders');
   }
 
   createOrder(order: Order) {
-    return this.http.post('/order/create?userid=' + order.maker + '&itemlist=' + order.itemlist +
+    return this.http.post('http://localhost:8080/order/create?userid=' + order.maker + '&itemlist=' + order.itemlist +
       '&storeadd='+order.storeadd+'&destination='+order.destination+'&timelimit='+order.timelimit+'&tip='+order.tip, order);
   }
 

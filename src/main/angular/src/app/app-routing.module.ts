@@ -22,7 +22,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashhome', pathMatch: 'full'},
       { path: 'dashhome', component:DashhomeComponent, outlet:'aux' },
       { path: 'createorder', component: CreateOrderComponent, outlet:'aux'},
-      { path: 'orderdetail', component: OrderDetailComponent, outlet: 'aux'}
+      { path: 'orderdetail/:orderid', component: OrderDetailComponent, outlet: 'aux'}
 ]}];
 
 @NgModule({

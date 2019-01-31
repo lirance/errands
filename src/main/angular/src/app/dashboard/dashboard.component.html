@@ -15,11 +15,14 @@
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/dashboard', {outlets: {'aux': ['createorder']}}]">Create Order</a>
       </li>
+      <li classs="nav-item">
+        <a class = "nav-link" (click)="userLogout()">Log Out</a>
+      </li>
 
     </ul>
 
     <div class="nav-item dropdown">
-      <button *ngIf="currentUser" class="nav-link btn dropdown-toggle text-primary" id="dropdownMenuButton" type="button"
+      <button *ngIf="currentUser" class=" btn dropdown-toggle text-primary" id="dropdownMenuButton" type="button"
          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{currentUser.username}}
       </button>

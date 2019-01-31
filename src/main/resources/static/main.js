@@ -23,6 +23,60 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 
 /***/ }),
 
+/***/ "./src/app/_directives/alert.component.html":
+/*!**************************************************!*\
+  !*** ./src/app/_directives/alert.component.html ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div *ngIf=\"message\" [ngClass]=\"{ 'alert': message, 'alert-success': message.type === 'success', 'alert-danger': message.type === 'error' }\">{{message.text}}</div>"
+
+/***/ }),
+
+/***/ "./src/app/_directives/alert.component.ts":
+/*!************************************************!*\
+  !*** ./src/app/_directives/alert.component.ts ***!
+  \************************************************/
+/*! exports provided: AlertComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AlertComponent", function() { return AlertComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../_services */ "./src/app/_services/index.ts");
+
+
+
+var AlertComponent = /** @class */ (function () {
+    function AlertComponent(alertService) {
+        this.alertService = alertService;
+    }
+    AlertComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.subscription = this.alertService.getMessage().subscribe(function (message) {
+            _this.message = message;
+        });
+    };
+    AlertComponent.prototype.ngOnDestroy = function () {
+        this.subscription.unsubscribe();
+    };
+    AlertComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'alert',
+            template: __webpack_require__(/*! ./alert.component.html */ "./src/app/_directives/alert.component.html")
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services__WEBPACK_IMPORTED_MODULE_2__["AlertService"]])
+    ], AlertComponent);
+    return AlertComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/_directives/equal-validator.directive.ts":
 /*!**********************************************************!*\
   !*** ./src/app/_directives/equal-validator.directive.ts ***!
@@ -65,17 +119,104 @@ function EqualValidator(otherControlName) {
 
 /***/ }),
 
+/***/ "./src/app/_directives/index.ts":
+/*!**************************************!*\
+  !*** ./src/app/_directives/index.ts ***!
+  \**************************************/
+/*! exports provided: AlertComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _alert_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./alert.component */ "./src/app/_directives/alert.component.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AlertComponent", function() { return _alert_component__WEBPACK_IMPORTED_MODULE_0__["AlertComponent"]; });
+
+
+
+
+/***/ }),
+
+/***/ "./src/app/_services/alert.service.ts":
+/*!********************************************!*\
+  !*** ./src/app/_services/alert.service.ts ***!
+  \********************************************/
+/*! exports provided: AlertService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AlertService", function() { return AlertService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+
+
+
+
+var AlertService = /** @class */ (function () {
+    function AlertService(router) {
+        var _this = this;
+        this.router = router;
+        this.subject = new rxjs__WEBPACK_IMPORTED_MODULE_3__["Subject"]();
+        this.keepAfterNavigationChange = false;
+        // clear alert message on route change
+        router.events.subscribe(function (event) {
+            if (event instanceof _angular_router__WEBPACK_IMPORTED_MODULE_2__["NavigationStart"]) {
+                if (_this.keepAfterNavigationChange) {
+                    // only keep for a single location change
+                    _this.keepAfterNavigationChange = false;
+                }
+                else {
+                    // clear alert
+                    _this.subject.next();
+                }
+            }
+        });
+    }
+    AlertService.prototype.success = function (message, keepAfterNavigationChange) {
+        if (keepAfterNavigationChange === void 0) { keepAfterNavigationChange = false; }
+        this.keepAfterNavigationChange = keepAfterNavigationChange;
+        this.subject.next({ type: 'success', text: message });
+    };
+    AlertService.prototype.error = function (message, keepAfterNavigationChange) {
+        if (keepAfterNavigationChange === void 0) { keepAfterNavigationChange = false; }
+        this.keepAfterNavigationChange = keepAfterNavigationChange;
+        this.subject.next({ type: 'error', text: message });
+    };
+    AlertService.prototype.getMessage = function () {
+        return this.subject.asObservable();
+    };
+    AlertService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
+    ], AlertService);
+    return AlertService;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/_services/index.ts":
 /*!************************************!*\
   !*** ./src/app/_services/index.ts ***!
   \************************************/
-/*! exports provided: UserService */
+/*! exports provided: UserService, OrderService, AlertService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _user_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./user.service */ "./src/app/_services/user.service.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserService", function() { return _user_service__WEBPACK_IMPORTED_MODULE_0__["UserService"]; });
+
+/* harmony import */ var _order_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./order.service */ "./src/app/_services/order.service.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OrderService", function() { return _order_service__WEBPACK_IMPORTED_MODULE_1__["OrderService"]; });
+
+/* harmony import */ var _alert_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./alert.service */ "./src/app/_services/alert.service.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AlertService", function() { return _alert_service__WEBPACK_IMPORTED_MODULE_2__["AlertService"]; });
+
+
 
 
 
@@ -103,10 +244,10 @@ var OrderService = /** @class */ (function () {
         this.http = http;
     }
     OrderService.prototype.getOrderlist = function () {
-        return this.http.get('/orders/getOrders');
+        return this.http.get('http://localhost:8080/orders/getOrders');
     };
     OrderService.prototype.createOrder = function (order) {
-        return this.http.post('/orders/create?userid=' + order.maker + '&itemlist=' + order.itemlist +
+        return this.http.post('http://localhost:8080/order/create?userid=' + order.maker + '&itemlist=' + order.itemlist +
             '&storeadd=' + order.storeadd + '&destination=' + order.destination + '&timelimit=' + order.timelimit + '&tip=' + order.tip, order);
     };
     OrderService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -141,16 +282,16 @@ var UserService = /** @class */ (function () {
         this.http = http;
     }
     UserService.prototype.login = function (phone, password) {
-        return this.http.get("/user/login/getId?phone=" + phone + "&password=" + password);
+        return this.http.get("http://localhost:8080/user/login/getId?phone=" + phone + "&password=" + password);
     };
     UserService.prototype.signup = function (user) {
-        return this.http.post("/user/register?phone=" + user.phone + "&password=" + user.password + "&username=" + user.username + "&address=" + user.address, user);
+        return this.http.post("http://localhost:8080/user/register?phone=" + user.phone + "&password=" + user.password + "&username=" + user.username + "&address=" + user.address, user);
     };
     UserService.prototype.getUserByphone = function (phone) {
-        return this.http.post("/user/getUserByPhone?phone=" + phone, phone);
+        return this.http.post("http://localhost:8080/user/getUserByPhone?phone=" + phone, phone);
     };
     UserService.prototype.getUserById = function (id) {
-        return this.http.get("/user/getUserById?userid=" + id);
+        return this.http.get("http://localhost:8080/user/getUserById?userid=" + id);
     };
     UserService.prototype.logout = function () {
         // remove user from local storage to log user out
@@ -266,7 +407,7 @@ var routes = [
             { path: '', redirectTo: 'dashhome', pathMatch: 'full' },
             { path: 'dashhome', component: _dashhome_dashhome_component__WEBPACK_IMPORTED_MODULE_8__["DashhomeComponent"], outlet: 'aux' },
             { path: 'createorder', component: _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_9__["CreateOrderComponent"], outlet: 'aux' },
-            { path: 'orderdetail', component: _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_10__["OrderDetailComponent"], outlet: 'aux' }
+            { path: 'orderdetail/:orderid', component: _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_10__["OrderDetailComponent"], outlet: 'aux' }
         ] }
 ];
 var AppRoutingModule = /** @class */ (function () {
@@ -365,6 +506,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./create-order/create-order.component */ "./src/app/create-order/create-order.component.ts");
 /* harmony import */ var _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./order-detail/order-detail.component */ "./src/app/order-detail/order-detail.component.ts");
 /* harmony import */ var _services_order_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./_services/order.service */ "./src/app/_services/order.service.ts");
+/* harmony import */ var _directives__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./_directives */ "./src/app/_directives/index.ts");
+
+
 
 
 
@@ -396,7 +540,8 @@ var AppModule = /** @class */ (function () {
                 _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_12__["DashboardComponent"],
                 _dashhome_dashhome_component__WEBPACK_IMPORTED_MODULE_13__["DashhomeComponent"],
                 _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_14__["CreateOrderComponent"],
-                _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_15__["OrderDetailComponent"]
+                _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_15__["OrderDetailComponent"],
+                _directives__WEBPACK_IMPORTED_MODULE_17__["AlertComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
@@ -406,7 +551,8 @@ var AppModule = /** @class */ (function () {
             ],
             providers: [
                 _services_order_service__WEBPACK_IMPORTED_MODULE_16__["OrderService"],
-                _services__WEBPACK_IMPORTED_MODULE_11__["UserService"]
+                _services__WEBPACK_IMPORTED_MODULE_11__["UserService"],
+                _services__WEBPACK_IMPORTED_MODULE_11__["AlertService"]
             ],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]]
         })
@@ -436,7 +582,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Create an order</h2>\n<form [formGroup]=\"orderForm\" (ngSubmit)=\"onSubmit()\">\n\n  <div class=\"form-group\">\n    <label for=\"itemlist\"> Item List </label>\n    <input type=\"text\" placeholder=\"e.g. apple\" id=\"itemlist\" formControlName=\"itemlist\" class=\"form-control\"/>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"storeadd\"> Store address </label>\n    <input type=\"text\" placeholder=\"e.g. Circle K on Monroe\" id=\"storeadd\" formControlName=\"storeadd\" class=\"form-control\"/>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"destination\" >Destination</label>\n    <input type=\"text\" placeholder=\"e.g. 123NW 123Street\" id=\"destination\" formControlName=\"destination\" class=\"form-control\"/>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"state\" >Departure State</label>\n    <select formControlName=\"state\" id=\"state\" class=\"form-control custom-select\">\n      <option value=\"\">N/A</option>\n      <option value=\"AK\">Alaska</option>\n      <option value=\"AL\">Alabama</option>\n      <option value=\"AR\">Arkansas</option>\n      <option value=\"AZ\">Arizona</option>\n      <option value=\"CA\">California</option>\n      <option value=\"CO\">Colorado</option>\n      <option value=\"CT\">Connecticut</option>\n      <option value=\"DC\">District of Columbia</option>\n      <option value=\"DE\">Delaware</option>\n      <option value=\"FL\">Florida</option>\n      <option value=\"GA\">Georgia</option>\n      <option value=\"HI\">Hawaii</option>\n      <option value=\"IA\">Iowa</option>\n      <option value=\"ID\">Idaho</option>\n      <option value=\"IL\">Illinois</option>\n      <option value=\"IN\">Indiana</option>\n      <option value=\"KS\">Kansas</option>\n      <option value=\"KY\">Kentucky</option>\n      <option value=\"LA\">Louisiana</option>\n      <option value=\"MA\">Massachusetts</option>\n      <option value=\"MD\">Maryland</option>\n      <option value=\"ME\">Maine</option>\n      <option value=\"MI\">Michigan</option>\n      <option value=\"MN\">Minnesota</option>\n      <option value=\"MO\">Missouri</option>\n      <option value=\"MS\">Mississippi</option>\n      <option value=\"MT\">Montana</option>\n      <option value=\"NC\">North Carolina</option>\n      <option value=\"ND\">North Dakota</option>\n      <option value=\"NE\">Nebraska</option>\n      <option value=\"NH\">New Hampshire</option>\n      <option value=\"NJ\">New Jersey</option>\n      <option value=\"NM\">New Mexico</option>\n      <option value=\"NV\">Nevada</option>\n      <option value=\"NY\">New York</option>\n      <option value=\"OH\">Ohio</option>\n      <option value=\"OK\">Oklahoma</option>\n      <option value=\"OR\">Oregon</option>\n      <option value=\"PA\">Pennsylvania</option>\n      <option value=\"PR\">Puerto Rico</option>\n      <option value=\"RI\">Rhode Island</option>\n      <option value=\"SC\">South Carolina</option>\n      <option value=\"SD\">South Dakota</option>\n      <option value=\"TN\">Tennessee</option>\n      <option value=\"TX\">Texas</option>\n      <option value=\"UT\">Utah</option>\n      <option value=\"VA\">Virginia</option>\n      <option value=\"VT\">Vermont</option>\n      <option value=\"WA\">Washington</option>\n      <option value=\"WI\">Wisconsin</option>\n      <option value=\"WV\">West Virginia</option>\n      <option value=\"WY\">Wyoming</option>\n    </select>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"timelimit\">Limit Time</label>\n    <select class=\"form-control custom-select\" formControlName=\"timelimit\" id=\"timelimit\">\n      <option value=\"1\">1</option>\n      <option value=\"2\">2</option>\n      <option value=\"3\">3</option>\n      <option value=\"4\">4</option>\n      <option value=\"5\">5</option>\n      <option value=\"5\">6</option>\n      <option value=\"5\">7</option>\n      <option value=\"5\">8</option>\n      <option value=\"5\">9</option>\n      <option value=\"5\">10</option>\n    </select>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"tip\">Tips</label>\n    <select class=\"form-control custom-select\" formControlName=\"tip\" id=\"tip\">\n      <option value=\"1\">1</option>\n      <option value=\"2\">2</option>\n      <option value=\"3\">3</option>\n      <option value=\"4\">4</option>\n      <option value=\"5\">5</option>\n    </select>\n  </div>\n\n\n  <div class=\"form-group\">\n    <button [disabled]=\"loading\" class=\"btn btn-primary\">Submit</button>\n    <img *ngIf=\"loading\" src=\"data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==\" />\n    <a [routerLink]=\"['']\" class=\"btn btn-link\">Cancel</a>\n  </div>\n\n</form>\n\n<br><br>\n"
+module.exports = "<h2 class=\"text-dark\" >Create an order</h2>\n<form [formGroup]=\"orderForm\" (ngSubmit)=\"onSubmit()\" class=\"text-dark text-left\">\n\n  <div class=\"form-group\">\n    <label for=\"itemlist\"> Item List (use , for separated items)</label>\n    <input type=\"text\" placeholder=\"e.g. apple, banana\" id=\"itemlist\" formControlName=\"itemlist\" class=\"form-control\"/>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"storeadd\"> Store address </label>\n    <input type=\"text\" placeholder=\"e.g. Circle K on Monroe\" id=\"storeadd\" formControlName=\"storeadd\" class=\"form-control\"/>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"destination\" >Destination</label>\n    <input type=\"text\" placeholder=\"e.g. 123NW 123Street\" id=\"destination\" formControlName=\"destination\" class=\"form-control\"/>\n  </div>\n\n\n  <div class=\"form-group\">\n    <label for=\"timelimit\">Limit Time(hours)</label>\n    <input type=\"number\" value=\"3\" id=\"timelimit\" formControlName=\"timelimit\" class=\"form-control\"/>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"tip\" >Tips</label>\n    <input type=\"number\" value=\"10\" id=\"tip\" formControlName=\"tip\" class=\"form-control\"/>\n  </div>\n\n\n  <div class=\"form-group text-center\">\n    <button [disabled]=\"loading\" class=\"btn btn-primary\">Submit</button>\n    <img *ngIf=\"loading\" src=\"data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==\" />\n    <a [routerLink]=\"['/dashboard', {outlets: {'aux': ['dashhome']}}]\" class=\"btn btn-link\">Cancel</a>\n  </div>\n\n</form>\n\n<br><br>\n"
 
 /***/ }),
 
@@ -456,6 +602,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _services_order_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../_services/order.service */ "./src/app/_services/order.service.ts");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../_services */ "./src/app/_services/index.ts");
+
 
 
 
@@ -463,10 +611,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var CreateOrderComponent = /** @class */ (function () {
-    function CreateOrderComponent(formBuilder, router, orderServie) {
+    function CreateOrderComponent(formBuilder, router, orderServie, alertService) {
         this.formBuilder = formBuilder;
         this.router = router;
         this.orderServie = orderServie;
+        this.alertService = alertService;
         this.loading = false;
     }
     CreateOrderComponent.prototype.ngOnInit = function () {
@@ -488,7 +637,8 @@ var CreateOrderComponent = /** @class */ (function () {
         this.orderForm.value.maker = localStorage.getItem('currentUserID');
         this.orderServie.createOrder(this.orderForm.value).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["first"])()).subscribe(function (success) {
             console.log('success!');
-            _this.router.navigate(['/dashhome']);
+            _this.alertService.success('Order Created!', true);
+            _this.router.navigate(['/dashboard', { outlets: { 'aux': ['dashhome'] } }]);
         });
     };
     CreateOrderComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -499,7 +649,8 @@ var CreateOrderComponent = /** @class */ (function () {
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"],
             _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
-            _services_order_service__WEBPACK_IMPORTED_MODULE_4__["OrderService"]])
+            _services_order_service__WEBPACK_IMPORTED_MODULE_4__["OrderService"],
+            _services__WEBPACK_IMPORTED_MODULE_6__["AlertService"]])
     ], CreateOrderComponent);
     return CreateOrderComponent;
 }());
@@ -526,7 +677,7 @@ module.exports = "/* Links */\na,\na:focus,\na:hover {\n  color: #fff;\n}\n\n/*#
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-light h-10\" style=\"background-color: #f0b07b;\">\n  <a class=\"navbar-brand\" routerLink=\"\">Errands</a>\n\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n          aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav mr-auto\">\n      <!--<li class=\"nav-item active\">-->\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['dashhome']}}]\">Home<span class=\"sr-only\">(current)</span></a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['createorder']}}]\">Create Order</a>\n      </li>\n\n    </ul>\n\n    <div class=\"nav-item dropdown\">\n      <a *ngIf=\"currentUser\" class=\"nav-link dropdown-toggle\" routerLink=\"/dashboard#\" id=\"navbarDropdown\" role=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n        {{currentUser.username}}\n      </a>\n      <div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdown\">\n        <a class=\"dropdown-item\" routerLink=\"./\">Edit Profile</a>\n        <a class=\"dropdown-item\" (click)=\"userLogout()\">Log Out</a>\n      </div>\n    </div>\n\n  </div>\n</nav>\n\n<div class=\"jumbotron h-90\">\n  <div class=\"container\">\n    <router-outlet name=\"aux\"></router-outlet>\n  </div>\n</div>\n"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-light h-10\" style=\"background-color: #f0b07b;\">\n  <a class=\"navbar-brand\" routerLink=\"\">Errands</a>\n\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n          aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav mr-auto\">\n      <!--<li class=\"nav-item active\">-->\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['dashhome']}}]\">Home<span class=\"sr-only\">(current)</span></a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['createorder']}}]\">Create Order</a>\n      </li>\n\n    </ul>\n\n    <div class=\"nav-item dropdown\">\n      <button *ngIf=\"currentUser\" class=\"nav-link btn dropdown-toggle text-primary\" id=\"dropdownMenuButton\" type=\"button\"\n         data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n        {{currentUser.username}}\n      </button>\n\n      <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">\n        <a class=\"dropdown-item\" href=\"#\">Edit Profile</a>\n        <a class=\"dropdown-item\" (click)=\"userLogout()\">Log Out</a>\n      </div>\n    </div>\n\n  </div>\n</nav>\n\n<div class=\"jumbotron h-90\">\n  <div class=\"container\">\n    <router-outlet name=\"aux\"></router-outlet>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -603,7 +754,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\" *ngIf='orderList != []'>\n  <div *ngFor=\"let order of orderList\" class=\"col-md-4\">\n    <div class=\"card mb-4 box-shadow\">\n      <div class=\"card-body\">\n        <h5 class=\"card-title\">{{order.orderid}}</h5>\n        <h6 class=\"card-subtitle mb-2 text-muted\">Time limit: {{order.timelimit}} </h6>\n      </div>\n\n      <ul class=\"list-group list-group-flush\">\n        <li class=\"list-group-item\">Store address: {{order.storeadd}}</li>\n        <li class=\"list-group-item\">destination adress: {{order.destination}}</li>\n        <li class=\"list-group-item\">Tips: {{order.tip}} </li>\n      </ul>\n\n      <div class=\"card-body\">\n        <a routerLink=\"/orderdetail/{{order.orderid}}\" class=\"card-link\">See Detail</a>\n      </div>\n\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row text-dark\" *ngIf='orderList != []'>\n  <div *ngFor=\"let order of orderList\" class=\"col-md-4\">\n    <div class=\"card mb-4 box-shadow\">\n      <div class=\"card-body\">\n        <h5 class=\"card-title\"> {{order.orderid}} </h5>\n        <h6 class=\"card-subtitle mb-2 text-muted\">Time limit: {{order.timelimit}} hours.</h6>\n      </div>\n\n      <ul class=\"list-group list-group-flush text-left\">\n        <li class=\"list-group-item\">Store address: {{order.storeadd}} </li>\n        <li class=\"list-group-item\">Destination adress: {{order.destination}} </li>\n        <li class=\"list-group-item\">Tips: {{order.tip}} dollar</li>\n      </ul>\n\n      <div class=\"card-body\">\n        <a routerLink=\"/orderdetail/{{order.orderid}}\" class=\"card-link\">See Detail</a>\n        <a routerLink=\"/orderdetail/{{order.orderid}}\" class=\"card-link disabled\">Accept</a>\n      </div>\n\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -639,6 +790,7 @@ var DashhomeComponent = /** @class */ (function () {
     DashhomeComponent.prototype.getOrderList = function () {
         var _this = this;
         this.orderService.getOrderlist().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["first"])()).subscribe(function (orderList) {
+            console.log(orderList);
             _this.orderList = orderList;
         });
     };
@@ -772,7 +924,7 @@ var LoginComponent = /** @class */ (function () {
             if (data.toString() != '-1') {
                 _this.currentUserID = data;
                 localStorage.setItem('currentUserID', JSON.stringify(_this.currentUserID));
-                _this.router.navigate(['/dashboard']);
+                _this.router.navigate(['/dashboard', { outlets: { 'aux': ['dashhome'] } }]);
             }
             ;
             if (data.toString() == '-1') {
@@ -817,7 +969,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  order-detail works!\n</p>\n"
+module.exports = "<div *ngIf='requestDetail' class=\"text-center text-dark\">\n  <div class=\"card text-center\">\n\n    <div class=\"card-header text-muted\">\n      <p>Order ID:  {{requestDetail.request_orderid}}</p>\n    </div>\n\n    <div class=\"card-body\">\n      <div class=\"col-center-block text-center\">\n        <dl class=\"row text-left\">\n          <dt class=\"col-sm-3\">Poster</dt>\n          <dd class=\"col-sm-9\"><p>{{requestDetail.request_userid}}</p>\n          </dd>\n\n          <dt class=\"col-sm-3\">From</dt>\n          <dd class=\"col-sm-9\"><p>{{requestDetail.departure_location}}, {{requestDetail.departure_city}}\n            , {{requestDetail.departure_state}}</p></dd>\n\n          <dt class=\"col-sm-3\">To</dt>\n          <dd class=\"col-sm-9\"><p>{{requestDetail.destination_location}}, {{requestDetail.destination_city}}\n            , {{requestDetail.destination_state}}</p></dd>\n\n          <dt class=\"col-sm-3\">Departure Time</dt>\n          <dd class=\"col-sm-9\"><p>{{requestDetail.departure_time}}</p></dd>\n\n          <dt class=\"col-sm-3\">Number of People</dt>\n          <dd class=\"col-sm-9\"><p>{{requestDetail.people_number}}</p></dd>\n\n          <dt class=\"col-sm-3\">Remarks</dt>\n          <dd class=\"col-sm-9\"><p>{{requestDetail.remarks}}</p></dd>\n        </dl>\n      </div>\n      <div class=\"button-block\">\n        <div *ngIf=\"currentUserId == requestDetail.request_userid\" class=\"text-center row\">\n          <div class=\"text-center col\">\n            <button type=\"button\" class=\"btn btn-primary\" routerLink=\"/updaterequest/{{requestDetail.request_orderid}}\">\n              Update\n            </button>\n          </div>\n          <div class=\"text-center col\">\n            <button type=\"button\" class=\"btn btn-primary\" (click)=\"requestDelete()\">Delete</button>\n          </div>\n        </div>\n      </div>\n      <div *ngIf=\"currentUserId != requestDetail.request_userid\" class=\"text-center\">\n        <a routerLink=\"/postlistinvite/{{requestDetail.request_orderid}}\" class=\"btn btn-primary btn-lg active\"\n           role=\"button\">Invite</a>\n      </div>\n    </div>\n\n    <div class=\"card-footer text-muted\">\n      <p>Post Time: {{requestDetail.post_time}}</p>\n      <button type=\"button\" class=\"btn btn-primary\" routerLink=\"\">Back</button>\n    </div>\n\n  </div>\n"
 
 /***/ }),
 
