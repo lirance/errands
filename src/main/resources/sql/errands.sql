@@ -7,12 +7,12 @@ DROP TABLE IF EXISTS `order`;
 ------------------------------------
 --user table
 CREATE TABLE `user` (
-  `userId` int(100) NOT NULL AUTO_INCREMENT,
+  `userId` int(20) NOT NULL AUTO_INCREMENT,
   `userName` varchar(40) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `phone` varchar(320) NOT NULL unique ,
-  `address` varchar(1024) NOT NULL,
-  `rateNumber` int(255) NOT NULL ,
+  `phone` varchar(255) NOT NULL unique ,
+  `address` varchar(255) NOT NULL,
+  `rateNumber` int(20) NOT NULL ,
   `averageRate` float (7,2),
   PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -21,11 +21,11 @@ CREATE TABLE `user` (
 --order table
 
 CREATE TABLE `order` (
-  `orderId` int(100) NOT NULL AUTO_INCREMENT,
-  `itemList` varchar(1024) NOT NULL,
+  `orderId` int(20) NOT NULL AUTO_INCREMENT,
+  `itemList` varchar(255) NOT NULL,
   `storeAdd` varchar(255) NOT NULL,
   `destination` varchar(255) NOT NULL,
-  `state` varchar(320) NOT NULL,
+  `state` varchar(255) NOT NULL,
   `timeLimit` int(255) DEFAULT 1,
   `tip` float (7,2) NOT NULL,
   PRIMARY KEY (`orderId`)
@@ -35,8 +35,8 @@ CREATE TABLE `order` (
 --user_order table
 
 CREATE TABLE `user_order` (
-  `userId` int(100) NOT NULL,
-  `orderId` int(100) NOT NULL,
+  `userId` int(20) NOT NULL,
+  `orderId` int(20) NOT NULL,
   `rateFlag` boolean DEFAULT 0,
   `orderMaker` boolean DEFAULT 1,
   `rate`  float (7,2),

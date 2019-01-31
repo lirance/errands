@@ -23,7 +23,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/orders")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class OrdersController {
 
     private final UserOrderService userOrderService;
@@ -55,7 +55,7 @@ public class OrdersController {
                 orderShowList.add(os);
             }
         } catch (Exception e) {
-            return null;
+            return orderShowList;
         }
 
         return orderShowList;

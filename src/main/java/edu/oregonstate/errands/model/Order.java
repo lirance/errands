@@ -1,11 +1,11 @@
 package edu.oregonstate.errands.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Order extends BaseModelObject {
     private Integer orderid;
 
-    private ArrayList<String> itemlist;
+    private List<String> itemlist;
 
     private String storeadd;
 
@@ -25,11 +25,11 @@ public class Order extends BaseModelObject {
         this.orderid = orderid;
     }
 
-    public ArrayList<String> getItemlist() {
+    public List<String> getItemlist() {
         return itemlist;
     }
 
-    public void setItemlist(ArrayList<String> itemlist) {
+    public void setItemlist(List<String> itemlist) {
         this.itemlist = itemlist;
     }
 

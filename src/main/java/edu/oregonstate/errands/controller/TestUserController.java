@@ -14,7 +14,7 @@ import java.util.List;
  * @date: 2019-01-17
  * @description:
  **/
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 public class TestUserController {
 

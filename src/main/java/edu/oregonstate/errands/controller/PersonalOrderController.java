@@ -7,7 +7,10 @@ import edu.oregonstate.errands.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author: Chendi Zhang
@@ -17,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/order")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class PersonalOrderController {
 
     private final UserOrderService userOrderService;
@@ -32,16 +35,28 @@ public class PersonalOrderController {
     }
 
     @RequestMapping("/create")
-    public boolean createOrder(Order order, int userid) {
+    public boolean createOrder(@RequestParam(value = "itemlist", required = true) List<String> itemlist, String storeadd, String destination, int timelimit, float tip, int userid) {
 
         UserOrder userOrder = new UserOrder();
+        Order order = new Order();
 
         userOrder.setUserid(userid);
+        order.setItemlist(itemlist);
+        order.setStoreadd(storeadd);
+        order.setDestination(destination);
+        order.setTimelimit(timelimit);
+        order.setTip(tip);
+
+        if (itemlist == null || storeadd == null) {
+            return false;
+        }
+
 
         try {
-            if (order.getDestination() == null) {
-                String destination = userService.selectByPrimaryKey(userid).getAddress();
-                order.setDestination(destination);
+
+            if (order.getDestination() == null || order.getDestination().isEmpty()) {
+                String destinationNew = userService.selectByPrimaryKey(userid).getAddress();
+                order.setDestination(destinationNew);
             }
             // insert into the order table
             orderService.insert(order);

@@ -3,7 +3,7 @@
 <mapper namespace="edu.oregonstate.errands.mapper.OrderMapper">
     <resultMap id="BaseResultMap" type="edu.oregonstate.errands.model.Order">
         <id column="orderId" jdbcType="INTEGER" property="orderid"/>
-        <result column="itemList" jdbcType="VARCHAR" property="itemlist" javaType="java.util.ArrayList"/>
+        <result column="itemList" jdbcType="VARCHAR" property="itemlist" javaType="java.util.List"/>
         <result column="storeAdd" jdbcType="VARCHAR" property="storeadd"/>
         <result column="destination" jdbcType="VARCHAR" property="destination"/>
         <result column="state" jdbcType="VARCHAR" property="state"/>
