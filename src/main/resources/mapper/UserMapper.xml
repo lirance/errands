@@ -24,10 +24,10 @@
     where userId = #{userid,jdbcType=INTEGER}
   </delete>
     <insert id="insert" parameterType="edu.oregonstate.errands.model.User" useGeneratedKeys="true">
-    insert into user (userId, userName, password, 
+    insert into user (userName, password,
       phone, address, rateNumber, 
       averageRate)
-    values (#{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+    values ( #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{ratenumber,jdbcType=INTEGER}, 
       #{averagerate,jdbcType=REAL})
   </insert>

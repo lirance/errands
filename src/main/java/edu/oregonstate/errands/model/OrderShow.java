@@ -1,7 +1,5 @@
 package edu.oregonstate.errands.model;
 
-import java.util.ArrayList;
-
 /**
  * @author: Chendi Zhang
  * @date: 2019-01-28
