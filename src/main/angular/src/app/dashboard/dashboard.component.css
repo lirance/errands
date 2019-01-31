@@ -4,3 +4,8 @@ a:focus,
 a:hover {
   color: #fff;
 }
+
+.navcontainer{
+  width: 1020px;
+  margin-left: 100px;
+}

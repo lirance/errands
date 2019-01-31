@@ -1,36 +1,63 @@
-<h2 class="text-dark" >Create an order</h2>
+<h2 class="text-dark">Create an order</h2>
 <form [formGroup]="orderForm" (ngSubmit)="onSubmit()" class="text-dark text-left">
 
   <div class="form-group">
-    <label for="itemlist"> Item List (use , for separated items)</label>
-    <input type="text" placeholder="e.g. apple, banana" id="itemlist" formControlName="itemlist" class="form-control"/>
+    <label for="itemlist"> Item List (use , for separated items, max length 200)</label>
+    <input type="text" placeholder="e.g. apple, banana" id="itemlist" formControlName="itemlist" class="form-control"
+           [ngClass]="{ 'is-invalid': submitted && f.itemlist.errors }"/>
+    <div *ngIf="submitted && f.itemlist.errors" class="invalid-feedback">
+      <div *ngIf="f.itemlist.errors.required">Item list is required</div>
+      <div *ngIf="f.itemlist.errors.maxLength">The max length is 200</div>
+    </div>
   </div>
 
   <div class="form-group">
-    <label for="storeadd"> Store address </label>
-    <input type="text" placeholder="e.g. Circle K on Monroe" id="storeadd" formControlName="storeadd" class="form-control"/>
+    <label for="storeadd"> Store address (max length 50) </label>
+    <input type="text" placeholder="e.g. Circle K on Monroe" id="storeadd" formControlName="storeadd"
+           class="form-control"
+           [ngClass]="{ 'is-invalid': submitted && f.storeadd.errors }"/>
+    <div *ngIf="submitted && f.storeadd.errors" class="invalid-feedback">
+      <div *ngIf="f.storeadd.errors.required">Store address is required</div>
+      <div *ngIf="f.storeadd.errors.maxLength">The max length is 50</div>
+    </div>
   </div>
 
   <div class="form-group">
-    <label for="destination" >Destination</label>
-    <input type="text" placeholder="e.g. 123NW 123Street" id="destination" formControlName="destination" class="form-control"/>
+    <label for="destination">Destination(defult value is registered address, max length is 50)</label>
+    <input type="text" placeholder="e.g. 123NW 123Street" id="destination" formControlName="destination"
+           class="form-control"
+           [ngClass]="{ 'is-invalid': submitted && f.destination.errors }"/>
+    <div *ngIf="submitted && f.destination.errors" class="invalid-feedback">
+      <div *ngIf="f.destination.errors.maxLength">The max length is 50</div>
+    </div>
   </div>
 
 
   <div class="form-group">
-    <label for="timelimit">Limit Time(hours)</label>
-    <input type="number" value="3" id="timelimit" formControlName="timelimit" class="form-control"/>
+    <label for="timelimit">Limit Time(hours) (up to 3 positive number)</label>
+    <input type="number" id="timelimit" formControlName="timelimit" class="form-control"
+           [ngClass]="{ 'is-invalid': submitted && f.timelimit.errors }"/>
+    <div *ngIf="submitted && f.timelimit.errors" class="invalid-feedback">
+      <div *ngIf="f.timelimit.errors.required">The time limit is required</div>
+      <div *ngIf="f.timelimit.errors.maxLength">The max length of time limit is 3</div>
+      <div *ngIf="f.timelimit.errors.pattern">The format is 3 digit number</div>
+    </div>
   </div>
 
   <div class="form-group">
-    <label for="tip" >Tips</label>
-    <input type="number" value="10" id="tip" formControlName="tip" class="form-control"/>
+    <label for="tip">Tips (Max 2 decimal)</label>
+    <input type="number" id="tip" formControlName="tip" class="form-control"
+           [ngClass]="{ 'is-invalid': submitted && f.tip.errors }"/>
+    <div *ngIf="submitted && f.tip.errors" class="invalid-feedback">
+      <div *ngIf="f.tip.errors.required">The tip is required</div>
+      <div *ngIf="f.tip.errors.maxLength">The max length of tip is 7</div>
+      <div *ngIf="f.tip.errors.pattern">The format of tip is 2 decimal number</div>
+    </div>
   </div>
 
 
   <div class="form-group text-center">
-    <button [disabled]="loading" class="btn btn-primary">Submit</button>
-    <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+    <button class="btn btn-primary">Submit</button>
     <a [routerLink]="['/dashboard', {outlets: {'aux': ['dashhome']}}]" class="btn btn-link">Cancel</a>
   </div>
 

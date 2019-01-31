@@ -18,6 +18,8 @@ export class SignUpComponent implements OnInit {
   signupForm: FormGroup;
   user: User;
   result = false;
+  invalidsignup = false;
+  submitted = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,15 +30,17 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit() {
     this.signupForm = this.formBuilder.group({
-      username:['', Validators.required],
+      username:['', Validators.compose([Validators.required, Validators.maxLength(20)])],
       phone:['', [Validators.required, Validators.pattern('[0-9]{10}')]],
-      address:['', Validators.required],
-      password:['', Validators.required],
+      address:['', Validators.compose([Validators.required,Validators.maxLength(50)])],
+      password:['', [Validators.required,Validators.maxLength(20)]],
       confirmPassword:['', [Validators.required, EqualValidator('password')]]
     });
   }
 
   onSubmit() {
+    this.submitted = true;
+
     if (this.signupForm.invalid) {
       console.log(this.signupForm.value);
       return;
@@ -46,6 +50,9 @@ export class SignUpComponent implements OnInit {
       data=>{data.toString();
       if(data) {
         this.router.navigate(['/login']);
+      };
+      if(!data){
+        this.invalidsignup = true;
       };
       },
       error => {console.log('error')}

@@ -14,6 +14,7 @@ import {AlertService} from "../_services";
 export class CreateOrderComponent implements OnInit {
   orderForm: FormGroup;
   loading = false;
+  submitted = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,25 +27,33 @@ export class CreateOrderComponent implements OnInit {
   ngOnInit() {
     this.orderForm = this.formBuilder.group({
       orderid: [],
-      itemlist: ['', Validators.required],
-      storeadd: ['', Validators.required],
-      destination: [''],
-      state: ['', Validators.required],
-      timelimit: ['', Validators.required],
-      tip: ['', Validators.required],
+      itemlist: ['', Validators.compose([Validators.required, Validators.maxLength(200)])],
+      storeadd: ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
+      destination: ['', Validators.maxLength(50)],
+      state: [],
+      timelimit: ['', Validators.compose([Validators.required, Validators.pattern('[^\\d+$]{3}')])],
+      tip: ['', Validators.compose([Validators.required,Validators.pattern('^\\d{0,5}(\\.\\d{1,2})?$')])],
       maker: [],
       recipient: []
     });
   }
+
+  get f() {
+    return this.orderForm.controls;
+  }
+
   onSubmit() {
-    this.loading = true;
+    this.submitted = true;
     this.orderForm.value.maker = localStorage.getItem('currentUserID');
+    if(!this.orderForm.controls.itemlist.errors && !this.orderForm.controls.storeadd.errors &&
+      !this.orderForm.controls.destination.errors && !this.orderForm.controls.timelimit.errors &&
+      !this.orderForm.controls.tip.errors){
     this.orderServie.createOrder(this.orderForm.value).pipe(first()).subscribe(
       success=>{
         console.log('success!');
-        this.alertService.success('Order Created!', true);
         this.router.navigate(['/dashboard', {outlets: {'aux': ['dashhome']}}]);
-      }
-    )
+        });
+      };
+    this.loading = true;
   }
 }
