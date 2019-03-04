@@ -120,4 +120,11 @@
         from user_order
         where orderMaker = true
     </select>
+
+    <select id="getUsersByOrder" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_order
+        where orderId = #{orderid,jdbcType=INTEGER}
+    </select>
 </mapper>

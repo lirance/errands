@@ -1,8 +1,10 @@
 package edu.oregonstate.errands.service;
 
+import edu.oregonstate.errands.model.User;
 import edu.oregonstate.errands.model.UserOrder;
 import edu.oregonstate.errands.model.UserOrderKey;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,4 +25,6 @@ public interface UserOrderService extends BaseObjectService<UserOrder, UserOrder
      * @return map <OrderId, UserId>
      */
     Map<Integer, Integer> getOrderMakers();
+
+    List<UserOrder> getUsersByOrder(int orderId);
 }

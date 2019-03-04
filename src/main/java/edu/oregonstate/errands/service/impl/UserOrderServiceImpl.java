@@ -80,4 +80,9 @@ public class UserOrderServiceImpl implements UserOrderService {
         return resultMap;
 
     }
+
+    @Override
+    public List<UserOrder> getUsersByOrder(int orderId) {
+        return userOrderMapper.getUsersByOrder(orderId);
+    }
 }

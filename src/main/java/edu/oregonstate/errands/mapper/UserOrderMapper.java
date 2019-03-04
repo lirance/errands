@@ -27,4 +27,6 @@ public interface UserOrderMapper {
     UserOrder selectRate(UserOrderKey key);
 
     List<UserOrder> getAllOrderMakers();
+
+    List<UserOrder> getUsersByOrder(int orderid);
 }

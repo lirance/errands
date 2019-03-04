@@ -3,6 +3,7 @@ package edu.oregonstate.errands.controller;
 import edu.oregonstate.errands.model.Order;
 import edu.oregonstate.errands.model.OrderShow;
 import edu.oregonstate.errands.model.User;
+import edu.oregonstate.errands.model.UserOrder;
 import edu.oregonstate.errands.service.OrderService;
 import edu.oregonstate.errands.service.UserOrderService;
 import edu.oregonstate.errands.service.UserService;
@@ -59,6 +60,24 @@ public class OrdersController {
         }
 
         return orderShowList;
+
+    }
+
+    @RequestMapping("/getOrderDetailById")
+    public OrderShow getOrderDetail(int orderId) {
+
+        Order order = orderService.selectByPrimaryKey(orderId);
+        OrderShow orderShow = new OrderShow(order);
+        List<UserOrder> orders = userOrderService.getUsersByOrder(orderId);
+        for (UserOrder o : orders) {
+            User user = userService.selectByPrimaryKey(o.getUserid());
+            if(o.getOrdermaker()){
+                orderShow.setMaker(user);
+            }else {
+                orderShow.setRecipient(user);
+            }
+        }
+        return orderShow;
 
     }
 }

@@ -85,6 +85,20 @@ public class UserController {
         return userService.selectByPrimaryKey(userid);
     }
 
+    @RequestMapping("/editProfile")
+    public boolean editProfile(String username, String phone, String address, int userid) {
+        try {
+            User user = userService.selectByPrimaryKey(userid);
+            user.setUsername(username);
+            user.setAddress(address);
+            user.setPhone(phone);
+
+            return userService.updateByPrimaryKey(user) == 1;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     @RequestMapping("/getUserByPhone")
     public User getUserByPhone(String phone) {
         return userService.getUserByPhone(phone);
