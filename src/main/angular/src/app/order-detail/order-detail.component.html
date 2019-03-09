@@ -1,56 +1,55 @@
-<div *ngIf='requestDetail' class="text-center text-dark">
+<div *ngIf='orderDetail' class="text-center text-dark">
   <div class="card text-center">
-
     <div class="card-header text-muted">
-      <p>Order ID:  {{requestDetail.request_orderid}}</p>
+      <p>Order ID:  {{orderDetail.orderid}}</p>
     </div>
 
     <div class="card-body">
       <div class="col-center-block text-center">
         <dl class="row text-left">
-          <dt class="col-sm-3">Poster</dt>
-          <dd class="col-sm-9"><p>{{requestDetail.request_userid}}</p>
+          <dt class="col-sm-3">Item list:</dt>
+          <dd class="col-sm-9"><p>{{orderDetail.itemlist}}</p>
           </dd>
+          <dt class="col-sm-3">Store address:</dt>
+          <dd class="col-sm-9"><p>{{orderDetail.storeadd}}</p></dd>
 
-          <dt class="col-sm-3">From</dt>
-          <dd class="col-sm-9"><p>{{requestDetail.departure_location}}, {{requestDetail.departure_city}}
-            , {{requestDetail.departure_state}}</p></dd>
+          <dt class="col-sm-3">Destination:</dt>
+          <dd class="col-sm-9"><p>{{orderDetail.destination}}</p></dd>
 
-          <dt class="col-sm-3">To</dt>
-          <dd class="col-sm-9"><p>{{requestDetail.destination_location}}, {{requestDetail.destination_city}}
-            , {{requestDetail.destination_state}}</p></dd>
+          <dt class="col-sm-3">Time limit:</dt>
+          <dd class="col-sm-9"><p>{{orderDetail.timelimit}}</p></dd>
 
-          <dt class="col-sm-3">Departure Time</dt>
-          <dd class="col-sm-9"><p>{{requestDetail.departure_time}}</p></dd>
+          <dt class="col-sm-3">Tips:</dt>
+          <dd class="col-sm-9"><p>{{orderDetail.tip}}</p></dd>
 
-          <dt class="col-sm-3">Number of People</dt>
-          <dd class="col-sm-9"><p>{{requestDetail.people_number}}</p></dd>
+          <dt class="col-sm-3">Poster:</dt>
+          <dd class="col-sm-9"><p>{{orderDetail.maker.username}}</p></dd>
 
-          <dt class="col-sm-3">Remarks</dt>
-          <dd class="col-sm-9"><p>{{requestDetail.remarks}}</p></dd>
+          <dt class="col-sm-3">State:</dt>
+          <dd class="col-sm-9"><p>{{orderDetail.state}}</p></dd>
         </dl>
       </div>
+
       <div class="button-block">
-        <div *ngIf="currentUserId == requestDetail.request_userid" class="text-center row">
+        <div *ngIf="currentUserId == orderDetail.maker.userid" class="text-center row">
           <div class="text-center col">
-            <button type="button" class="btn btn-primary" routerLink="/updaterequest/{{requestDetail.request_orderid}}">
-              Update
+            <button type="button" class="btn btn-primary" routerLink="">
+              Complete
             </button>
           </div>
           <div class="text-center col">
-            <button type="button" class="btn btn-primary" (click)="requestDelete()">Delete</button>
+            <button type="button" class="btn btn-primary" routerLink="">
+              Rate
+            </button>
           </div>
         </div>
-      </div>
-      <div *ngIf="currentUserId != requestDetail.request_userid" class="text-center">
-        <a routerLink="/postlistinvite/{{requestDetail.request_orderid}}" class="btn btn-primary btn-lg active"
-           role="button">Invite</a>
       </div>
     </div>
 
     <div class="card-footer text-muted">
-      <p>Post Time: {{requestDetail.post_time}}</p>
-      <button type="button" class="btn btn-primary" routerLink="">Back</button>
+      <!---->
+      <button type="button" class="btn btn-primary" [routerLink]="['/dashboard', {outlets: {'aux': ['dashhome']}}]">Back</button>
     </div>
 
   </div>
+</div>

@@ -250,6 +250,15 @@ var OrderService = /** @class */ (function () {
         return this.http.post('http://localhost:8080/order/create?userid=' + order.maker + '&itemlist=' + order.itemlist +
             '&storeadd=' + order.storeadd + '&destination=' + order.destination + '&timelimit=' + order.timelimit + '&tip=' + order.tip, order);
     };
+    OrderService.prototype.acceptOrder = function (userid, orderid) {
+        return this.http.get('http://localhost:8080/order/accept?userId=' + userid + '&orderId=' + orderid);
+    };
+    OrderService.prototype.completeOrder = function (userid, orderid) {
+        return this.http.get('http://localhost:8080/order/complete?userId=' + userid + '&orderId=' + orderid);
+    };
+    OrderService.prototype.rateOrder = function (userid, orderid, rate) {
+        return this.http.get('http://localhost:8080/order/rate?orderId=' + orderid + '&userId=' + userid + '&rate=' + rate);
+    };
     OrderService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])(),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]])
@@ -298,6 +307,9 @@ var UserService = /** @class */ (function () {
         localStorage.removeItem('user');
         localStorage.removeItem('currentUser');
         localStorage.clear();
+    };
+    UserService.prototype.profileEdit = function (userid, phone, username, address) {
+        return this.http.get('http://localhost:8080/user/editProfile?userid=' + userid + '&phone=' + phone + '&username=' + username + '&address=' + address);
     };
     UserService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])(),
@@ -384,6 +396,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _dashhome_dashhome_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./dashhome/dashhome.component */ "./src/app/dashhome/dashhome.component.ts");
 /* harmony import */ var _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./create-order/create-order.component */ "./src/app/create-order/create-order.component.ts");
 /* harmony import */ var _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./order-detail/order-detail.component */ "./src/app/order-detail/order-detail.component.ts");
+/* harmony import */ var _userprofile_userprofile_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./userprofile/userprofile.component */ "./src/app/userprofile/userprofile.component.ts");
+
 
 
 
@@ -406,6 +420,7 @@ var routes = [
         children: [
             { path: '', redirectTo: 'dashhome', pathMatch: 'full' },
             { path: 'dashhome', component: _dashhome_dashhome_component__WEBPACK_IMPORTED_MODULE_8__["DashhomeComponent"], outlet: 'aux' },
+            { path: 'profile', component: _userprofile_userprofile_component__WEBPACK_IMPORTED_MODULE_11__["UserprofileComponent"], outlet: 'aux' },
             { path: 'createorder', component: _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_9__["CreateOrderComponent"], outlet: 'aux' },
             { path: 'orderdetail/:orderid', component: _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_10__["OrderDetailComponent"], outlet: 'aux' }
         ] }
@@ -415,7 +430,7 @@ var AppRoutingModule = /** @class */ (function () {
     }
     AppRoutingModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
-            imports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(routes, { enableTracing: true })],
+            imports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(routes, { enableTracing: true, onSameUrlNavigation: 'reload' })],
             exports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"]]
         })
     ], AppRoutingModule);
@@ -507,6 +522,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./order-detail/order-detail.component */ "./src/app/order-detail/order-detail.component.ts");
 /* harmony import */ var _services_order_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./_services/order.service */ "./src/app/_services/order.service.ts");
 /* harmony import */ var _directives__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./_directives */ "./src/app/_directives/index.ts");
+/* harmony import */ var _userprofile_userprofile_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./userprofile/userprofile.component */ "./src/app/userprofile/userprofile.component.ts");
+
 
 
 
@@ -541,7 +558,8 @@ var AppModule = /** @class */ (function () {
                 _dashhome_dashhome_component__WEBPACK_IMPORTED_MODULE_13__["DashhomeComponent"],
                 _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_14__["CreateOrderComponent"],
                 _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_15__["OrderDetailComponent"],
-                _directives__WEBPACK_IMPORTED_MODULE_17__["AlertComponent"]
+                _directives__WEBPACK_IMPORTED_MODULE_17__["AlertComponent"],
+                _userprofile_userprofile_component__WEBPACK_IMPORTED_MODULE_18__["UserprofileComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
@@ -582,7 +600,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h2 class=\"text-dark\">Create an order</h2>\n<form [formGroup]=\"orderForm\" (ngSubmit)=\"onSubmit()\" class=\"text-dark text-left\">\n\n  <div class=\"form-group\">\n    <label for=\"itemlist\"> Item List (use , for separated items)</label>\n    <input type=\"text\" placeholder=\"e.g. apple, banana\" id=\"itemlist\" formControlName=\"itemlist\" class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.itemlist.errors }\"/>\n    <div *ngIf=\"submitted && f.itemlist.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.itemlist.errors.required\">Item list is required</div>\n      <div *ngIf=\"f.itemlist.errors.maxLength\">The max length of item list is 200</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"storeadd\"> Store address </label>\n    <input type=\"text\" placeholder=\"e.g. Circle K on Monroe\" id=\"storeadd\" formControlName=\"storeadd\"\n           class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.storeadd.errors }\"/>\n    <div *ngIf=\"submitted && f.storeadd.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.storeadd.errors.required\">Store address is required</div>\n      <div *ngIf=\"f.storeadd.errors.maxLength\">The max length of store address is 50</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"destination\">Destination</label>\n    <input type=\"text\" placeholder=\"e.g. 123NW 123Street\" id=\"destination\" formControlName=\"destination\"\n           class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.destination.errors }\"/>\n    <div *ngIf=\"submitted && f.destination.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.destination.errors.maxLength\">The max length of store address is 50</div>\n    </div>\n  </div>\n\n\n  <div class=\"form-group\">\n    <label for=\"timelimit\">Limit Time(hours)</label>\n    <input type=\"number\" value=\"3\" id=\"timelimit\" formControlName=\"timelimit\" class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.timelimit.errors }\"/>\n    <div *ngIf=\"submitted && f.timelimit.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.timelimit.errors.required\">The time limit is required</div>\n      <div *ngIf=\"f.timelimit.errors.pattern\">The format of time limit should be up to 3 digit number</div>\n      <div *ngIf=\"f.timelimit.errors.maxLength\">The max length of time limit is 5</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"tip\">Tips</label>\n    <input type=\"number\" value=\"10\" id=\"tip\" formControlName=\"tip\" class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.tip.errors }\"/>\n    <div *ngIf=\"submitted && f.tip.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.tip.errors.required\">The tip is required</div>\n      <div *ngIf=\"f.tip.errors.pattern\">The format of tip should be up to 2 decimal number</div>\n      <div *ngIf=\"f.tip.errors.maxLength\">The max length of tip is 7</div>\n    </div>\n  </div>\n\n\n  <div class=\"form-group text-center\">\n    <button [disabled]=\"loading\" class=\"btn btn-primary\">Submit</button>\n    <img *ngIf=\"loading\"\n         src=\"data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==\"/>\n    <a [routerLink]=\"['/dashboard', {outlets: {'aux': ['dashhome']}}]\" class=\"btn btn-link\">Cancel</a>\n  </div>\n\n</form>\n\n<br><br>\n"
+module.exports = "<h2 class=\"text-dark\">Create an order</h2>\n<form [formGroup]=\"orderForm\" (ngSubmit)=\"onSubmit()\" class=\"text-dark text-left\">\n\n  <div class=\"form-group\">\n    <label for=\"itemlist\"> Item List (use , for separated items, max length 200)</label>\n    <input type=\"text\" placeholder=\"e.g. apple, banana\" id=\"itemlist\" formControlName=\"itemlist\" class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.itemlist.errors }\"/>\n    <div *ngIf=\"submitted && f.itemlist.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.itemlist.errors.required\">Item list is required</div>\n      <div *ngIf=\"f.itemlist.errors.maxLength\">The max length is 200</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"storeadd\"> Store address (max length 50) </label>\n    <input type=\"text\" placeholder=\"e.g. Circle K on Monroe\" id=\"storeadd\" formControlName=\"storeadd\"\n           class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.storeadd.errors }\"/>\n    <div *ngIf=\"submitted && f.storeadd.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.storeadd.errors.required\">Store address is required</div>\n      <div *ngIf=\"f.storeadd.errors.maxLength\">The max length is 50</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"destination\">Destination(defult value is registered address, max length is 50)</label>\n    <input type=\"text\" placeholder=\"e.g. 123NW 123Street\" id=\"destination\" formControlName=\"destination\"\n           class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.destination.errors }\"/>\n    <div *ngIf=\"submitted && f.destination.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.destination.errors.maxLength\">The max length is 50</div>\n    </div>\n  </div>\n\n\n  <div class=\"form-group\">\n    <label for=\"timelimit\">Limit Time(hours) (up to 3 positive number)</label>\n    <input type=\"number\" id=\"timelimit\" formControlName=\"timelimit\" class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.timelimit.errors }\"/>\n    <div *ngIf=\"submitted && f.timelimit.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.timelimit.errors.required\">The time limit is required</div>\n      <div *ngIf=\"f.timelimit.errors.maxLength\">The max length of time limit is 3</div>\n      <div *ngIf=\"f.timelimit.errors.pattern\">The format is 3 digit number</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"tip\">Tips (Max 2 decimal)</label>\n    <input type=\"number\" id=\"tip\" formControlName=\"tip\" class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.tip.errors }\"/>\n    <div *ngIf=\"submitted && f.tip.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.tip.errors.required\">The tip is required</div>\n      <div *ngIf=\"f.tip.errors.maxLength\">The max length of tip is 7</div>\n      <div *ngIf=\"f.tip.errors.pattern\">The format of tip is 2 decimal number</div>\n    </div>\n  </div>\n\n\n  <div class=\"form-group text-center\">\n    <button class=\"btn btn-primary\">Submit</button>\n    <a [routerLink]=\"['/dashboard', {outlets: {'aux': ['dashhome']}}]\" class=\"btn btn-link\">Cancel</a>\n  </div>\n\n</form>\n\n<br><br>\n"
 
 /***/ }),
 
@@ -622,12 +640,12 @@ var CreateOrderComponent = /** @class */ (function () {
     CreateOrderComponent.prototype.ngOnInit = function () {
         this.orderForm = this.formBuilder.group({
             orderid: [],
-            itemlist: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(200)]],
-            storeadd: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(50)]],
+            itemlist: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].compose([_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(200)])],
+            storeadd: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].compose([_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(50)])],
             destination: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(50)],
             state: [],
-            timelimit: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('^\\d+$')]],
-            tip: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(7), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('\\-?\\d*\\.?\\d{1,2}')]],
+            timelimit: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].compose([_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('^\\d{1,3}?$')])],
+            tip: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].compose([_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('^\\d{0,5}(\\.\\d{1,2})?$')])],
             maker: [],
             recipient: []
         });
@@ -642,13 +660,17 @@ var CreateOrderComponent = /** @class */ (function () {
     CreateOrderComponent.prototype.onSubmit = function () {
         var _this = this;
         this.submitted = true;
-        this.loading = true;
         this.orderForm.value.maker = localStorage.getItem('currentUserID');
-        this.orderServie.createOrder(this.orderForm.value).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["first"])()).subscribe(function (success) {
-            console.log('success!');
-            _this.alertService.success('Order Created!', true);
-            _this.router.navigate(['/dashboard', { outlets: { 'aux': ['dashhome'] } }]);
-        });
+        if (!this.orderForm.controls.itemlist.errors && !this.orderForm.controls.storeadd.errors &&
+            !this.orderForm.controls.destination.errors && !this.orderForm.controls.timelimit.errors &&
+            !this.orderForm.controls.tip.errors) {
+            this.orderServie.createOrder(this.orderForm.value).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["first"])()).subscribe(function (success) {
+                console.log('success!');
+                _this.router.navigate(['/dashboard', { outlets: { 'aux': ['dashhome'] } }]);
+            });
+        }
+        ;
+        this.loading = true;
     };
     CreateOrderComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -686,7 +708,7 @@ module.exports = "/* Links */\na,\na:focus,\na:hover {\n  color: #fff;\n}\n.navc
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-light h-10\" style=\"background-color: #f0b07b;\">\n  <div class=\"navcontainer\">\n    <div class=\"row\">\n      <a class=\"navbar-brand \" routerLink=\"\">Errands</a>\n\n      <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n              aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n        <span class=\"navbar-toggler-icon\"></span>\n      </button>\n\n      <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n        <ul class=\"navbar-nav mr-auto\">\n          <!--<li class=\"nav-item active\">-->\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['dashhome']}}]\">Home<span\n              class=\"sr-only\">(current)</span></a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['createorder']}}]\">Create Order</a>\n          </li>\n          <li classs=\"nav-item\">\n            <a class=\"nav-link\" (click)=\"userLogout()\">Log Out</a>\n          </li>\n\n        </ul>\n\n        <div class=\"nav-item dropdown\">\n          <button *ngIf=\"currentUser\" class=\" btn dropdown-toggle text-primary\" id=\"dropdownMenuButton\" type=\"button\"\n                  data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n            {{currentUser.username}}\n          </button>\n\n          <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">\n            <a class=\"dropdown-item text-dark\" href=\"#\">Edit Profile</a>\n            <a class=\"dropdown-item text-dark\" (click)=\"userLogout()\">Log Out</a>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</nav>\n\n<div class=\"jumbotron h-90\">\n  <div class=\"container\">\n    <router-outlet name=\"aux\"></router-outlet>\n  </div>\n</div>\n"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-light h-10\" style=\"background-color: #f0b07b;\">\n  <div class=\"navcontainer\">\n    <div class=\"row\">\n      <a class=\"navbar-brand \" routerLink=\"\">Errands</a>\n\n      <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n              aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n        <span class=\"navbar-toggler-icon\"></span>\n      </button>\n\n      <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n        <ul class=\"navbar-nav mr-auto\">\n          <!--<li class=\"nav-item active\">-->\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['dashhome']}}]\">Home<span\n              class=\"sr-only\">(current)</span></a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['createorder']}}]\">Create Order</a>\n          </li>\n          <li classs=\"nav-item\">\n            <a class=\"nav-link\" (click)=\"userLogout()\">My order</a>\n          </li>\n\n        </ul>\n\n        <div class=\"nav-item dropdown\">\n          <button *ngIf=\"currentUser\" class=\" btn dropdown-toggle text-primary\" id=\"dropdownMenuButton\" type=\"button\"\n                  data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n            {{currentUser.username}}\n          </button>\n\n          <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">\n            <a class=\"dropdown-item text-dark\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['profile']}}]\">Edit Profile</a>\n            <a class=\"dropdown-item text-dark\" (click)=\"userLogout()\">Log Out</a>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</nav>\n\n<div class=\"jumbotron h-90\">\n  <div class=\"container\">\n    <router-outlet name=\"aux\"></router-outlet>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -763,7 +785,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row text-dark\" *ngIf='orderList != []'>\n  <div *ngFor=\"let order of orderList\" class=\"col-md-4\">\n    <div class=\"card mb-4 box-shadow\">\n      <div class=\"card-body\">\n        <h5 class=\"card-title\"> {{order.orderid}} </h5>\n        <h6 class=\"card-subtitle mb-2 text-muted\">Time limit: {{order.timelimit}} hours.</h6>\n      </div>\n\n      <ul class=\"list-group list-group-flush text-left\">\n        <li class=\"list-group-item\">Store address: {{order.storeadd}} </li>\n        <li class=\"list-group-item\">Destination adress: {{order.destination}} </li>\n        <li class=\"list-group-item\">Tips: {{order.tip}} dollar</li>\n      </ul>\n\n      <div class=\"card-body\">\n        <a routerLink=\"/orderdetail/{{order.orderid}}\" class=\"card-link\">See Detail</a>\n        <a routerLink=\"/orderdetail/{{order.orderid}}\" class=\"card-link disabled\">Accept</a>\n      </div>\n\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row text-dark\" *ngIf='orderList != []'>\n  <div *ngFor=\"let order of orderList\" class=\"col-md-4\">\n    <div class=\"card mb-4 box-shadow\">\n      <div class=\"card-body\">\n        <h5 class=\"card-title\"> {{order.orderid}} </h5>\n        <h6 class=\"card-subtitle mb-2 text-muted\">Time limit: {{order.timelimit}} hours.</h6>\n      </div>\n\n      <ul class=\"list-group list-group-flush text-left\">\n        <li class=\"list-group-item\">Store address: {{order.storeadd}} </li>\n        <li class=\"list-group-item\">Destination adress: {{order.destination}} </li>\n        <li class=\"list-group-item\">Tips: {{order.tip}} dollar</li>\n      </ul>\n\n      <div class=\"card-body\">\n        <a routerLink=\"/orderdetail/{{order.orderid}}\" class=\"card-link\">See Detail</a>\n        <a routerLink=\"/orderdetail/{{order.orderid}}\" *ngIf=\"order.maker.userid != currentUserID\" class=\"card-link disabled\">Accept</a>\n      </div>\n\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -795,6 +817,7 @@ var DashhomeComponent = /** @class */ (function () {
     }
     DashhomeComponent.prototype.ngOnInit = function () {
         this.getOrderList();
+        this.currentUserID = localStorage.getItem('currentUserID');
     };
     DashhomeComponent.prototype.getOrderList = function () {
         var _this = this;
@@ -978,7 +1001,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf='requestDetail' class=\"text-center text-dark\">\n  <div class=\"card text-center\">\n\n    <div class=\"card-header text-muted\">\n      <p>Order ID:  {{requestDetail.request_orderid}}</p>\n    </div>\n\n    <div class=\"card-body\">\n      <div class=\"col-center-block text-center\">\n        <dl class=\"row text-left\">\n          <dt class=\"col-sm-3\">Poster</dt>\n          <dd class=\"col-sm-9\"><p>{{requestDetail.request_userid}}</p>\n          </dd>\n\n          <dt class=\"col-sm-3\">From</dt>\n          <dd class=\"col-sm-9\"><p>{{requestDetail.departure_location}}, {{requestDetail.departure_city}}\n            , {{requestDetail.departure_state}}</p></dd>\n\n          <dt class=\"col-sm-3\">To</dt>\n          <dd class=\"col-sm-9\"><p>{{requestDetail.destination_location}}, {{requestDetail.destination_city}}\n            , {{requestDetail.destination_state}}</p></dd>\n\n          <dt class=\"col-sm-3\">Departure Time</dt>\n          <dd class=\"col-sm-9\"><p>{{requestDetail.departure_time}}</p></dd>\n\n          <dt class=\"col-sm-3\">Number of People</dt>\n          <dd class=\"col-sm-9\"><p>{{requestDetail.people_number}}</p></dd>\n\n          <dt class=\"col-sm-3\">Remarks</dt>\n          <dd class=\"col-sm-9\"><p>{{requestDetail.remarks}}</p></dd>\n        </dl>\n      </div>\n      <div class=\"button-block\">\n        <div *ngIf=\"currentUserId == requestDetail.request_userid\" class=\"text-center row\">\n          <div class=\"text-center col\">\n            <button type=\"button\" class=\"btn btn-primary\" routerLink=\"/updaterequest/{{requestDetail.request_orderid}}\">\n              Update\n            </button>\n          </div>\n          <div class=\"text-center col\">\n            <button type=\"button\" class=\"btn btn-primary\" (click)=\"requestDelete()\">Delete</button>\n          </div>\n        </div>\n      </div>\n      <div *ngIf=\"currentUserId != requestDetail.request_userid\" class=\"text-center\">\n        <a routerLink=\"/postlistinvite/{{requestDetail.request_orderid}}\" class=\"btn btn-primary btn-lg active\"\n           role=\"button\">Invite</a>\n      </div>\n    </div>\n\n    <div class=\"card-footer text-muted\">\n      <p>Post Time: {{requestDetail.post_time}}</p>\n      <button type=\"button\" class=\"btn btn-primary\" routerLink=\"\">Back</button>\n    </div>\n\n  </div>\n"
+module.exports = "<div *ngIf='orderDetail' class=\"text-center text-dark\">\n  <div class=\"card text-center\">\n\n    <div class=\"card-header text-muted\">\n      <p>Order ID:  {{orderDetail.orderid}}</p>\n    </div>\n\n    <div class=\"card-body\">\n      <div class=\"col-center-block text-center\">\n        <dl class=\"row text-left\">\n          <dt class=\"col-sm-3\">Item List:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.itemlist}}</p>\n          </dd>\n          <dt class=\"col-sm-3\">Store Address:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.storeadd}}</p></dd>\n\n          <dt class=\"col-sm-3\">Destination:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.destination}}</p></dd>\n\n          <dt class=\"col-sm-3\">Time limit:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.timelimit}}</p></dd>\n\n          <dt class=\"col-sm-3\">Tips:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.tip}}</p></dd>\n        </dl>\n      </div>\n      <div class=\"button-block\">\n        <div *ngIf=\"currentUserId == requestDetail.request_userid\" class=\"text-center row\">\n          <div class=\"text-center col\">\n            <button type=\"button\" class=\"btn btn-primary\" routerLink=\"/updaterequest/{{requestDetail.request_orderid}}\">\n              Update\n            </button>\n          </div>\n          <div class=\"text-center col\">\n            <button type=\"button\" class=\"btn btn-primary\" (click)=\"requestDelete()\">Delete</button>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"card-footer text-muted\">\n      <p>Post Time: {{requestDetail.post_time}}</p>\n      <button type=\"button\" class=\"btn btn-primary\" routerLink=\"\">Back</button>\n    </div>\n\n  </div>\n"
 
 /***/ }),
 
@@ -994,12 +1017,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OrderDetailComponent", function() { return OrderDetailComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../_services */ "./src/app/_services/index.ts");
+
+
 
 
 var OrderDetailComponent = /** @class */ (function () {
-    function OrderDetailComponent() {
+    function OrderDetailComponent(router, route, orderService) {
+        this.router = router;
+        this.route = route;
+        this.orderService = orderService;
     }
     OrderDetailComponent.prototype.ngOnInit = function () {
+    };
+    OrderDetailComponent.prototype.getPostDetail = function () {
+        var orderid = this.route.snapshot.paramMap.get('orderid');
     };
     OrderDetailComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -1007,7 +1040,7 @@ var OrderDetailComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./order-detail.component.html */ "./src/app/order-detail/order-detail.component.html"),
             styles: [__webpack_require__(/*! ./order-detail.component.css */ "./src/app/order-detail/order-detail.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _services__WEBPACK_IMPORTED_MODULE_3__["OrderService"]])
     ], OrderDetailComponent);
     return OrderDetailComponent;
 }());
@@ -1112,6 +1145,135 @@ var SignUpComponent = /** @class */ (function () {
             _services_user_service__WEBPACK_IMPORTED_MODULE_4__["UserService"]])
     ], SignUpComponent);
     return SignUpComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/userprofile/userprofile.component.css":
+/*!*******************************************************!*\
+  !*** ./src/app/userprofile/userprofile.component.css ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3VzZXJwcm9maWxlL3VzZXJwcm9maWxlLmNvbXBvbmVudC5jc3MifQ== */"
+
+/***/ }),
+
+/***/ "./src/app/userprofile/userprofile.component.html":
+/*!********************************************************!*\
+  !*** ./src/app/userprofile/userprofile.component.html ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h2 class=\"text-dark\">Profile</h2>\n<form [formGroup]=\"profileForm\" (ngSubmit)=\"onSubmit()\" class=\"text-dark text-left\">\n\n  <div class=\"form-group\">\n    <label for=\"userId\">User Id</label>\n    <input type=\"text\" formControlName=\"userId\" readonly=\"readonly\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.userId.errors }\" />\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"userName\">User Name</label>\n    <input type=\"text\" formControlName=\"userName\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.userName.errors }\" />\n    <div *ngIf=\"submitted && f.userName.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.userName.errors.required\">User name is required</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"password\">Password</label>\n    <input type=\"text\" formControlName=\"password\" readonly=\"readonly\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.password.errors }\" />\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"phone\">Phone Number</label>\n    <input type=\"text\" formControlName=\"phone\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.phone.errors }\" />\n    <div *ngIf=\"submitted && f.phone.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.phone.errors.required\">Phone Number is required</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"address\">Address</label>\n    <input type=\"text\" formControlName=\"address\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.address.errors }\" />\n    <div *ngIf=\"submitted && f.address.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.address.errors.required\">Address is required</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"rateNumber\">Rate Number</label>\n    <input type=\"text\" formControlName=\"rateNumber\" readonly=\"readonly\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.rateNumber.errors }\" />\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"averageRate\">Average Rate</label>\n    <input type=\"text\" formControlName=\"averageRate\" readonly=\"readonly\" class=\"form-control\"/>\n  </div>\n\n  <div class=\"form-group text-center\">\n    <button [disabled]=\"loading\" class=\"btn btn-primary\">Submit</button>\n    <a [routerLink]=\"['/dashboard', {outlets: {'aux': ['dashhome']}}]\" class=\"btn btn-link\">Cancel</a>\n  </div>\n\n</form>\n"
+
+/***/ }),
+
+/***/ "./src/app/userprofile/userprofile.component.ts":
+/*!******************************************************!*\
+  !*** ./src/app/userprofile/userprofile.component.ts ***!
+  \******************************************************/
+/*! exports provided: UserprofileComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserprofileComponent", function() { return UserprofileComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../_services */ "./src/app/_services/index.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+
+
+
+
+
+var UserprofileComponent = /** @class */ (function () {
+    function UserprofileComponent(formBuilder, router, userService, alertService) {
+        var _this = this;
+        this.formBuilder = formBuilder;
+        this.router = router;
+        this.userService = userService;
+        this.alertService = alertService;
+        this.loading = false;
+        this.submitted = false;
+        this.router.routeReuseStrategy.shouldReuseRoute = function () {
+            return false;
+        };
+        this.router.events.subscribe(function (evt) {
+            if (evt instanceof _angular_router__WEBPACK_IMPORTED_MODULE_3__["NavigationEnd"]) {
+                // trick the Router into believing it's last link wasn't previously loaded
+                _this.router.navigated = false;
+                // if you need to scroll back to top, here is the right place
+                window.scrollTo(0, 0);
+            }
+        });
+    }
+    UserprofileComponent.prototype.ngOnInit = function () {
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.profileForm = this.formBuilder.group({
+            userId: [this.currentUser.userid, _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            userName: [this.currentUser.username, _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            password: [this.currentUser.password, _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            phone: [this.currentUser.phone, _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            address: [this.currentUser.address, _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            rateNumber: [this.currentUser.ratenumber, _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            averageRate: [this.currentUser.averagerate]
+        });
+    };
+    Object.defineProperty(UserprofileComponent.prototype, "f", {
+        get: function () { return this.profileForm.controls; },
+        enumerable: true,
+        configurable: true
+    });
+    UserprofileComponent.prototype.onSubmit = function () {
+        var _this = this;
+        this.submitted = true;
+        // stop here if form is invalid
+        if (this.profileForm.invalid) {
+            return;
+        }
+        this.loading = true;
+        this.userService.profileEdit(this.profileForm.value.userId, this.profileForm.value.phone, this.profileForm.value.userName, this.profileForm.value.address)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["first"])())
+            .subscribe(function (data) {
+            data.toString();
+            if (data) {
+                console.log('update successful');
+                _this.currentUserID = localStorage.getItem('currentUserID');
+                localStorage.removeItem('currentUser');
+                _this.userService.getUserById(_this.currentUserID).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["first"])()).subscribe(function (user) {
+                    _this.currentUser = user;
+                    localStorage.setItem('currentUser', JSON.stringify(_this.currentUser));
+                });
+                _this.router.navigate(['/dashboard', { outlets: { 'aux': ['dashhome'] } }]);
+            }
+            ;
+            if (!data) {
+                console.log('update error');
+            }
+            ;
+        });
+    };
+    UserprofileComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-userprofile',
+            template: __webpack_require__(/*! ./userprofile.component.html */ "./src/app/userprofile/userprofile.component.html"),
+            styles: [__webpack_require__(/*! ./userprofile.component.css */ "./src/app/userprofile/userprofile.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormBuilder"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
+            _services__WEBPACK_IMPORTED_MODULE_2__["UserService"],
+            _services__WEBPACK_IMPORTED_MODULE_2__["AlertService"]])
+    ], UserprofileComponent);
+    return UserprofileComponent;
 }());
 
 

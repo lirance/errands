@@ -1,3 +1,5 @@
+import {User} from "./user";
+
 export class Order {
   orderid: number;
   itemlist: [string];
@@ -6,7 +8,6 @@ export class Order {
   state: string;
   timelimit: number;
   tip: number;
-  maker: number;
-  recipient: number;
+  maker: User;
+  recipient: User;
 }
-

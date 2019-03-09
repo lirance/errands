@@ -31,6 +31,9 @@ export class UserService {
     localStorage.clear();
 
   }
+  profileEdit(userid: string, phone: string, username: string, address: string){
+    return this.http.get<string>('http://localhost:8080/user/editProfile?userid='+ userid +'&phone=' + phone +'&username=' + username + '&address=' + address);
+  }
 
 }
 

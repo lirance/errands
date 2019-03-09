@@ -19,7 +19,7 @@
             <a class="nav-link" [routerLink]="['/dashboard', {outlets: {'aux': ['createorder']}}]">Create Order</a>
           </li>
           <li classs="nav-item">
-            <a class="nav-link" (click)="userLogout()">Log Out</a>
+            <a class="nav-link" (click)="userLogout()">My order</a>
           </li>
 
         </ul>
@@ -31,7 +31,7 @@
           </button>
 
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item text-dark" href="#">Edit Profile</a>
+            <a class="dropdown-item text-dark" [routerLink]="['/dashboard', {outlets: {'aux': ['profile']}}]">Edit Profile</a>
             <a class="dropdown-item text-dark" (click)="userLogout()">Log Out</a>
           </div>
         </div>

@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {first} from 'rxjs/operators';
-import {Order} from "../_models/order";
 import {OrderService} from "../_services/order.service";
 import {Router} from "@angular/router";
+import {Order} from "../_models/order";
 
 @Component({
   selector: 'app-dashhome',
@@ -13,12 +13,14 @@ import {Router} from "@angular/router";
 export class DashhomeComponent implements OnInit {
 
   orderList: Order[] = [];
+  currentUserID: string;
 
   constructor(private orderService: OrderService, private router: Router) {
   }
 
   ngOnInit() {
     this.getOrderList();
+    this.currentUserID= localStorage.getItem('currentUserID');
   }
 
   getOrderList() {

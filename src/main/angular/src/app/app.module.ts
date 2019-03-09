@@ -20,6 +20,7 @@ import {OrderService} from "./_services/order.service";
 
 import { AlertService } from "./_services";
 import { AlertComponent } from "./_directives";
+import { UserprofileComponent } from './userprofile/userprofile.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { AlertComponent } from "./_directives";
     DashhomeComponent,
     CreateOrderComponent,
     OrderDetailComponent,
-    AlertComponent
+    AlertComponent,
+    UserprofileComponent
   ],
   imports: [
     BrowserModule,

@@ -17,4 +17,20 @@ export class OrderService {
       '&storeadd='+order.storeadd+'&destination='+order.destination+'&timelimit='+order.timelimit+'&tip='+order.tip, order);
   }
 
+  getOrderDetail(orderid: string){
+    return this.http.get<Order>('http://localhost:8080/orders/getOrderDetailById?orderId=' + orderid);
+  }
+
+  acceptOrder(userid:string, orderid:string){
+    return this.http.get<string>('http://localhost:8080/order/accept?userId=' + userid + '&orderId=' + orderid);
+  }
+
+  completeOrder(userid:string, orderid:string){
+    return this.http.get<string>('http://localhost:8080/order/complete?userId='+ userid + '&orderId=' + orderid);
+  }
+
+  rateOrder(userid:string, orderid:string, rate:number){
+    return this.http.get<string>('http://localhost:8080/order/rate?orderId='+ orderid + '&userId=' + userid + '&rate=' + rate );
+  }
+
 }

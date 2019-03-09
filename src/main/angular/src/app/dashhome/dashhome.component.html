@@ -13,8 +13,8 @@
       </ul>
 
       <div class="card-body">
-        <a routerLink="/orderdetail/{{order.orderid}}" class="card-link">See Detail</a>
-        <a routerLink="/orderdetail/{{order.orderid}}" class="card-link disabled">Accept</a>
+        <a [routerLink]="['/dashboard', {outlets: {'aux': ['orderdetail', order.orderid]}}]" class="card-link">See Detail</a>
+        <a routerLink=" " *ngIf="order.maker.userid != currentUserID" class="card-link disabled">Accept</a>
       </div>
 
     </div>

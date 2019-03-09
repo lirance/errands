@@ -31,7 +31,7 @@ export class CreateOrderComponent implements OnInit {
       storeadd: ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
       destination: ['', Validators.maxLength(50)],
       state: [],
-      timelimit: ['', Validators.compose([Validators.required, Validators.pattern('[^\\d+$]{3}')])],
+      timelimit: ['', Validators.compose([Validators.required, Validators.pattern('^\\d{1,3}?$')])],
       tip: ['', Validators.compose([Validators.required,Validators.pattern('^\\d{0,5}(\\.\\d{1,2})?$')])],
       maker: [],
       recipient: []
