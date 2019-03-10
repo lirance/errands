@@ -27,4 +27,8 @@ public interface UserOrderService extends BaseObjectService<UserOrder, UserOrder
     Map<Integer, Integer> getOrderMakers();
 
     List<UserOrder> getUsersByOrder(int orderId);
+
+    List<UserOrder> getOrdersByMaker(int userid);
+
+    List<UserOrder> getOrdersByAccepter(int userid);
 }

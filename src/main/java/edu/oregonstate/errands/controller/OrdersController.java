@@ -1,9 +1,6 @@
 package edu.oregonstate.errands.controller;
 
-import edu.oregonstate.errands.model.Order;
-import edu.oregonstate.errands.model.OrderShow;
-import edu.oregonstate.errands.model.User;
-import edu.oregonstate.errands.model.UserOrder;
+import edu.oregonstate.errands.model.*;
 import edu.oregonstate.errands.service.OrderService;
 import edu.oregonstate.errands.service.UserOrderService;
 import edu.oregonstate.errands.service.UserService;
@@ -68,16 +65,62 @@ public class OrdersController {
 
         Order order = orderService.selectByPrimaryKey(orderId);
         OrderShow orderShow = new OrderShow(order);
+        setOrderUsers(orderId, orderShow);
+        return orderShow;
+
+    }
+
+
+    @RequestMapping("/getCreateOrder")
+    public List<PersonOrderShow> getCreateOrderCR(int userId) {
+        List<PersonOrderShow> orderShowList = new ArrayList<>();
+
+        try {
+            List<UserOrder> userOrders = userOrderService.getOrdersByMaker(userId);
+
+            for (UserOrder uo : userOrders) {
+                PersonOrderShow orderShow = new PersonOrderShow(getOrderDetail(uo.getOrderid()));
+                orderShow.setRated(uo.getRateflag());
+                orderShowList.add(orderShow);
+            }
+
+        } catch (Exception e) {
+            return null;
+        }
+        return orderShowList;
+
+    }
+
+    @RequestMapping("/getAcceptedOrder")
+    public List<PersonOrderShow> getAcceptedOrder(int userId) {
+        List<PersonOrderShow> orderShowList = new ArrayList<>();
+
+        try {
+            List<UserOrder> userOrders = userOrderService.getOrdersByAccepter(userId);
+
+            for (UserOrder uo : userOrders) {
+                PersonOrderShow orderShow = new PersonOrderShow(getOrderDetail(uo.getOrderid()));
+                orderShow.setRated(uo.getRateflag());
+                orderShowList.add(orderShow);
+            }
+
+        } catch (Exception e) {
+            return null;
+        }
+        return orderShowList;
+
+    }
+
+
+    private void setOrderUsers(int orderId, OrderShow orderShow) {
         List<UserOrder> orders = userOrderService.getUsersByOrder(orderId);
         for (UserOrder o : orders) {
             User user = userService.selectByPrimaryKey(o.getUserid());
-            if(o.getOrdermaker()){
+            if (o.getOrdermaker()) {
                 orderShow.setMaker(user);
-            }else {
+            } else {
                 orderShow.setRecipient(user);
             }
         }
-        return orderShow;
-
     }
 }

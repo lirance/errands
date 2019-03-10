@@ -29,4 +29,6 @@ public interface UserOrderMapper {
     List<UserOrder> getAllOrderMakers();
 
     List<UserOrder> getUsersByOrder(int orderid);
+
+    List<UserOrder> getOrdersByUser(int userid, boolean orderMaker);
 }

@@ -127,4 +127,12 @@
         from user_order
         where orderId = #{orderid,jdbcType=INTEGER}
     </select>
+
+    <select id="getOrdersByUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_order
+        where userId = #{0}
+        and orderMaker = #{1}
+    </select>
 </mapper>

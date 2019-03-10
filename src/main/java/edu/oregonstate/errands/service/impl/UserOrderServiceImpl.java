@@ -85,4 +85,16 @@ public class UserOrderServiceImpl implements UserOrderService {
     public List<UserOrder> getUsersByOrder(int orderId) {
         return userOrderMapper.getUsersByOrder(orderId);
     }
+
+    @Override
+    public List<UserOrder> getOrdersByMaker(int userid) {
+        return userOrderMapper.getOrdersByUser(userid, true);
+    }
+
+    @Override
+    public List<UserOrder> getOrdersByAccepter(int userid) {
+        return userOrderMapper.getOrdersByUser(userid, false);
+    }
+
+
 }
