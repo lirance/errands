@@ -4,6 +4,7 @@ import {NavigationEnd, Router} from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from "../_models";
 import {first} from "rxjs/operators";
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-userprofile',
@@ -21,7 +22,8 @@ export class UserprofileComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private userService: UserService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private location: Location
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function(){
       return false;
@@ -84,6 +86,10 @@ export class UserprofileComponent implements OnInit {
           };
 
         });
+  }
+
+  backtolast(){
+    this.location.back();
   }
 
 }

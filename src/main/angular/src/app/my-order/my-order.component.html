@@ -1,0 +1,16 @@
+<p class="text-dark text-left">Choose <strong>Created</strong> to view all created order, <strong>Accepted</strong> to view all accepted order</p>
+<ul class="nav nav-tabs text-dark">
+  <li class="nav-item">
+    <a class="nav-link {{created_active}}" (click)="switch_created()"><strong>Created</strong> </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {{accepted_active}}" (click)="switch_accepted()"><strong>Accepted</strong> </a>
+</ul>
+<br><br>
+<div *ngIf='switch_flag == 0'>
+  <app-created-order-list></app-created-order-list>
+</div>
+
+<div *ngIf='switch_flag == 1'>
+  <app-accepted-order-list></app-accepted-order-list>
+</div>

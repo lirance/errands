@@ -10,7 +10,6 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <!--<li class="nav-item active">-->
           <li class="nav-item">
             <a class="nav-link" [routerLink]="['/dashboard', {outlets: {'aux': ['dashhome']}}]">Home<span
               class="sr-only">(current)</span></a>
@@ -19,7 +18,7 @@
             <a class="nav-link" [routerLink]="['/dashboard', {outlets: {'aux': ['createorder']}}]">Create Order</a>
           </li>
           <li classs="nav-item">
-            <a class="nav-link" (click)="userLogout()">My order</a>
+            <a class="nav-link" [routerLink]="['/dashboard', {outlets: {'aux': ['myorder']}}]">My order</a>
           </li>
 
         </ul>

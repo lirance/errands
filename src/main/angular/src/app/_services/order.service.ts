@@ -1,6 +1,7 @@
 import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {Order} from "../_models/order";
+import {PersonalOrderShow} from "../_models";
 
 @Injectable()
 
@@ -29,8 +30,15 @@ export class OrderService {
     return this.http.get<string>('http://localhost:8080/order/complete?userId='+ userid + '&orderId=' + orderid);
   }
 
-  rateOrder(userid:string, orderid:string, rate:number){
-    return this.http.get<string>('http://localhost:8080/order/rate?orderId='+ orderid + '&userId=' + userid + '&rate=' + rate );
+  rateOrder(userid:string, orderid:string, rate:string){
+    return this.http.get<string>('http://localhost:8080/order/rate?orderId='+ orderid + '&userId=' + userid + '&rate=' + rate);
+  }
+  getCreatedOrder(userid:string){
+    return this.http.get<PersonalOrderShow[]>('http://localhost:8080/orders/getCreateOrder?userId=' + userid);
+  }
+
+  getAcceptedOrder(userid:string){
+    return this.http.get<PersonalOrderShow[]>('http://localhost:8080/orders/getAcceptedOrder?userId=' + userid);
   }
 
 }

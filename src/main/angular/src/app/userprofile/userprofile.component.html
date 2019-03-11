@@ -2,12 +2,12 @@
 <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="text-dark text-left">
 
   <div class="form-group">
-    <label for="userId">User Id</label>
+    <label>User Id</label>
     <input type="text" formControlName="userId" readonly="readonly" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.userId.errors }" />
   </div>
 
   <div class="form-group">
-    <label for="userName">User Name</label>
+    <label>User Name</label>
     <input type="text" formControlName="userName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.userName.errors }" />
     <div *ngIf="submitted && f.userName.errors" class="invalid-feedback">
       <div *ngIf="f.userName.errors.required">User name is required</div>
@@ -15,12 +15,12 @@
   </div>
 
   <div class="form-group">
-    <label for="password">Password</label>
+    <label>Password</label>
     <input type="text" formControlName="password" readonly="readonly" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
   </div>
 
   <div class="form-group">
-    <label for="phone">Phone Number</label>
+    <label>Phone Number</label>
     <input type="text" formControlName="phone" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" />
     <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
       <div *ngIf="f.phone.errors.required">Phone Number is required</div>
@@ -28,7 +28,7 @@
   </div>
 
   <div class="form-group">
-    <label for="address">Address</label>
+    <label>Address</label>
     <input type="text" formControlName="address" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.address.errors }" />
     <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
       <div *ngIf="f.address.errors.required">Address is required</div>
@@ -36,18 +36,18 @@
   </div>
 
   <div class="form-group">
-    <label for="rateNumber">Rate Number</label>
+    <label>Rate Number</label>
     <input type="text" formControlName="rateNumber" readonly="readonly" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.rateNumber.errors }" />
   </div>
 
   <div class="form-group">
-    <label for="averageRate">Average Rate</label>
+    <label>Average Rate</label>
     <input type="text" formControlName="averageRate" readonly="readonly" class="form-control"/>
   </div>
 
   <div class="form-group text-center">
     <button [disabled]="loading" class="btn btn-primary">Submit</button>
-    <a [routerLink]="['/dashboard', {outlets: {'aux': ['dashhome']}}]" class="btn btn-link">Cancel</a>
+    <a (click)="backtolast()" class="btn btn-link">Cancel</a>
   </div>
 
 </form>

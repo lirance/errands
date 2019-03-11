@@ -1,0 +1,12 @@
+<h2 mat-dialog-title class="text-center">Accept Result</h2>
+
+<mat-dialog-content class="text-center">
+  <p *ngIf="acceptResult">Accept success!</p>
+  <p *ngIf="!acceptResult">Accept failed!</p>
+</mat-dialog-content>
+
+<div class="row">
+  <div class="col text-center">
+    <button class="btn btn-info" (click)="close()">Confirm</button>
+  </div>
+</div>

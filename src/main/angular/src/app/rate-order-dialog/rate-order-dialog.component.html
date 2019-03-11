@@ -1,0 +1,23 @@
+<h2 mat-dialog-title class="text-center">Rate Order</h2>
+
+<mat-dialog-content *ngIf='state == "COMPLETED"' class="text-center text-light">
+  <p >Please rate</p>
+  <ngb-rating [(rate)]="currentRate"></ngb-rating>
+  <hr>
+  <pre class="text-light">Rate: <b>{{currentRate}}</b></pre>
+  <p *ngIf="rateResult"> Rate success!</p>
+  <p *ngIf="submitResult"> You have aleady rated!</p>
+</mat-dialog-content>
+
+<mat-dialog-content *ngIf='state != "COMPLETED"' class="text-center text-light">
+  <p class="text-light">The order is not completed.</p>
+</mat-dialog-content>
+
+<div class="row">
+  <div class="col-6 text-center " *ngIf='state == "COMPLETED"'>
+    <button class="btn btn-info" *ngIf='state == "COMPLETED"' (click)="submit()">Submit</button>
+  </div>
+  <div class="col text-center">
+    <button class="btn btn-info" (click)="close()">cancel</button>
+  </div>
+</div>

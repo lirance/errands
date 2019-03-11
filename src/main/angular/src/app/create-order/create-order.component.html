@@ -58,7 +58,7 @@
 
   <div class="form-group text-center">
     <button class="btn btn-primary">Submit</button>
-    <a [routerLink]="['/dashboard', {outlets: {'aux': ['dashhome']}}]" class="btn btn-link">Cancel</a>
+    <a (click)="backtolast()" class="btn btn-link">Cancel</a>
   </div>
 
 </form>

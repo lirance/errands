@@ -250,6 +250,9 @@ var OrderService = /** @class */ (function () {
         return this.http.post('http://localhost:8080/order/create?userid=' + order.maker + '&itemlist=' + order.itemlist +
             '&storeadd=' + order.storeadd + '&destination=' + order.destination + '&timelimit=' + order.timelimit + '&tip=' + order.tip, order);
     };
+    OrderService.prototype.getOrderDetail = function (orderid) {
+        return this.http.get('http://localhost:8080/orders/getOrderDetailById?orderId=' + orderid);
+    };
     OrderService.prototype.acceptOrder = function (userid, orderid) {
         return this.http.get('http://localhost:8080/order/accept?userId=' + userid + '&orderId=' + orderid);
     };
@@ -258,6 +261,12 @@ var OrderService = /** @class */ (function () {
     };
     OrderService.prototype.rateOrder = function (userid, orderid, rate) {
         return this.http.get('http://localhost:8080/order/rate?orderId=' + orderid + '&userId=' + userid + '&rate=' + rate);
+    };
+    OrderService.prototype.getCreatedOrder = function (userid) {
+        return this.http.get('http://localhost:8080/orders/getCreateOrder?userId=' + userid);
+    };
+    OrderService.prototype.getAcceptedOrder = function (userid) {
+        return this.http.get('http://localhost:8080/orders/getAcceptedOrder?userId=' + userid);
     };
     OrderService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])(),
@@ -340,7 +349,7 @@ module.exports = "/* Links */\na,\na:focus,\na:hover {\n  color: #fff;\n}\n/* Cu
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"cover-container d-flex w-100 h-100 p-3 mx-auto flex-column\">\n\n  <header class=\"masthead mb-auto\">\n    <div class=\"inner\">\n      <h3 class=\"masthead-brand\">Errands</h3>\n      <nav class=\"nav nav-masthead justify-content-center\">\n        <a class=\"nav-link\" routerLink=\"/home\" routerLinkActive=\"active\">Home</a>\n        <a class=\"nav-link\" routerLink=\"/aboutUs\" routerLinkActive=\"active\">About us</a>\n        <a class=\"nav-link\" routerLink=\"/login\" routerLinkActive=\"active\">Log in</a>\n        <a class=\"nav-link\" routerLink=\"/signup\" routerLinkActive=\"active\">Sign up</a>\n      </nav>\n    </div>\n  </header>\n\n    <main role=\"main\" class=\"inner cover\">\n        <h1 class=\"cover-heading\">About Us</h1><br>\n        <p class=\"lead\">Content need to add</p>\n    </main>\n\n    <footer class=\"mastfoot mt-auto\">\n        <div class=\"inner\">\n            <p>Website for <a href=\"http://web.engr.oregonstate.edu/~scaffidc/courses/cs562/index.shtml?cb=1547975610290\">CS562</a>, by <a href=\"https://github.com/lirance/errands\">@Lirance and Brian</a>.</p>\n        </div>\n    </footer>\n</div>\n"
+module.exports = "<div class=\"cover-container d-flex w-100 h-100 p-3 mx-auto flex-column\">\n\n  <header class=\"masthead mb-auto\">\n    <div class=\"inner\">\n      <h3 class=\"masthead-brand\">Errands</h3>\n      <nav class=\"nav nav-masthead justify-content-center\">\n        <a class=\"nav-link\" routerLink=\"/home\" routerLinkActive=\"active\">Home</a>\n        <a class=\"nav-link\" routerLink=\"/aboutUs\" routerLinkActive=\"active\">About us</a>\n        <a class=\"nav-link\" routerLink=\"/login\" routerLinkActive=\"active\">Log in</a>\n        <a class=\"nav-link\" routerLink=\"/signup\" routerLinkActive=\"active\">Sign up</a>\n      </nav>\n    </div>\n  </header>\n\n    <main role=\"main\" class=\"inner cover\">\n        <h1 class=\"cover-heading\">About Us</h1><br>\n        <p class=\"lead\">Errands is a web application that Lirance and Brian made for course CS562. People can post orders and others can take the order to do some errands and earn money.</p>\n    </main>\n\n    <footer class=\"mastfoot mt-auto\">\n        <div class=\"inner\">\n            <p>Website for <a href=\"http://web.engr.oregonstate.edu/~scaffidc/courses/cs562/index.shtml?cb=1547975610290\">CS562</a>, by <a href=\"https://github.com/lirance/errands\">@Lirance and Brian</a>.</p>\n        </div>\n    </footer>\n</div>\n"
 
 /***/ }),
 
@@ -375,6 +384,145 @@ var AboutUsComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/accept-dialog/accept-dialog.component.css":
+/*!***********************************************************!*\
+  !*** ./src/app/accept-dialog/accept-dialog.component.css ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FjY2VwdC1kaWFsb2cvYWNjZXB0LWRpYWxvZy5jb21wb25lbnQuY3NzIn0= */"
+
+/***/ }),
+
+/***/ "./src/app/accept-dialog/accept-dialog.component.html":
+/*!************************************************************!*\
+  !*** ./src/app/accept-dialog/accept-dialog.component.html ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h2 mat-dialog-title class=\"text-center\">Accept Result</h2>\n\n<mat-dialog-content class=\"text-center\">\n  <p *ngIf=\"acceptResult\">Accept success!</p>\n  <p *ngIf=\"!acceptResult\">Accept failed!</p>\n</mat-dialog-content>\n\n<div class=\"row\">\n  <div class=\"col text-center\">\n    <button class=\"btn btn-info\" (click)=\"close()\">Confirm</button>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/accept-dialog/accept-dialog.component.ts":
+/*!**********************************************************!*\
+  !*** ./src/app/accept-dialog/accept-dialog.component.ts ***!
+  \**********************************************************/
+/*! exports provided: AcceptDialogComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AcceptDialogComponent", function() { return AcceptDialogComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+
+
+
+
+var AcceptDialogComponent = /** @class */ (function () {
+    function AcceptDialogComponent(router, dialogRef, data) {
+        this.router = router;
+        this.dialogRef = dialogRef;
+        this.acceptResult = data.acceptResult;
+    }
+    AcceptDialogComponent.prototype.ngOnInit = function () {
+    };
+    AcceptDialogComponent.prototype.close = function () {
+        this.dialogRef.close();
+        window.location.reload();
+    };
+    AcceptDialogComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-accept-dialog',
+            template: __webpack_require__(/*! ./accept-dialog.component.html */ "./src/app/accept-dialog/accept-dialog.component.html"),
+            styles: [__webpack_require__(/*! ./accept-dialog.component.css */ "./src/app/accept-dialog/accept-dialog.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](2, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_2__["MAT_DIALOG_DATA"])),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogRef"], Object])
+    ], AcceptDialogComponent);
+    return AcceptDialogComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/accepted-order-list/accepted-order-list.component.css":
+/*!***********************************************************************!*\
+  !*** ./src/app/accepted-order-list/accepted-order-list.component.css ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FjY2VwdGVkLW9yZGVyLWxpc3QvYWNjZXB0ZWQtb3JkZXItbGlzdC5jb21wb25lbnQuY3NzIn0= */"
+
+/***/ }),
+
+/***/ "./src/app/accepted-order-list/accepted-order-list.component.html":
+/*!************************************************************************!*\
+  !*** ./src/app/accepted-order-list/accepted-order-list.component.html ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"row text-dark\" *ngIf='acceptOrderList != []'>\n  <div *ngFor=\"let order of acceptOrderList\" class=\"col-md-4\">\n    <div class=\"card mb-4 box-shadow\">\n      <div class=\"card-body\">\n        <h5 class=\"card-title\"> {{order.orderid}} </h5>\n        <h6 class=\"card-subtitle mb-2 text-muted\">Time limit: {{order.timelimit}} hours.</h6>\n      </div>\n\n      <ul class=\"list-group list-group-flush text-left\">\n        <li class=\"list-group-item\">Store address: {{order.storeadd}} </li>\n        <li class=\"list-group-item\">Destination adress: {{order.destination}} </li>\n        <li class=\"list-group-item\">Tips: {{order.tip}} dollar</li>\n      </ul>\n\n      <div class=\"card-body\">\n        <a [routerLink]=\"['/dashboard', {outlets: {'aux': ['orderdetail', order.orderid]}}]\" class=\"card-link\">See Detail</a>\n      </div>\n\n    </div>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/accepted-order-list/accepted-order-list.component.ts":
+/*!**********************************************************************!*\
+  !*** ./src/app/accepted-order-list/accepted-order-list.component.ts ***!
+  \**********************************************************************/
+/*! exports provided: AcceptedOrderListComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AcceptedOrderListComponent", function() { return AcceptedOrderListComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../_services */ "./src/app/_services/index.ts");
+
+
+
+
+var AcceptedOrderListComponent = /** @class */ (function () {
+    function AcceptedOrderListComponent(orderService) {
+        this.orderService = orderService;
+        this.acceptOrderList = [];
+    }
+    AcceptedOrderListComponent.prototype.ngOnInit = function () {
+        this.currentUserID = localStorage.getItem('currentUserID');
+        this.getAcceptedOrderlist();
+    };
+    AcceptedOrderListComponent.prototype.getAcceptedOrderlist = function () {
+        var _this = this;
+        this.orderService.getAcceptedOrder(this.currentUserID).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["first"])()).subscribe(function (orders) {
+            _this.acceptOrderList = orders;
+        });
+    };
+    AcceptedOrderListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-accepted-order-list',
+            template: __webpack_require__(/*! ./accepted-order-list.component.html */ "./src/app/accepted-order-list/accepted-order-list.component.html"),
+            styles: [__webpack_require__(/*! ./accepted-order-list.component.css */ "./src/app/accepted-order-list/accepted-order-list.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services__WEBPACK_IMPORTED_MODULE_3__["OrderService"]])
+    ], AcceptedOrderListComponent);
+    return AcceptedOrderListComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/app-routing.module.ts":
 /*!***************************************!*\
   !*** ./src/app/app-routing.module.ts ***!
@@ -397,6 +545,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./create-order/create-order.component */ "./src/app/create-order/create-order.component.ts");
 /* harmony import */ var _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./order-detail/order-detail.component */ "./src/app/order-detail/order-detail.component.ts");
 /* harmony import */ var _userprofile_userprofile_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./userprofile/userprofile.component */ "./src/app/userprofile/userprofile.component.ts");
+/* harmony import */ var _my_order_my_order_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./my-order/my-order.component */ "./src/app/my-order/my-order.component.ts");
+
 
 
 
@@ -422,7 +572,8 @@ var routes = [
             { path: 'dashhome', component: _dashhome_dashhome_component__WEBPACK_IMPORTED_MODULE_8__["DashhomeComponent"], outlet: 'aux' },
             { path: 'profile', component: _userprofile_userprofile_component__WEBPACK_IMPORTED_MODULE_11__["UserprofileComponent"], outlet: 'aux' },
             { path: 'createorder', component: _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_9__["CreateOrderComponent"], outlet: 'aux' },
-            { path: 'orderdetail/:orderid', component: _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_10__["OrderDetailComponent"], outlet: 'aux' }
+            { path: 'myorder', component: _my_order_my_order_component__WEBPACK_IMPORTED_MODULE_12__["MyOrderComponent"], outlet: 'aux' },
+            { path: 'orderdetail/:orderid', component: _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_10__["OrderDetailComponent"], outlet: 'aux' },
         ] }
 ];
 var AppRoutingModule = /** @class */ (function () {
@@ -509,20 +660,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
-/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
-/* harmony import */ var _aboutUs_aboutUs_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./aboutUs/aboutUs.component */ "./src/app/aboutUs/aboutUs.component.ts");
-/* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./home/home.component */ "./src/app/home/home.component.ts");
-/* harmony import */ var _login_login_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./login/login.component */ "./src/app/login/login.component.ts");
-/* harmony import */ var _sign_up_sign_up_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./sign-up/sign-up.component */ "./src/app/sign-up/sign-up.component.ts");
-/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./_services */ "./src/app/_services/index.ts");
-/* harmony import */ var _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./dashboard/dashboard.component */ "./src/app/dashboard/dashboard.component.ts");
-/* harmony import */ var _dashhome_dashhome_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./dashhome/dashhome.component */ "./src/app/dashhome/dashhome.component.ts");
-/* harmony import */ var _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./create-order/create-order.component */ "./src/app/create-order/create-order.component.ts");
-/* harmony import */ var _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./order-detail/order-detail.component */ "./src/app/order-detail/order-detail.component.ts");
-/* harmony import */ var _services_order_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./_services/order.service */ "./src/app/_services/order.service.ts");
-/* harmony import */ var _directives__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./_directives */ "./src/app/_directives/index.ts");
-/* harmony import */ var _userprofile_userprofile_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./userprofile/userprofile.component */ "./src/app/userprofile/userprofile.component.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
+/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
+/* harmony import */ var _aboutUs_aboutUs_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./aboutUs/aboutUs.component */ "./src/app/aboutUs/aboutUs.component.ts");
+/* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./home/home.component */ "./src/app/home/home.component.ts");
+/* harmony import */ var _login_login_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./login/login.component */ "./src/app/login/login.component.ts");
+/* harmony import */ var _sign_up_sign_up_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./sign-up/sign-up.component */ "./src/app/sign-up/sign-up.component.ts");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./_services */ "./src/app/_services/index.ts");
+/* harmony import */ var _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./dashboard/dashboard.component */ "./src/app/dashboard/dashboard.component.ts");
+/* harmony import */ var _dashhome_dashhome_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./dashhome/dashhome.component */ "./src/app/dashhome/dashhome.component.ts");
+/* harmony import */ var _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./create-order/create-order.component */ "./src/app/create-order/create-order.component.ts");
+/* harmony import */ var _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./order-detail/order-detail.component */ "./src/app/order-detail/order-detail.component.ts");
+/* harmony import */ var _services_order_service__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./_services/order.service */ "./src/app/_services/order.service.ts");
+/* harmony import */ var _directives__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./_directives */ "./src/app/_directives/index.ts");
+/* harmony import */ var _userprofile_userprofile_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./userprofile/userprofile.component */ "./src/app/userprofile/userprofile.component.ts");
+/* harmony import */ var _accept_dialog_accept_dialog_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./accept-dialog/accept-dialog.component */ "./src/app/accept-dialog/accept-dialog.component.ts");
+/* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/fesm5/animations.js");
+/* harmony import */ var _my_order_my_order_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./my-order/my-order.component */ "./src/app/my-order/my-order.component.ts");
+/* harmony import */ var _complete_dialog_complete_dialog_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./complete-dialog/complete-dialog.component */ "./src/app/complete-dialog/complete-dialog.component.ts");
+/* harmony import */ var _created_order_list_created_order_list_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./created-order-list/created-order-list.component */ "./src/app/created-order-list/created-order-list.component.ts");
+/* harmony import */ var _accepted_order_list_accepted_order_list_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./accepted-order-list/accepted-order-list.component */ "./src/app/accepted-order-list/accepted-order-list.component.ts");
+/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ "./node_modules/@ng-bootstrap/ng-bootstrap/fesm5/ng-bootstrap.js");
+/* harmony import */ var _rate_order_dialog_rate_order_dialog_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./rate-order-dialog/rate-order-dialog.component */ "./src/app/rate-order-dialog/rate-order-dialog.component.ts");
+
+
+
+
+
+
+
+
+
 
 
 
@@ -549,33 +718,112 @@ var AppModule = /** @class */ (function () {
     AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
             declarations: [
-                _app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"],
-                _aboutUs_aboutUs_component__WEBPACK_IMPORTED_MODULE_7__["AboutUsComponent"],
-                _home_home_component__WEBPACK_IMPORTED_MODULE_8__["HomeComponent"],
-                _login_login_component__WEBPACK_IMPORTED_MODULE_9__["LoginComponent"],
-                _sign_up_sign_up_component__WEBPACK_IMPORTED_MODULE_10__["SignUpComponent"],
-                _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_12__["DashboardComponent"],
-                _dashhome_dashhome_component__WEBPACK_IMPORTED_MODULE_13__["DashhomeComponent"],
-                _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_14__["CreateOrderComponent"],
-                _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_15__["OrderDetailComponent"],
-                _directives__WEBPACK_IMPORTED_MODULE_17__["AlertComponent"],
-                _userprofile_userprofile_component__WEBPACK_IMPORTED_MODULE_18__["UserprofileComponent"]
+                _app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"],
+                _aboutUs_aboutUs_component__WEBPACK_IMPORTED_MODULE_8__["AboutUsComponent"],
+                _home_home_component__WEBPACK_IMPORTED_MODULE_9__["HomeComponent"],
+                _login_login_component__WEBPACK_IMPORTED_MODULE_10__["LoginComponent"],
+                _sign_up_sign_up_component__WEBPACK_IMPORTED_MODULE_11__["SignUpComponent"],
+                _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_13__["DashboardComponent"],
+                _dashhome_dashhome_component__WEBPACK_IMPORTED_MODULE_14__["DashhomeComponent"],
+                _create_order_create_order_component__WEBPACK_IMPORTED_MODULE_15__["CreateOrderComponent"],
+                _order_detail_order_detail_component__WEBPACK_IMPORTED_MODULE_16__["OrderDetailComponent"],
+                _directives__WEBPACK_IMPORTED_MODULE_18__["AlertComponent"],
+                _userprofile_userprofile_component__WEBPACK_IMPORTED_MODULE_19__["UserprofileComponent"],
+                _accept_dialog_accept_dialog_component__WEBPACK_IMPORTED_MODULE_20__["AcceptDialogComponent"],
+                _my_order_my_order_component__WEBPACK_IMPORTED_MODULE_22__["MyOrderComponent"],
+                _complete_dialog_complete_dialog_component__WEBPACK_IMPORTED_MODULE_23__["CompleteDialogComponent"],
+                _created_order_list_created_order_list_component__WEBPACK_IMPORTED_MODULE_24__["CreatedOrderListComponent"],
+                _accepted_order_list_accepted_order_list_component__WEBPACK_IMPORTED_MODULE_25__["AcceptedOrderListComponent"],
+                _rate_order_dialog_rate_order_dialog_component__WEBPACK_IMPORTED_MODULE_27__["RateOrderDialogComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClientModule"],
-                _app_routing_module__WEBPACK_IMPORTED_MODULE_5__["AppRoutingModule"]
+                _app_routing_module__WEBPACK_IMPORTED_MODULE_6__["AppRoutingModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatDialogModule"],
+                _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_26__["NgbModule"],
+                _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_21__["BrowserAnimationsModule"]
             ],
             providers: [
-                _services_order_service__WEBPACK_IMPORTED_MODULE_16__["OrderService"],
-                _services__WEBPACK_IMPORTED_MODULE_11__["UserService"],
-                _services__WEBPACK_IMPORTED_MODULE_11__["AlertService"]
+                _services_order_service__WEBPACK_IMPORTED_MODULE_17__["OrderService"],
+                _services__WEBPACK_IMPORTED_MODULE_12__["UserService"],
+                _services__WEBPACK_IMPORTED_MODULE_12__["AlertService"]
             ],
-            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]]
+            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"]],
+            entryComponents: [_accept_dialog_accept_dialog_component__WEBPACK_IMPORTED_MODULE_20__["AcceptDialogComponent"], _complete_dialog_complete_dialog_component__WEBPACK_IMPORTED_MODULE_23__["CompleteDialogComponent"], _rate_order_dialog_rate_order_dialog_component__WEBPACK_IMPORTED_MODULE_27__["RateOrderDialogComponent"]]
         })
     ], AppModule);
     return AppModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/complete-dialog/complete-dialog.component.css":
+/*!***************************************************************!*\
+  !*** ./src/app/complete-dialog/complete-dialog.component.css ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBsZXRlLWRpYWxvZy9jb21wbGV0ZS1kaWFsb2cuY29tcG9uZW50LmNzcyJ9 */"
+
+/***/ }),
+
+/***/ "./src/app/complete-dialog/complete-dialog.component.html":
+/*!****************************************************************!*\
+  !*** ./src/app/complete-dialog/complete-dialog.component.html ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h2 mat-dialog-title class=\"text-center\">Complete Result</h2>\n\n<mat-dialog-content class=\"text-center\">\n  <p *ngIf=\"completeResult\">Complete success!</p>\n  <p *ngIf=\"!completeResult\">This order is already completed!</p>\n</mat-dialog-content>\n\n<div class=\"row\">\n  <div class=\"col text-center\">\n    <button class=\"btn btn-info\" (click)=\"close()\">Confirm</button>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/complete-dialog/complete-dialog.component.ts":
+/*!**************************************************************!*\
+  !*** ./src/app/complete-dialog/complete-dialog.component.ts ***!
+  \**************************************************************/
+/*! exports provided: CompleteDialogComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CompleteDialogComponent", function() { return CompleteDialogComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+
+
+
+
+var CompleteDialogComponent = /** @class */ (function () {
+    function CompleteDialogComponent(router, dialogRef, data) {
+        this.router = router;
+        this.dialogRef = dialogRef;
+        this.completeResult = data.completeResult;
+    }
+    CompleteDialogComponent.prototype.ngOnInit = function () {
+    };
+    CompleteDialogComponent.prototype.close = function () {
+        this.dialogRef.close();
+        window.location.reload();
+    };
+    CompleteDialogComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-complete-dialog',
+            template: __webpack_require__(/*! ./complete-dialog.component.html */ "./src/app/complete-dialog/complete-dialog.component.html"),
+            styles: [__webpack_require__(/*! ./complete-dialog.component.css */ "./src/app/complete-dialog/complete-dialog.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](2, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_2__["MAT_DIALOG_DATA"])),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogRef"], Object])
+    ], CompleteDialogComponent);
+    return CompleteDialogComponent;
 }());
 
 
@@ -600,7 +848,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h2 class=\"text-dark\">Create an order</h2>\n<form [formGroup]=\"orderForm\" (ngSubmit)=\"onSubmit()\" class=\"text-dark text-left\">\n\n  <div class=\"form-group\">\n    <label for=\"itemlist\"> Item List (use , for separated items, max length 200)</label>\n    <input type=\"text\" placeholder=\"e.g. apple, banana\" id=\"itemlist\" formControlName=\"itemlist\" class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.itemlist.errors }\"/>\n    <div *ngIf=\"submitted && f.itemlist.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.itemlist.errors.required\">Item list is required</div>\n      <div *ngIf=\"f.itemlist.errors.maxLength\">The max length is 200</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"storeadd\"> Store address (max length 50) </label>\n    <input type=\"text\" placeholder=\"e.g. Circle K on Monroe\" id=\"storeadd\" formControlName=\"storeadd\"\n           class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.storeadd.errors }\"/>\n    <div *ngIf=\"submitted && f.storeadd.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.storeadd.errors.required\">Store address is required</div>\n      <div *ngIf=\"f.storeadd.errors.maxLength\">The max length is 50</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"destination\">Destination(defult value is registered address, max length is 50)</label>\n    <input type=\"text\" placeholder=\"e.g. 123NW 123Street\" id=\"destination\" formControlName=\"destination\"\n           class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.destination.errors }\"/>\n    <div *ngIf=\"submitted && f.destination.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.destination.errors.maxLength\">The max length is 50</div>\n    </div>\n  </div>\n\n\n  <div class=\"form-group\">\n    <label for=\"timelimit\">Limit Time(hours) (up to 3 positive number)</label>\n    <input type=\"number\" id=\"timelimit\" formControlName=\"timelimit\" class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.timelimit.errors }\"/>\n    <div *ngIf=\"submitted && f.timelimit.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.timelimit.errors.required\">The time limit is required</div>\n      <div *ngIf=\"f.timelimit.errors.maxLength\">The max length of time limit is 3</div>\n      <div *ngIf=\"f.timelimit.errors.pattern\">The format is 3 digit number</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"tip\">Tips (Max 2 decimal)</label>\n    <input type=\"number\" id=\"tip\" formControlName=\"tip\" class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.tip.errors }\"/>\n    <div *ngIf=\"submitted && f.tip.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.tip.errors.required\">The tip is required</div>\n      <div *ngIf=\"f.tip.errors.maxLength\">The max length of tip is 7</div>\n      <div *ngIf=\"f.tip.errors.pattern\">The format of tip is 2 decimal number</div>\n    </div>\n  </div>\n\n\n  <div class=\"form-group text-center\">\n    <button class=\"btn btn-primary\">Submit</button>\n    <a [routerLink]=\"['/dashboard', {outlets: {'aux': ['dashhome']}}]\" class=\"btn btn-link\">Cancel</a>\n  </div>\n\n</form>\n\n<br><br>\n"
+module.exports = "<h2 class=\"text-dark\">Create an order</h2>\n<form [formGroup]=\"orderForm\" (ngSubmit)=\"onSubmit()\" class=\"text-dark text-left\">\n\n  <div class=\"form-group\">\n    <label for=\"itemlist\"> Item List (use , for separated items, max length 200)</label>\n    <input type=\"text\" placeholder=\"e.g. apple, banana\" id=\"itemlist\" formControlName=\"itemlist\" class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.itemlist.errors }\"/>\n    <div *ngIf=\"submitted && f.itemlist.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.itemlist.errors.required\">Item list is required</div>\n      <div *ngIf=\"f.itemlist.errors.maxLength\">The max length is 200</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"storeadd\"> Store address (max length 50) </label>\n    <input type=\"text\" placeholder=\"e.g. Circle K on Monroe\" id=\"storeadd\" formControlName=\"storeadd\"\n           class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.storeadd.errors }\"/>\n    <div *ngIf=\"submitted && f.storeadd.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.storeadd.errors.required\">Store address is required</div>\n      <div *ngIf=\"f.storeadd.errors.maxLength\">The max length is 50</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"destination\">Destination(defult value is registered address, max length is 50)</label>\n    <input type=\"text\" placeholder=\"e.g. 123NW 123Street\" id=\"destination\" formControlName=\"destination\"\n           class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.destination.errors }\"/>\n    <div *ngIf=\"submitted && f.destination.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.destination.errors.maxLength\">The max length is 50</div>\n    </div>\n  </div>\n\n\n  <div class=\"form-group\">\n    <label for=\"timelimit\">Limit Time(hours) (up to 3 positive number)</label>\n    <input type=\"number\" id=\"timelimit\" formControlName=\"timelimit\" class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.timelimit.errors }\"/>\n    <div *ngIf=\"submitted && f.timelimit.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.timelimit.errors.required\">The time limit is required</div>\n      <div *ngIf=\"f.timelimit.errors.maxLength\">The max length of time limit is 3</div>\n      <div *ngIf=\"f.timelimit.errors.pattern\">The format is 3 digit number</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"tip\">Tips (Max 2 decimal)</label>\n    <input type=\"number\" id=\"tip\" formControlName=\"tip\" class=\"form-control\"\n           [ngClass]=\"{ 'is-invalid': submitted && f.tip.errors }\"/>\n    <div *ngIf=\"submitted && f.tip.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.tip.errors.required\">The tip is required</div>\n      <div *ngIf=\"f.tip.errors.maxLength\">The max length of tip is 7</div>\n      <div *ngIf=\"f.tip.errors.pattern\">The format of tip is 2 decimal number</div>\n    </div>\n  </div>\n\n\n  <div class=\"form-group text-center\">\n    <button class=\"btn btn-primary\">Submit</button>\n    <a (click)=\"backtolast()\" class=\"btn btn-link\">Cancel</a>\n  </div>\n\n</form>\n\n<br><br>\n"
 
 /***/ }),
 
@@ -621,6 +869,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_order_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../_services/order.service */ "./src/app/_services/order.service.ts");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../_services */ "./src/app/_services/index.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+
 
 
 
@@ -629,11 +879,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var CreateOrderComponent = /** @class */ (function () {
-    function CreateOrderComponent(formBuilder, router, orderServie, alertService) {
+    function CreateOrderComponent(formBuilder, router, orderServie, alertService, location) {
         this.formBuilder = formBuilder;
         this.router = router;
         this.orderServie = orderServie;
         this.alertService = alertService;
+        this.location = location;
         this.loading = false;
         this.submitted = false;
     }
@@ -672,6 +923,9 @@ var CreateOrderComponent = /** @class */ (function () {
         ;
         this.loading = true;
     };
+    CreateOrderComponent.prototype.backtolast = function () {
+        this.location.back();
+    };
     CreateOrderComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-create-order',
@@ -681,9 +935,99 @@ var CreateOrderComponent = /** @class */ (function () {
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"],
             _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
             _services_order_service__WEBPACK_IMPORTED_MODULE_4__["OrderService"],
-            _services__WEBPACK_IMPORTED_MODULE_6__["AlertService"]])
+            _services__WEBPACK_IMPORTED_MODULE_6__["AlertService"],
+            _angular_common__WEBPACK_IMPORTED_MODULE_7__["Location"]])
     ], CreateOrderComponent);
     return CreateOrderComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/created-order-list/created-order-list.component.css":
+/*!*********************************************************************!*\
+  !*** ./src/app/created-order-list/created-order-list.component.css ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NyZWF0ZWQtb3JkZXItbGlzdC9jcmVhdGVkLW9yZGVyLWxpc3QuY29tcG9uZW50LmNzcyJ9 */"
+
+/***/ }),
+
+/***/ "./src/app/created-order-list/created-order-list.component.html":
+/*!**********************************************************************!*\
+  !*** ./src/app/created-order-list/created-order-list.component.html ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"row text-dark\" *ngIf='createdOrderList != []'>\n  <div *ngFor=\"let order of createdOrderList\" class=\"col-md-4\">\n    <div class=\"card mb-4 box-shadow\">\n      <div class=\"card-body\">\n        <h5 class=\"card-title\"> {{order.orderid}} </h5>\n        <h6 class=\"card-subtitle mb-2 text-muted\">Time limit: {{order.timelimit}} hours.</h6>\n      </div>\n\n      <ul class=\"list-group list-group-flush text-left\">\n        <li class=\"list-group-item\">Store address: {{order.storeadd}} </li>\n        <li class=\"list-group-item\">Destination adress: {{order.destination}} </li>\n        <li class=\"list-group-item\">Tips: {{order.tip}} dollar</li>\n      </ul>\n\n      <div class=\"card-body\">\n        <a [routerLink]=\"['/dashboard', {outlets: {'aux': ['orderdetail', order.orderid]}}]\" class=\"card-link\">See Detail</a>\n        <a *ngIf= \"!order.rated\" (click)=\"rate(order.orderid, order.state)\" class=\"card-link\">Rate</a>\n      </div>\n\n    </div>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/created-order-list/created-order-list.component.ts":
+/*!********************************************************************!*\
+  !*** ./src/app/created-order-list/created-order-list.component.ts ***!
+  \********************************************************************/
+/*! exports provided: CreatedOrderListComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CreatedOrderListComponent", function() { return CreatedOrderListComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../_services */ "./src/app/_services/index.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _rate_order_dialog_rate_order_dialog_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../rate-order-dialog/rate-order-dialog.component */ "./src/app/rate-order-dialog/rate-order-dialog.component.ts");
+
+
+
+
+
+
+
+var CreatedOrderListComponent = /** @class */ (function () {
+    function CreatedOrderListComponent(orderService, dialog, router, route) {
+        this.orderService = orderService;
+        this.dialog = dialog;
+        this.router = router;
+        this.route = route;
+        this.createdOrderList = [];
+    }
+    CreatedOrderListComponent.prototype.ngOnInit = function () {
+        this.currentUserID = localStorage.getItem('currentUserID');
+        this.getCreatedOrderlist();
+    };
+    CreatedOrderListComponent.prototype.getCreatedOrderlist = function () {
+        var _this = this;
+        this.orderService.getCreatedOrder(this.currentUserID).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["first"])()).subscribe(function (orders) {
+            _this.createdOrderList = orders;
+        });
+    };
+    CreatedOrderListComponent.prototype.rate = function (orderid, state) {
+        this.openRateDialog(orderid, state);
+    };
+    CreatedOrderListComponent.prototype.openRateDialog = function (orderid, state) {
+        var dialogConfig = new _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatDialogConfig"]();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = { orderid: orderid, state: state };
+        this.dialog.open(_rate_order_dialog_rate_order_dialog_component__WEBPACK_IMPORTED_MODULE_6__["RateOrderDialogComponent"], dialogConfig);
+    };
+    CreatedOrderListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-created-order-list',
+            template: __webpack_require__(/*! ./created-order-list.component.html */ "./src/app/created-order-list/created-order-list.component.html"),
+            styles: [__webpack_require__(/*! ./created-order-list.component.css */ "./src/app/created-order-list/created-order-list.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services__WEBPACK_IMPORTED_MODULE_3__["OrderService"], _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatDialog"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"]])
+    ], CreatedOrderListComponent);
+    return CreatedOrderListComponent;
 }());
 
 
@@ -708,7 +1052,7 @@ module.exports = "/* Links */\na,\na:focus,\na:hover {\n  color: #fff;\n}\n.navc
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-light h-10\" style=\"background-color: #f0b07b;\">\n  <div class=\"navcontainer\">\n    <div class=\"row\">\n      <a class=\"navbar-brand \" routerLink=\"\">Errands</a>\n\n      <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n              aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n        <span class=\"navbar-toggler-icon\"></span>\n      </button>\n\n      <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n        <ul class=\"navbar-nav mr-auto\">\n          <!--<li class=\"nav-item active\">-->\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['dashhome']}}]\">Home<span\n              class=\"sr-only\">(current)</span></a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['createorder']}}]\">Create Order</a>\n          </li>\n          <li classs=\"nav-item\">\n            <a class=\"nav-link\" (click)=\"userLogout()\">My order</a>\n          </li>\n\n        </ul>\n\n        <div class=\"nav-item dropdown\">\n          <button *ngIf=\"currentUser\" class=\" btn dropdown-toggle text-primary\" id=\"dropdownMenuButton\" type=\"button\"\n                  data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n            {{currentUser.username}}\n          </button>\n\n          <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">\n            <a class=\"dropdown-item text-dark\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['profile']}}]\">Edit Profile</a>\n            <a class=\"dropdown-item text-dark\" (click)=\"userLogout()\">Log Out</a>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</nav>\n\n<div class=\"jumbotron h-90\">\n  <div class=\"container\">\n    <router-outlet name=\"aux\"></router-outlet>\n  </div>\n</div>\n"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-light h-10\" style=\"background-color: #f0b07b;\">\n  <div class=\"navcontainer\">\n    <div class=\"row\">\n      <a class=\"navbar-brand \" routerLink=\"\">Errands</a>\n\n      <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n              aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n        <span class=\"navbar-toggler-icon\"></span>\n      </button>\n\n      <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n        <ul class=\"navbar-nav mr-auto\">\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['dashhome']}}]\">Home<span\n              class=\"sr-only\">(current)</span></a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['createorder']}}]\">Create Order</a>\n          </li>\n          <li classs=\"nav-item\">\n            <a class=\"nav-link\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['myorder']}}]\">My order</a>\n          </li>\n\n        </ul>\n\n        <div class=\"nav-item dropdown\">\n          <button *ngIf=\"currentUser\" class=\" btn dropdown-toggle text-primary\" id=\"dropdownMenuButton\" type=\"button\"\n                  data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n            {{currentUser.username}}\n          </button>\n\n          <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">\n            <a class=\"dropdown-item text-dark\" [routerLink]=\"['/dashboard', {outlets: {'aux': ['profile']}}]\">Edit Profile</a>\n            <a class=\"dropdown-item text-dark\" (click)=\"userLogout()\">Log Out</a>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</nav>\n\n<div class=\"jumbotron h-90\">\n  <div class=\"container\">\n    <router-outlet name=\"aux\"></router-outlet>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -785,7 +1129,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row text-dark\" *ngIf='orderList != []'>\n  <div *ngFor=\"let order of orderList\" class=\"col-md-4\">\n    <div class=\"card mb-4 box-shadow\">\n      <div class=\"card-body\">\n        <h5 class=\"card-title\"> {{order.orderid}} </h5>\n        <h6 class=\"card-subtitle mb-2 text-muted\">Time limit: {{order.timelimit}} hours.</h6>\n      </div>\n\n      <ul class=\"list-group list-group-flush text-left\">\n        <li class=\"list-group-item\">Store address: {{order.storeadd}} </li>\n        <li class=\"list-group-item\">Destination adress: {{order.destination}} </li>\n        <li class=\"list-group-item\">Tips: {{order.tip}} dollar</li>\n      </ul>\n\n      <div class=\"card-body\">\n        <a routerLink=\"/orderdetail/{{order.orderid}}\" class=\"card-link\">See Detail</a>\n        <a routerLink=\"/orderdetail/{{order.orderid}}\" *ngIf=\"order.maker.userid != currentUserID\" class=\"card-link disabled\">Accept</a>\n      </div>\n\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row text-dark\" *ngIf='orderList != []'>\n  <div *ngFor=\"let order of orderList\" class=\"col-md-4\">\n    <div class=\"card mb-4 box-shadow\">\n      <div class=\"card-body\">\n        <h5 class=\"card-title\"> {{order.orderid}} </h5>\n        <h6 class=\"card-subtitle mb-2 text-muted\">Time limit: {{order.timelimit}} hours.</h6>\n      </div>\n\n      <ul class=\"list-group list-group-flush text-left\">\n        <li class=\"list-group-item\">Store address: {{order.storeadd}} </li>\n        <li class=\"list-group-item\">Destination adress: {{order.destination}} </li>\n        <li class=\"list-group-item\">Tips: {{order.tip}} dollar</li>\n      </ul>\n\n      <div class=\"card-body\">\n        <a [routerLink]=\"['/dashboard', {outlets: {'aux': ['orderdetail', order.orderid]}}]\" class=\"card-link\">See Detail</a>\n        <a routerLink=\" \" *ngIf=\"order.maker.userid != currentUserID\" class=\"card-link\" (click)=\"accept(order.orderid)\">Accept</a>\n      </div>\n\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -804,15 +1148,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var _services_order_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../_services/order.service */ "./src/app/_services/order.service.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _accept_dialog_accept_dialog_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../accept-dialog/accept-dialog.component */ "./src/app/accept-dialog/accept-dialog.component.ts");
+
+
 
 
 
 
 
 var DashhomeComponent = /** @class */ (function () {
-    function DashhomeComponent(orderService, router) {
+    function DashhomeComponent(orderService, router, dialog) {
         this.orderService = orderService;
         this.router = router;
+        this.dialog = dialog;
         this.orderList = [];
     }
     DashhomeComponent.prototype.ngOnInit = function () {
@@ -822,9 +1171,26 @@ var DashhomeComponent = /** @class */ (function () {
     DashhomeComponent.prototype.getOrderList = function () {
         var _this = this;
         this.orderService.getOrderlist().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["first"])()).subscribe(function (orderList) {
-            console.log(orderList);
             _this.orderList = orderList;
         });
+    };
+    DashhomeComponent.prototype.accept = function (orderid) {
+        var _this = this;
+        this.orderService.acceptOrder(this.currentUserID, orderid).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["first"])()).subscribe(function (result) {
+            result.toString();
+            console.log(result);
+            _this.acceptResult = result;
+            _this.openAcceptDialog();
+        });
+    };
+    DashhomeComponent.prototype.openAcceptDialog = function () {
+        var dialogConfig = new _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatDialogConfig"]();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            acceptResult: this.acceptResult
+        };
+        this.dialog.open(_accept_dialog_accept_dialog_component__WEBPACK_IMPORTED_MODULE_6__["AcceptDialogComponent"], dialogConfig);
     };
     DashhomeComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -832,7 +1198,7 @@ var DashhomeComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./dashhome.component.html */ "./src/app/dashhome/dashhome.component.html"),
             styles: [__webpack_require__(/*! ./dashhome.component.css */ "./src/app/dashhome/dashhome.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_order_service__WEBPACK_IMPORTED_MODULE_3__["OrderService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_order_service__WEBPACK_IMPORTED_MODULE_3__["OrderService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"], _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatDialog"]])
     ], DashhomeComponent);
     return DashhomeComponent;
 }());
@@ -983,6 +1349,75 @@ var LoginComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/my-order/my-order.component.css":
+/*!*************************************************!*\
+  !*** ./src/app/my-order/my-order.component.css ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL215LW9yZGVyL215LW9yZGVyLmNvbXBvbmVudC5jc3MifQ== */"
+
+/***/ }),
+
+/***/ "./src/app/my-order/my-order.component.html":
+/*!**************************************************!*\
+  !*** ./src/app/my-order/my-order.component.html ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p class=\"text-dark text-left\">Choose <strong>Created</strong> to view all created order, <strong>Accepted</strong> to view all accepted order</p>\n<ul class=\"nav nav-tabs text-dark\">\n  <li class=\"nav-item\">\n    <a class=\"nav-link {{created_active}}\" (click)=\"switch_created()\"><strong>Created</strong> </a>\n  </li>\n  <li class=\"nav-item\">\n    <a class=\"nav-link {{accepted_active}}\" (click)=\"switch_accepted()\"><strong>Accepted</strong> </a>\n</ul>\n<br><br>\n<div *ngIf='switch_flag == 0'>\n  <app-created-order-list></app-created-order-list>\n</div>\n\n<div *ngIf='switch_flag == 1'>\n  <app-accepted-order-list></app-accepted-order-list>\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/my-order/my-order.component.ts":
+/*!************************************************!*\
+  !*** ./src/app/my-order/my-order.component.ts ***!
+  \************************************************/
+/*! exports provided: MyOrderComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MyOrderComponent", function() { return MyOrderComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+var MyOrderComponent = /** @class */ (function () {
+    function MyOrderComponent() {
+        this.switch_flag = 0;
+        this.created_active = 'active';
+        this.accepted_active = '';
+    }
+    MyOrderComponent.prototype.ngOnInit = function () {
+    };
+    MyOrderComponent.prototype.switch_created = function () {
+        this.switch_flag = 0;
+        this.accepted_active = '';
+        this.created_active = 'active';
+    };
+    MyOrderComponent.prototype.switch_accepted = function () {
+        this.switch_flag = 1;
+        this.accepted_active = 'active';
+        this.created_active = '';
+    };
+    MyOrderComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-my-order',
+            template: __webpack_require__(/*! ./my-order.component.html */ "./src/app/my-order/my-order.component.html"),
+            styles: [__webpack_require__(/*! ./my-order.component.css */ "./src/app/my-order/my-order.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+    ], MyOrderComponent);
+    return MyOrderComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/order-detail/order-detail.component.css":
 /*!*********************************************************!*\
   !*** ./src/app/order-detail/order-detail.component.css ***!
@@ -1001,7 +1436,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf='orderDetail' class=\"text-center text-dark\">\n  <div class=\"card text-center\">\n\n    <div class=\"card-header text-muted\">\n      <p>Order ID:  {{orderDetail.orderid}}</p>\n    </div>\n\n    <div class=\"card-body\">\n      <div class=\"col-center-block text-center\">\n        <dl class=\"row text-left\">\n          <dt class=\"col-sm-3\">Item List:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.itemlist}}</p>\n          </dd>\n          <dt class=\"col-sm-3\">Store Address:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.storeadd}}</p></dd>\n\n          <dt class=\"col-sm-3\">Destination:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.destination}}</p></dd>\n\n          <dt class=\"col-sm-3\">Time limit:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.timelimit}}</p></dd>\n\n          <dt class=\"col-sm-3\">Tips:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.tip}}</p></dd>\n        </dl>\n      </div>\n      <div class=\"button-block\">\n        <div *ngIf=\"currentUserId == requestDetail.request_userid\" class=\"text-center row\">\n          <div class=\"text-center col\">\n            <button type=\"button\" class=\"btn btn-primary\" routerLink=\"/updaterequest/{{requestDetail.request_orderid}}\">\n              Update\n            </button>\n          </div>\n          <div class=\"text-center col\">\n            <button type=\"button\" class=\"btn btn-primary\" (click)=\"requestDelete()\">Delete</button>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"card-footer text-muted\">\n      <p>Post Time: {{requestDetail.post_time}}</p>\n      <button type=\"button\" class=\"btn btn-primary\" routerLink=\"\">Back</button>\n    </div>\n\n  </div>\n"
+module.exports = "<div *ngIf='orderDetail' class=\"text-center text-dark\">\n  <div class=\"card text-center\">\n    <div class=\"card-header text-muted\">\n      <p>Order ID:  {{orderDetail.orderid}}</p>\n    </div>\n\n    <div class=\"card-body\">\n      <div class=\"col-center-block text-center\">\n        <dl class=\"row text-left\">\n          <dt class=\"col-sm-3\">Item list:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.itemlist}}</p>\n          </dd>\n          <dt class=\"col-sm-3\">Store address:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.storeadd}}</p></dd>\n\n          <dt class=\"col-sm-3\">Destination:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.destination}}</p></dd>\n\n          <dt class=\"col-sm-3\">Time limit:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.timelimit}}</p></dd>\n\n          <dt class=\"col-sm-3\">Tips:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.tip}}</p></dd>\n\n          <dt class=\"col-sm-3\">Poster:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.maker.username}}</p></dd>\n\n          <dt class=\"col-sm-3\">State:</dt>\n          <dd class=\"col-sm-9\"><p>{{orderDetail.state}}</p></dd>\n        </dl>\n      </div>\n\n      <div class=\"button-block\">\n        <div *ngIf=\"orderDetail.maker != null && orderDetail.recipient !=null\n        && (orderDetail.maker.userid == currentUserId || orderDetail.recipient.userid == currentUserId)\" class=\"text-center row\">\n          <div class=\"text-center col\">\n            <button type=\"button\" class=\"btn btn-primary\" (click)=\"complete()\">\n              Complete\n            </button>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"card-footer text-muted\">\n      <!---->\n      <button type=\"button\" class=\"btn btn-primary\" (click)=\"backtolast()\">Back</button>\n    </div>\n\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1018,21 +1453,58 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../_services */ "./src/app/_services/index.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../_services */ "./src/app/_services/index.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _complete_dialog_complete_dialog_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../complete-dialog/complete-dialog.component */ "./src/app/complete-dialog/complete-dialog.component.ts");
+
+
+
+
 
 
 
 
 var OrderDetailComponent = /** @class */ (function () {
-    function OrderDetailComponent(router, route, orderService) {
+    function OrderDetailComponent(router, route, orderService, location, dialog) {
         this.router = router;
         this.route = route;
         this.orderService = orderService;
+        this.location = location;
+        this.dialog = dialog;
     }
     OrderDetailComponent.prototype.ngOnInit = function () {
+        this.getOrder();
+        this.currentUserId = localStorage.getItem('currentUserID');
     };
-    OrderDetailComponent.prototype.getPostDetail = function () {
+    OrderDetailComponent.prototype.getOrder = function () {
+        var _this = this;
         var orderid = this.route.snapshot.paramMap.get('orderid');
+        this.orderService.getOrderDetail(orderid).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["first"])()).subscribe(function (order) {
+            _this.orderDetail = order;
+        });
+    };
+    OrderDetailComponent.prototype.complete = function () {
+        var _this = this;
+        var orderid = this.route.snapshot.paramMap.get('orderid');
+        this.orderService.completeOrder(this.currentUserId, orderid).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["first"])()).subscribe(function (result) {
+            result.toString();
+            _this.completeResult = result;
+            _this.openCompleteDialog();
+        });
+    };
+    OrderDetailComponent.prototype.openCompleteDialog = function () {
+        var dialogConfig = new _angular_material__WEBPACK_IMPORTED_MODULE_6__["MatDialogConfig"]();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            completeResult: this.completeResult
+        };
+        this.dialog.open(_complete_dialog_complete_dialog_component__WEBPACK_IMPORTED_MODULE_7__["CompleteDialogComponent"], dialogConfig);
+    };
+    OrderDetailComponent.prototype.backtolast = function () {
+        this.location.back();
     };
     OrderDetailComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -1040,9 +1512,100 @@ var OrderDetailComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./order-detail.component.html */ "./src/app/order-detail/order-detail.component.html"),
             styles: [__webpack_require__(/*! ./order-detail.component.css */ "./src/app/order-detail/order-detail.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _services__WEBPACK_IMPORTED_MODULE_3__["OrderService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _services__WEBPACK_IMPORTED_MODULE_4__["OrderService"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["Location"], _angular_material__WEBPACK_IMPORTED_MODULE_6__["MatDialog"]])
     ], OrderDetailComponent);
     return OrderDetailComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/rate-order-dialog/rate-order-dialog.component.css":
+/*!*******************************************************************!*\
+  !*** ./src/app/rate-order-dialog/rate-order-dialog.component.css ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3JhdGUtb3JkZXItZGlhbG9nL3JhdGUtb3JkZXItZGlhbG9nLmNvbXBvbmVudC5jc3MifQ== */"
+
+/***/ }),
+
+/***/ "./src/app/rate-order-dialog/rate-order-dialog.component.html":
+/*!********************************************************************!*\
+  !*** ./src/app/rate-order-dialog/rate-order-dialog.component.html ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h2 mat-dialog-title class=\"text-center\">Rate Order</h2>\n\n<mat-dialog-content *ngIf='state == \"COMPLETED\"' class=\"text-center text-light\">\n  <p >Please rate</p>\n  <ngb-rating [(rate)]=\"currentRate\"></ngb-rating>\n  <hr>\n  <pre class=\"text-light\">Rate: <b>{{currentRate}}</b></pre>\n  <p *ngIf=\"rateResult\"> Rate success!</p>\n</mat-dialog-content>\n\n<mat-dialog-content *ngIf='state != \"COMPLETED\"' class=\"text-center text-light\">\n  <p class=\"text-light\">The order is not completed.</p>\n</mat-dialog-content>\n\n<div class=\"row\">\n  <div class=\"col text-center\">\n    <button class=\"btn btn-info\" (click)=\"submit()\">Submit</button>\n    <button class=\"btn btn-info\" (click)=\"close()\">cancel</button>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/rate-order-dialog/rate-order-dialog.component.ts":
+/*!******************************************************************!*\
+  !*** ./src/app/rate-order-dialog/rate-order-dialog.component.ts ***!
+  \******************************************************************/
+/*! exports provided: RateOrderDialogComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RateOrderDialogComponent", function() { return RateOrderDialogComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ "./node_modules/@ng-bootstrap/ng-bootstrap/fesm5/ng-bootstrap.js");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../_services */ "./src/app/_services/index.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+
+
+
+
+
+
+var RateOrderDialogComponent = /** @class */ (function () {
+    function RateOrderDialogComponent(router, dialogRef, orderService, data, config) {
+        this.router = router;
+        this.dialogRef = dialogRef;
+        this.orderService = orderService;
+        this.rate = 0;
+        this.orderid = data.orderid;
+        this.state = data.state;
+        config.max = 5;
+    }
+    RateOrderDialogComponent.prototype.ngOnInit = function () {
+        this.submitResult = false;
+    };
+    RateOrderDialogComponent.prototype.close = function () {
+        this.dialogRef.close();
+        window.location.reload();
+    };
+    RateOrderDialogComponent.prototype.submit = function () {
+        var _this = this;
+        this.submitResult = true;
+        this.currentUserID = localStorage.getItem('currentUserID');
+        this.orderService.rateOrder(this.currentUserID, this.orderid, this.rate.toString()).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["first"])()).subscribe(function (result) {
+            result.toString();
+            _this.rateResult = result;
+        });
+    };
+    RateOrderDialogComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-rate-order-dialog',
+            template: __webpack_require__(/*! ./rate-order-dialog.component.html */ "./src/app/rate-order-dialog/rate-order-dialog.component.html"),
+            providers: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__["NgbRatingConfig"]],
+            styles: [__webpack_require__(/*! ./rate-order-dialog.component.css */ "./src/app/rate-order-dialog/rate-order-dialog.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_2__["MAT_DIALOG_DATA"])),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogRef"],
+            _services__WEBPACK_IMPORTED_MODULE_5__["OrderService"], Object, _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__["NgbRatingConfig"]])
+    ], RateOrderDialogComponent);
+    return RateOrderDialogComponent;
 }());
 
 
@@ -1169,7 +1732,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h2 class=\"text-dark\">Profile</h2>\n<form [formGroup]=\"profileForm\" (ngSubmit)=\"onSubmit()\" class=\"text-dark text-left\">\n\n  <div class=\"form-group\">\n    <label for=\"userId\">User Id</label>\n    <input type=\"text\" formControlName=\"userId\" readonly=\"readonly\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.userId.errors }\" />\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"userName\">User Name</label>\n    <input type=\"text\" formControlName=\"userName\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.userName.errors }\" />\n    <div *ngIf=\"submitted && f.userName.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.userName.errors.required\">User name is required</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"password\">Password</label>\n    <input type=\"text\" formControlName=\"password\" readonly=\"readonly\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.password.errors }\" />\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"phone\">Phone Number</label>\n    <input type=\"text\" formControlName=\"phone\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.phone.errors }\" />\n    <div *ngIf=\"submitted && f.phone.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.phone.errors.required\">Phone Number is required</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"address\">Address</label>\n    <input type=\"text\" formControlName=\"address\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.address.errors }\" />\n    <div *ngIf=\"submitted && f.address.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.address.errors.required\">Address is required</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"rateNumber\">Rate Number</label>\n    <input type=\"text\" formControlName=\"rateNumber\" readonly=\"readonly\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.rateNumber.errors }\" />\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"averageRate\">Average Rate</label>\n    <input type=\"text\" formControlName=\"averageRate\" readonly=\"readonly\" class=\"form-control\"/>\n  </div>\n\n  <div class=\"form-group text-center\">\n    <button [disabled]=\"loading\" class=\"btn btn-primary\">Submit</button>\n    <a [routerLink]=\"['/dashboard', {outlets: {'aux': ['dashhome']}}]\" class=\"btn btn-link\">Cancel</a>\n  </div>\n\n</form>\n"
+module.exports = "<h2 class=\"text-dark\">Profile</h2>\n<form [formGroup]=\"profileForm\" (ngSubmit)=\"onSubmit()\" class=\"text-dark text-left\">\n\n  <div class=\"form-group\">\n    <label>User Id</label>\n    <input type=\"text\" formControlName=\"userId\" readonly=\"readonly\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.userId.errors }\" />\n  </div>\n\n  <div class=\"form-group\">\n    <label>User Name</label>\n    <input type=\"text\" formControlName=\"userName\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.userName.errors }\" />\n    <div *ngIf=\"submitted && f.userName.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.userName.errors.required\">User name is required</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label>Password</label>\n    <input type=\"text\" formControlName=\"password\" readonly=\"readonly\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.password.errors }\" />\n  </div>\n\n  <div class=\"form-group\">\n    <label>Phone Number</label>\n    <input type=\"text\" formControlName=\"phone\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.phone.errors }\" />\n    <div *ngIf=\"submitted && f.phone.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.phone.errors.required\">Phone Number is required</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label>Address</label>\n    <input type=\"text\" formControlName=\"address\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.address.errors }\" />\n    <div *ngIf=\"submitted && f.address.errors\" class=\"invalid-feedback\">\n      <div *ngIf=\"f.address.errors.required\">Address is required</div>\n    </div>\n  </div>\n\n  <div class=\"form-group\">\n    <label>Rate Number</label>\n    <input type=\"text\" formControlName=\"rateNumber\" readonly=\"readonly\" class=\"form-control\" [ngClass]=\"{ 'is-invalid': submitted && f.rateNumber.errors }\" />\n  </div>\n\n  <div class=\"form-group\">\n    <label>Average Rate</label>\n    <input type=\"text\" formControlName=\"averageRate\" readonly=\"readonly\" class=\"form-control\"/>\n  </div>\n\n  <div class=\"form-group text-center\">\n    <button [disabled]=\"loading\" class=\"btn btn-primary\">Submit</button>\n    <a (click)=\"backtolast()\" class=\"btn btn-link\">Cancel</a>\n  </div>\n\n</form>\n"
 
 /***/ }),
 
@@ -1189,6 +1752,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+
 
 
 
@@ -1196,12 +1761,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var UserprofileComponent = /** @class */ (function () {
-    function UserprofileComponent(formBuilder, router, userService, alertService) {
+    function UserprofileComponent(formBuilder, router, userService, alertService, location) {
         var _this = this;
         this.formBuilder = formBuilder;
         this.router = router;
         this.userService = userService;
         this.alertService = alertService;
+        this.location = location;
         this.loading = false;
         this.submitted = false;
         this.router.routeReuseStrategy.shouldReuseRoute = function () {
@@ -1262,6 +1828,9 @@ var UserprofileComponent = /** @class */ (function () {
             ;
         });
     };
+    UserprofileComponent.prototype.backtolast = function () {
+        this.location.back();
+    };
     UserprofileComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-userprofile',
@@ -1271,7 +1840,8 @@ var UserprofileComponent = /** @class */ (function () {
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormBuilder"],
             _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
             _services__WEBPACK_IMPORTED_MODULE_2__["UserService"],
-            _services__WEBPACK_IMPORTED_MODULE_2__["AlertService"]])
+            _services__WEBPACK_IMPORTED_MODULE_2__["AlertService"],
+            _angular_common__WEBPACK_IMPORTED_MODULE_6__["Location"]])
     ], UserprofileComponent);
     return UserprofileComponent;
 }());
@@ -1318,18 +1888,21 @@ var environment = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/platform-browser-dynamic */ "./node_modules/@angular/platform-browser-dynamic/fesm5/platform-browser-dynamic.js");
-/* harmony import */ var _app_app_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app/app.module */ "./src/app/app.module.ts");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var hammerjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! hammerjs */ "./node_modules/hammerjs/hammer.js");
+/* harmony import */ var hammerjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(hammerjs__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/platform-browser-dynamic */ "./node_modules/@angular/platform-browser-dynamic/fesm5/platform-browser-dynamic.js");
+/* harmony import */ var _app_app_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app/app.module */ "./src/app/app.module.ts");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./environments/environment */ "./src/environments/environment.ts");
 
 
 
 
-if (_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].production) {
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["enableProdMode"])();
+
+if (_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].production) {
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["enableProdMode"])();
 }
-Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformBrowserDynamic"])().bootstrapModule(_app_app_module__WEBPACK_IMPORTED_MODULE_2__["AppModule"])
+Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_2__["platformBrowserDynamic"])().bootstrapModule(_app_app_module__WEBPACK_IMPORTED_MODULE_3__["AppModule"])
     .catch(function (err) { return console.error(err); });
 
 

@@ -1,0 +1,22 @@
+<div class="row text-dark" *ngIf='createdOrderList != []'>
+  <div *ngFor="let order of createdOrderList" class="col-md-4">
+    <div class="card mb-4 box-shadow">
+      <div class="card-body">
+        <h5 class="card-title"> {{order.orderid}} </h5>
+        <h6 class="card-subtitle mb-2 text-muted">Time limit: {{order.timelimit}} hours.</h6>
+      </div>
+
+      <ul class="list-group list-group-flush text-left">
+        <li class="list-group-item">Store address: {{order.storeadd}} </li>
+        <li class="list-group-item">Destination adress: {{order.destination}} </li>
+        <li class="list-group-item">Tips: {{order.tip}} dollar</li>
+      </ul>
+
+      <div class="card-body">
+        <a [routerLink]="['/dashboard', {outlets: {'aux': ['orderdetail', order.orderid]}}]" class="card-link">See Detail</a>
+        <a *ngIf= "!order.rated" (click)="rate(order.orderid, order.state)" class="card-link text-primary">Rate</a>
+      </div>
+
+    </div>
+  </div>
+</div>

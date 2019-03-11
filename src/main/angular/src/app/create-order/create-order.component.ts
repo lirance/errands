@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {OrderService} from "../_services/order.service";
 import {first} from "rxjs/operators";
 import {AlertService} from "../_services";
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-create-order',
@@ -21,6 +22,7 @@ export class CreateOrderComponent implements OnInit {
     private router: Router,
     private orderServie: OrderService,
     private alertService: AlertService,
+    private location: Location
     ) {
   }
 
@@ -55,5 +57,9 @@ export class CreateOrderComponent implements OnInit {
         });
       };
     this.loading = true;
+  }
+
+  backtolast(){
+    this.location.back();
   }
 }

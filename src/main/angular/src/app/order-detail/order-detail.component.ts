@@ -3,7 +3,9 @@ import { Order } from "../_models/order";
 import { ActivatedRoute, Router} from '@angular/router';
 import { first } from 'rxjs/operators';
 import { OrderService } from "../_services";
-
+import { Location } from '@angular/common';
+import { MatDialog, MatDialogConfig } from "@angular/material";
+import { CompleteDialogComponent } from "../complete-dialog/complete-dialog.component";
 
 @Component({
   selector: 'app-order-detail',
@@ -15,8 +17,9 @@ export class OrderDetailComponent implements OnInit {
   orderDetail: Order;
   orderid: string;
   currentUserId: string;
+  completeResult: string;
 
-  constructor(private router: Router, private route: ActivatedRoute, private  orderService: OrderService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private  orderService: OrderService, private location: Location, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.getOrder();
@@ -30,5 +33,31 @@ export class OrderDetailComponent implements OnInit {
     });
   }
 
+  complete(){
+    let orderid = this.route.snapshot.paramMap.get('orderid');
+    this.orderService.completeOrder(this.currentUserId, orderid).pipe(first()).subscribe( result=>{
+      result.toString();
+      this.completeResult = result;
+      this.openCompleteDialog();
+    });
+  }
+
+  openCompleteDialog():void {
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    dialogConfig.data = {
+      completeResult: this.completeResult
+    };
+
+    this.dialog.open(CompleteDialogComponent, dialogConfig);
+  }
+
+  backtolast(){
+    this.location.back();
+  }
 
 }

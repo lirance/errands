@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from "@angular/material";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +22,14 @@ import {OrderService} from "./_services/order.service";
 import { AlertService } from "./_services";
 import { AlertComponent } from "./_directives";
 import { UserprofileComponent } from './userprofile/userprofile.component';
+import { AcceptDialogComponent } from './accept-dialog/accept-dialog.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MyOrderComponent } from './my-order/my-order.component';
+import { CompleteDialogComponent } from './complete-dialog/complete-dialog.component';
+import { CreatedOrderListComponent } from './created-order-list/created-order-list.component';
+import { AcceptedOrderListComponent } from './accepted-order-list/accepted-order-list.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RateOrderDialogComponent } from './rate-order-dialog/rate-order-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,20 +43,30 @@ import { UserprofileComponent } from './userprofile/userprofile.component';
     CreateOrderComponent,
     OrderDetailComponent,
     AlertComponent,
-    UserprofileComponent
+    UserprofileComponent,
+    AcceptDialogComponent,
+    MyOrderComponent,
+    CompleteDialogComponent,
+    CreatedOrderListComponent,
+    AcceptedOrderListComponent,
+    RateOrderDialogComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatDialogModule,
+    NgbModule,
+    BrowserAnimationsModule
   ],
   providers: [
     OrderService,
     UserService,
     AlertService
     ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [AcceptDialogComponent, CompleteDialogComponent, RateOrderDialogComponent]
 })
 
 export class AppModule { }
