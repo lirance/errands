@@ -2,9 +2,9 @@
 
 <mat-dialog-content *ngIf='state == "COMPLETED"' class="text-center text-light">
   <p >Please rate</p>
-  <ngb-rating [(rate)]="currentRate"></ngb-rating>
+  <ngb-rating [(rate)]="rate"></ngb-rating>
   <hr>
-  <pre class="text-light">Rate: <b>{{currentRate}}</b></pre>
+  <pre class="text-light">Rate: <b>{{rate}}</b></pre>
   <p *ngIf="rateResult"> Rate success!</p>
   <p *ngIf="submitResult"> You have aleady rated!</p>
 </mat-dialog-content>

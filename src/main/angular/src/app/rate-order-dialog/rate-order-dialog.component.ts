@@ -46,6 +46,7 @@ export class RateOrderDialogComponent implements OnInit {
     this.currentUserID= localStorage.getItem('currentUserID');
     this.orderService.rateOrder(this.currentUserID, this.orderid, this.rate.toString()).pipe(first()).subscribe(result=>{
       result.toString();
+      console.log(result);
       this.rateResult = result;
 
     })
