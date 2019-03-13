@@ -14,6 +14,7 @@
 
       <div class="card-body">
         <a [routerLink]="['/dashboard', {outlets: {'aux': ['orderdetail', order.orderid]}}]" class="card-link">See Detail</a>
+        <a *ngIf= "!order.rated" (click)="rate(order.orderid, order.state)" class="card-link text-primary">Rate</a>
       </div>
 
     </div>

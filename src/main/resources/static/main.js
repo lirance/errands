@@ -1539,7 +1539,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h2 mat-dialog-title class=\"text-center\">Rate Order</h2>\n\n<mat-dialog-content *ngIf='state == \"COMPLETED\"' class=\"text-center text-light\">\n  <p >Please rate</p>\n  <ngb-rating [(rate)]=\"currentRate\"></ngb-rating>\n  <hr>\n  <pre class=\"text-light\">Rate: <b>{{currentRate}}</b></pre>\n  <p *ngIf=\"rateResult\"> Rate success!</p>\n  <p *ngIf=\"submitResult\"> You have aleady rated!</p>\n</mat-dialog-content>\n\n<mat-dialog-content *ngIf='state != \"COMPLETED\"' class=\"text-center text-light\">\n  <p class=\"text-light\">The order is not completed.</p>\n</mat-dialog-content>\n\n<div class=\"row\">\n  <div class=\"col-6 text-center \" *ngIf='state == \"COMPLETED\"'>\n    <button class=\"btn btn-info\" *ngIf='state == \"COMPLETED\"' (click)=\"submit()\">Submit</button>\n  </div>\n  <div class=\"col text-center\">\n    <button class=\"btn btn-info\" (click)=\"close()\">cancel</button>\n  </div>\n</div>\n"
+module.exports = "<h2 mat-dialog-title class=\"text-center\">Rate Order</h2>\n\n<mat-dialog-content *ngIf='state == \"COMPLETED\"' class=\"text-center text-light\">\n  <p >Please rate</p>\n  <ngb-rating [(rate)]=\"rate\"></ngb-rating>\n  <hr>\n  <pre class=\"text-light\">Rate: <b>{{rate}}</b></pre>\n  <p *ngIf=\"rateResult\"> Rate success!</p>\n  <p *ngIf=\"submitResult\"> You have aleady rated!</p>\n</mat-dialog-content>\n\n<mat-dialog-content *ngIf='state != \"COMPLETED\"' class=\"text-center text-light\">\n  <p class=\"text-light\">The order is not completed.</p>\n</mat-dialog-content>\n\n<div class=\"row\">\n  <div class=\"col-6 text-center \" *ngIf='state == \"COMPLETED\"'>\n    <button class=\"btn btn-info\" *ngIf='state == \"COMPLETED\"' (click)=\"submit()\">Submit</button>\n  </div>\n  <div class=\"col text-center\">\n    <button class=\"btn btn-info\" (click)=\"close()\">cancel</button>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1590,6 +1590,7 @@ var RateOrderDialogComponent = /** @class */ (function () {
         this.currentUserID = localStorage.getItem('currentUserID');
         this.orderService.rateOrder(this.currentUserID, this.orderid, this.rate.toString()).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["first"])()).subscribe(function (result) {
             result.toString();
+            console.log(result);
             _this.rateResult = result;
         });
     };
