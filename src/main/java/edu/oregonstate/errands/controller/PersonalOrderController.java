@@ -215,10 +215,11 @@ public class PersonalOrderController {
 
                 if (user.getAveragerate() == null) {
                     user.setAveragerate(rate);
-                    user.setRatenumber(user.getRatenumber() + 1);
+                    user.setRatenumber(1);
                 } else {
                     float avgRate = user.getAveragerate();
                     int rateNum = user.getRatenumber();
+                    user.setRatenumber(rateNum + 1);
                     user.setAveragerate((avgRate * rateNum + rate) / (rateNum + 1));
                 }
                 return userService.updateByPrimaryKey(user) == 1;
