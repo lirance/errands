@@ -39,14 +39,28 @@
       </div>
 
       <div class="button-block">
-        <div *ngIf="orderDetail.maker != null && orderDetail.recipient !=null
-        && (orderDetail.maker.userid == currentUserId || orderDetail.recipient.userid == currentUserId)" class="text-center row">
-          <div class="text-center col">
+        <div  class="text-center row">
+          <div *ngIf="orderDetail.maker != null && orderDetail.recipient !=null
+        && (orderDetail.maker.userid == currentUserId || orderDetail.recipient.userid == currentUserId)" class="text-center col">
             <button type="button" class="btn btn-primary" (click)="complete()">
               Complete
             </button>
           </div>
+
+
+        <div class="text-center col " *ngIf='orderDetail.state == "ACCEPTED" && orderDetail.recipient.userid == currentUserId'>
+          <button  type="button" class="btn btn-primary" (click)="cancelAcceptedOrder()">
+            Cancel
+          </button>
         </div>
+
+        <div class="text-center col" *ngIf='orderDetail.state == "ORDERED" && orderDetail.maker.userid == currentUserId'>
+          <button  type="button" class="btn btn-primary" (click)="deleteOrder()">
+            Delete
+          </button>
+        </div>
+        </div>
+
       </div>
     </div>
 

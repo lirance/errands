@@ -41,4 +41,12 @@ export class OrderService {
     return this.http.get<PersonalOrderShow[]>('http://localhost:8080/orders/getAcceptedOrder?userId=' + userid);
   }
 
+  cancelAcceptedOrder(userid: string, orderid: string){
+    return this.http.get<string>('http://localhost:8080/order/cancel?userId='+userid+'&orderId='+orderid);
+  }
+
+  deleteOrder(userid: string, orderid: string){
+    return this.http.get<string>('http://localhost:8080/order/delete?userId='+userid+'&orderId='+orderid);
+  }
+
 }
