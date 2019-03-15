@@ -11,6 +11,7 @@ import { CreateOrderComponent } from "./create-order/create-order.component";
 import { OrderDetailComponent } from "./order-detail/order-detail.component";
 import { UserprofileComponent } from './userprofile/userprofile.component';
 import { MyOrderComponent } from "./my-order/my-order.component";
+import { PublicProfileComponent } from "./public-profile/public-profile.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -27,6 +28,7 @@ const routes: Routes = [
       { path: 'createorder', component: CreateOrderComponent, outlet:'aux'},
       { path: 'myorder', component: MyOrderComponent, outlet:'aux'},
       { path: 'orderdetail/:orderid', component: OrderDetailComponent, outlet: 'aux'},
+      { path: 'publicprofile/:userid', component: PublicProfileComponent, outlet: 'aux'},
 ]}];
 
 @NgModule({

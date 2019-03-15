@@ -30,6 +30,7 @@ import { CreatedOrderListComponent } from './created-order-list/created-order-li
 import { AcceptedOrderListComponent } from './accepted-order-list/accepted-order-list.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RateOrderDialogComponent } from './rate-order-dialog/rate-order-dialog.component';
+import { PublicProfileComponent } from './public-profile/public-profile.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { RateOrderDialogComponent } from './rate-order-dialog/rate-order-dialog.
     CompleteDialogComponent,
     CreatedOrderListComponent,
     AcceptedOrderListComponent,
-    RateOrderDialogComponent
+    RateOrderDialogComponent,
+    PublicProfileComponent
   ],
   imports: [
     BrowserModule,

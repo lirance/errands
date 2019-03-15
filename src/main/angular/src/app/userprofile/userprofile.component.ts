@@ -45,7 +45,6 @@ export class UserprofileComponent implements OnInit {
     this.profileForm = this.formBuilder.group({
       userId: [this.currentUser.userid, Validators.required],
       userName: [this.currentUser.username, Validators.required],
-      password: [this.currentUser.password, Validators.required],
       phone: [this.currentUser.phone, Validators.required],
       address: [this.currentUser.address, Validators.required],
       rateNumber: [this.currentUser.ratenumber, Validators.required],

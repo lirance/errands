@@ -23,10 +23,18 @@
           <dd class="col-sm-9"><p>{{orderDetail.tip}}</p></dd>
 
           <dt class="col-sm-3">Poster:</dt>
-          <dd class="col-sm-9"><p>{{orderDetail.maker.username}}</p></dd>
+          <dd class="col-sm-9">
+            <a [routerLink]="['/dashboard', {outlets: {'aux': ['publicprofile', orderDetail.maker.userid]}}]">{{orderDetail.maker.username}}</a>
+          </dd>
 
           <dt class="col-sm-3">State:</dt>
           <dd class="col-sm-9"><p>{{orderDetail.state}}</p></dd>
+
+          <dt class="col-sm-3">Accepter:</dt>
+          <dd class="col-sm-9">
+            <a *ngIf="orderDetail.recipient != null" [routerLink]="['/dashboard', {outlets: {'aux': ['publicprofile', orderDetail.recipient.userid]}}]">{{orderDetail.recipient.username}}</a>
+            <p *ngIf="orderDetail.recipient == null">Haven't accepted by other user!</p>
+          </dd>
         </dl>
       </div>
 

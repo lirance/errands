@@ -1,0 +1,36 @@
+<div *ngIf='currentUser' class="text-center text-dark">
+  <div class="card text-center">
+    <div class="card-header text-muted">
+      <p>User ID:  {{currentUser.userid}}</p>
+    </div>
+
+    <div class="card-body">
+      <div class="col-center-block text-center">
+        <dl class="row text-left">
+          <dt class="col-sm-3">User Name:</dt>
+          <dd class="col-sm-9"><p>{{currentUser.username}}</p>
+          </dd>
+          <dt class="col-sm-3">User address:</dt>
+          <dd class="col-sm-9"><p>{{currentUser.address}}</p></dd>
+
+          <dt class="col-sm-3">User phone number:</dt>
+          <dd class="col-sm-9"><p>{{currentUser.phone}}</p></dd>
+
+          <dt class="col-sm-3">User average rate:</dt>
+          <dd class="col-sm-9">
+            <p *ngIf="currentUser.averagerate != null">{{currentUser.averagerate}}</p>
+            <p *ngIf="currentUser.averagerate == null">This user have get any rate yet</p>
+          </dd>
+
+          <dt class="col-sm-3">User rate number:</dt>
+          <dd class="col-sm-9"><p>{{currentUser.ratenumber}}</p></dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="card-footer text-muted">
+      <!---->
+      <button type="button" class="btn btn-primary" (click)="backtolast()">Back</button>
+    </div>
+  </div>
+</div>

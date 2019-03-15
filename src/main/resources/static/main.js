@@ -471,7 +471,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row text-dark\" *ngIf='acceptOrderList != []'>\n  <div *ngFor=\"let order of acceptOrderList\" class=\"col-md-4\">\n    <div class=\"card mb-4 box-shadow\">\n      <div class=\"card-body\">\n        <h5 class=\"card-title\"> {{order.orderid}} </h5>\n        <h6 class=\"card-subtitle mb-2 text-muted\">Time limit: {{order.timelimit}} hours.</h6>\n      </div>\n\n      <ul class=\"list-group list-group-flush text-left\">\n        <li class=\"list-group-item\">Store address: {{order.storeadd}} </li>\n        <li class=\"list-group-item\">Destination adress: {{order.destination}} </li>\n        <li class=\"list-group-item\">Tips: {{order.tip}} dollar</li>\n      </ul>\n\n      <div class=\"card-body\">\n        <a [routerLink]=\"['/dashboard', {outlets: {'aux': ['orderdetail', order.orderid]}}]\" class=\"card-link\">See Detail</a>\n      </div>\n\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row text-dark\" *ngIf='acceptOrderList != []'>\n  <div *ngFor=\"let order of acceptOrderList\" class=\"col-md-4\">\n    <div class=\"card mb-4 box-shadow\">\n      <div class=\"card-body\">\n        <h5 class=\"card-title\"> {{order.orderid}} </h5>\n        <h6 class=\"card-subtitle mb-2 text-muted\">Time limit: {{order.timelimit}} hours.</h6>\n      </div>\n\n      <ul class=\"list-group list-group-flush text-left\">\n        <li class=\"list-group-item\">Store address: {{order.storeadd}} </li>\n        <li class=\"list-group-item\">Destination adress: {{order.destination}} </li>\n        <li class=\"list-group-item\">Tips: {{order.tip}} dollar</li>\n      </ul>\n\n      <div class=\"card-body\">\n        <a [routerLink]=\"['/dashboard', {outlets: {'aux': ['orderdetail', order.orderid]}}]\" class=\"card-link\">See Detail</a>\n        <a *ngIf= \"!order.rated\" (click)=\"rate(order.orderid, order.state)\" class=\"card-link text-primary\">Rate</a>\n      </div>\n\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -489,13 +489,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../_services */ "./src/app/_services/index.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _rate_order_dialog_rate_order_dialog_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../rate-order-dialog/rate-order-dialog.component */ "./src/app/rate-order-dialog/rate-order-dialog.component.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+
+
+
 
 
 
 
 var AcceptedOrderListComponent = /** @class */ (function () {
-    function AcceptedOrderListComponent(orderService) {
+    function AcceptedOrderListComponent(orderService, dialog, router, route) {
         this.orderService = orderService;
+        this.dialog = dialog;
+        this.router = router;
+        this.route = route;
         this.acceptOrderList = [];
     }
     AcceptedOrderListComponent.prototype.ngOnInit = function () {
@@ -508,13 +517,23 @@ var AcceptedOrderListComponent = /** @class */ (function () {
             _this.acceptOrderList = orders;
         });
     };
+    AcceptedOrderListComponent.prototype.rate = function (orderid, state) {
+        this.openRateDialog(orderid, state);
+    };
+    AcceptedOrderListComponent.prototype.openRateDialog = function (orderid, state) {
+        var dialogConfig = new _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatDialogConfig"]();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = { orderid: orderid, state: state };
+        this.dialog.open(_rate_order_dialog_rate_order_dialog_component__WEBPACK_IMPORTED_MODULE_5__["RateOrderDialogComponent"], dialogConfig);
+    };
     AcceptedOrderListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-accepted-order-list',
             template: __webpack_require__(/*! ./accepted-order-list.component.html */ "./src/app/accepted-order-list/accepted-order-list.component.html"),
             styles: [__webpack_require__(/*! ./accepted-order-list.component.css */ "./src/app/accepted-order-list/accepted-order-list.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services__WEBPACK_IMPORTED_MODULE_3__["OrderService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services__WEBPACK_IMPORTED_MODULE_3__["OrderService"], _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatDialog"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"]])
     ], AcceptedOrderListComponent);
     return AcceptedOrderListComponent;
 }());
