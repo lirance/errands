@@ -74,6 +74,36 @@ public class PersonalOrderController {
 
     }
 
+    @RequestMapping("/delete")
+    public boolean deleteOrder(int orderId, int userId) {
+
+        try {
+            Order order = orderService.selectByPrimaryKey(orderId);
+            if (!order.getState().equals(State.ORDERED.toString())) {
+                return false;
+            }
+
+            UserOrderKey userOrderKey = new UserOrderKey();
+            userOrderKey.setUserid(userId);
+            userOrderKey.setOrderid(orderId);
+
+            UserOrder userOrder = userOrderService.selectByPrimaryKey(userOrderKey);
+            if (userOrder == null || !userOrder.getOrdermaker()) {
+                return false;
+            }
+
+            // delete user order
+            if (userOrderService.deleteByPrimaryKey(userOrderKey) != 1) {
+                return false;
+            }
+            //delete order
+            return orderService.deleteByPrimaryKey(orderId) == 1;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
 
     @RequestMapping("/accept")
     public boolean AcceptOrder(int orderId, int userId) {
@@ -105,6 +135,31 @@ public class PersonalOrderController {
             return false;
         }
 
+
+    }
+
+    @RequestMapping("/cancel")
+    public boolean cancelOrder(int orderId, int userId) {
+
+        try {
+            Order order = orderService.selectByPrimaryKey(orderId);
+
+            if (!order.getState().equals(State.ACCEPTED.toString())) {
+                return false;
+            }
+
+            UserOrderKey userOrderKey = new UserOrderKey();
+            userOrderKey.setOrderid(orderId);
+            userOrderKey.setUserid(userId);
+            if (userOrderService.deleteByPrimaryKey(userOrderKey) != 1) {
+                return false;
+            }
+            order.setState(State.ORDERED.toString());
+            return (orderService.updateByPrimaryKey(order) == 1);
+
+        } catch (Exception e) {
+            return false;
+        }
 
     }
 
