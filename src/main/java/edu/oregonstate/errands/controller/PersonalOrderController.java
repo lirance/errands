@@ -214,8 +214,8 @@ public class PersonalOrderController {
 
 
                 if (user.getAveragerate() == null) {
-                    user.setAveragerate((float) rate);
-                    user.setRatenumber(1);
+                    user.setAveragerate(rate);
+                    user.setRatenumber(user.getRatenumber() + 1);
                 } else {
                     float avgRate = user.getAveragerate();
                     int rateNum = user.getRatenumber();
